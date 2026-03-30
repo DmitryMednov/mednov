@@ -1,4 +1,4 @@
-/* ===== MEDNOV FAMILY OFFICE — v2.0 ===== */
+/* ===== MEDNOV FAMILY OFFICE — v2.1 ===== */
 
 document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
@@ -62,19 +62,12 @@ function initReveal() {
 function initSplitText() {
   // Word split
   document.querySelectorAll('.split-words').forEach(el => {
-    if (el.dataset.split) return; // already split
+    if (el.dataset.split) return;
     el.dataset.split = '1';
-    const html = el.innerHTML;
-    // Split by words, preserving HTML tags like <span> and <br>
-    const text = el.textContent;
-    const words = text.split(/\s+/).filter(w => w.length > 0);
-    let newHtml = '';
-    let wordIndex = 0;
-    // Simple approach: wrap each text node word
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
     const textNodes = [];
     while (walker.nextNode()) textNodes.push(walker.currentNode);
-
+    let wordIndex = 0;
     textNodes.forEach(node => {
       const nodeWords = node.textContent.split(/(\s+)/);
       let replacement = '';
@@ -150,10 +143,10 @@ function initCursorGlow() {
   }, { passive: true });
 }
 
-/* --- Magnetic Buttons --- */
+/* --- Magnetic Buttons (only hero-cta, NOT scroll-btn) --- */
 function initMagneticButtons() {
   if (window.innerWidth < 768) return;
-  document.querySelectorAll('.hero-cta, .scroll-btn').forEach(btn => {
+  document.querySelectorAll('.hero-cta').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
@@ -212,71 +205,105 @@ function initScrollStrips() {
     wrap.appendChild(prevBtn);
     wrap.appendChild(nextBtn);
 
-    // Scroll amount = width of first card + gap
-    const getScrollAmount = () => {
-      const firstChild = strip.children[0];
-      if (!firstChild) return 300;
-      return firstChild.offsetWidth + 24; // 24 = 1.5rem gap approx
-    };
+    // Check if cloning is disabled (for small collections)
+    const noClone = wrap.hasAttribute('data-no-clone');
+    const origItems = Array.from(strip.children);
 
-    prevBtn.addEventListener('click', () => {
-      strip.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-    });
-    nextBtn.addEventListener('click', () => {
-      strip.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-    });
+    // Only clone if enough items to fill viewport and cloning is not disabled
+    const gap = 24; // 1.5rem gap
+    const totalOrigWidth = origItems.reduce((s, i) => s + i.offsetWidth + gap, 0);
+    const shouldClone = !noClone && totalOrigWidth > strip.clientWidth * 0.8;
 
-    // Update button visibility
-    function updateButtons() {
-      const atStart = strip.scrollLeft <= 5;
-      const atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 5;
-      prevBtn.classList.toggle('active', !atStart);
-      nextBtn.classList.toggle('active', !atEnd);
-    }
-
-    strip.addEventListener('scroll', updateButtons, { passive: true });
-    // Initial check after layout
-    requestAnimationFrame(() => {
-      updateButtons();
-      // Re-check after images load
-      setTimeout(updateButtons, 500);
-    });
-
-    // Clone items for infinite feel
-    const items = Array.from(strip.children);
-    if (items.length > 0) {
-      items.forEach(item => {
-        const clone = item.cloneNode(true);
-        strip.appendChild(clone);
+    if (shouldClone && origItems.length > 0) {
+      origItems.forEach(item => {
+        strip.appendChild(item.cloneNode(true));
       });
     }
 
-    // Auto-scroll
-    let scrollPos = 0;
-    const speed = 0.4;
-    const totalOrigWidth = items.reduce((s, i) => s + i.offsetWidth + 24, 0);
+    // State
+    let autoScrollPos = 0;
+    let autoScrollActive = true;
+    let manualScrollCooldown = 0; // timestamp when manual scroll ends
+    const SPEED = 0.4;
+    const COOLDOWN_MS = 800; // pause auto-scroll for 800ms after button click
 
-    let paused = false;
-    strip.addEventListener('mouseenter', () => paused = true);
-    strip.addEventListener('mouseleave', () => { paused = false; scrollPos = strip.scrollLeft; });
-    strip.addEventListener('touchstart', () => paused = true, { passive: true });
-    strip.addEventListener('touchend', () => { paused = false; scrollPos = strip.scrollLeft; });
+    // Scroll amount = width of first card + gap
+    const getScrollAmount = () => {
+      const firstChild = origItems[0];
+      if (!firstChild) return 300;
+      return firstChild.offsetWidth + gap;
+    };
 
-    function step() {
-      if (!paused && totalOrigWidth > 0) {
-        scrollPos += speed;
-        if (scrollPos >= totalOrigWidth) scrollPos -= totalOrigWidth;
-        strip.scrollLeft = scrollPos;
-      } else {
-        scrollPos = strip.scrollLeft;
-        if (totalOrigWidth > 0 && scrollPos >= totalOrigWidth) {
-          scrollPos -= totalOrigWidth;
-          strip.scrollLeft = scrollPos;
+    // Button click handlers — pause auto-scroll, do manual scroll
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      manualScrollCooldown = Date.now() + COOLDOWN_MS;
+      const target = Math.max(0, strip.scrollLeft - getScrollAmount());
+      strip.scrollTo({ left: target, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      manualScrollCooldown = Date.now() + COOLDOWN_MS;
+      strip.scrollTo({ left: strip.scrollLeft + getScrollAmount(), behavior: 'smooth' });
+    });
+
+    // Update button visibility (debounced)
+    let updateTimer = null;
+    function updateButtons() {
+      if (updateTimer) return;
+      updateTimer = requestAnimationFrame(() => {
+        updateTimer = null;
+        const atStart = strip.scrollLeft <= 5;
+        const atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 5;
+        prevBtn.classList.toggle('active', !atStart);
+        nextBtn.classList.toggle('active', !atEnd);
+      });
+    }
+
+    strip.addEventListener('scroll', updateButtons, { passive: true });
+    requestAnimationFrame(() => {
+      updateButtons();
+      setTimeout(updateButtons, 500);
+    });
+
+    // Pause auto-scroll on hover/touch
+    strip.addEventListener('mouseenter', () => { autoScrollActive = false; });
+    strip.addEventListener('mouseleave', () => {
+      autoScrollActive = true;
+      autoScrollPos = strip.scrollLeft;
+    });
+    strip.addEventListener('touchstart', () => { autoScrollActive = false; }, { passive: true });
+    strip.addEventListener('touchend', () => {
+      autoScrollActive = true;
+      autoScrollPos = strip.scrollLeft;
+    });
+
+    // Auto-scroll animation loop — only when items are cloned
+    if (shouldClone) {
+      function step() {
+        const now = Date.now();
+        const inCooldown = now < manualScrollCooldown;
+
+        if (autoScrollActive && !inCooldown && totalOrigWidth > 0) {
+          autoScrollPos += SPEED;
+          if (autoScrollPos >= totalOrigWidth) {
+            autoScrollPos -= totalOrigWidth;
+          }
+          strip.scrollLeft = autoScrollPos;
+        } else if (!inCooldown) {
+          autoScrollPos = strip.scrollLeft;
+          if (totalOrigWidth > 0 && autoScrollPos >= totalOrigWidth) {
+            autoScrollPos -= totalOrigWidth;
+            strip.scrollLeft = autoScrollPos;
+          }
         }
+        requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
-    requestAnimationFrame(step);
   });
 }
 
@@ -330,7 +357,6 @@ function initGamesBg() {
     animId = requestAnimationFrame(draw);
   }
 
-  // Use ResizeObserver for better perf
   let resizeTimeout;
   const ro = new ResizeObserver(() => {
     clearTimeout(resizeTimeout);

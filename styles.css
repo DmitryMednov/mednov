@@ -438,8 +438,10 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 }
 .scroll-btn:hover {
   background:rgba(44,176,168,1);
-  transform:translateY(-50%) scale(1.1);
   box-shadow: 0 8px 30px rgba(44,176,168,0.35);
+}
+.scroll-btn:active {
+  transform:translateY(-50%) scale(0.92);
 }
 .scroll-btn svg {
   width:20px; height:20px;

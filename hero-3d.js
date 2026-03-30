@@ -1,41 +1,47 @@
-/* ===== MEDNOV 3D HERO SCENE ===== */
-/* Three.js interactive scene with floating geometry, mouse parallax, scroll animation */
+/* ===== MEDNOV 3D HERO SCENE — v2.1 ===== */
+/* Three.js interactive scene — centered, responsive, optimized */
 
 (function () {
   const container = document.getElementById('hero-3d');
   if (!container) return;
 
+  // Bail on very low-end devices
+  const isMobile = window.innerWidth < 768;
+  const isLowEnd = isMobile && window.devicePixelRatio < 2;
+
   /* --- Setup --- */
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-  camera.position.set(0, 0, 14);
+  // Adaptive FOV: wider on mobile for better framing
+  const baseFov = isMobile ? 60 : 50;
+  const camera = new THREE.PerspectiveCamera(baseFov, 1, 0.1, 100);
+  camera.position.set(0, 0, 10);
+  camera.lookAt(0, 0, 0);
 
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
-    antialias: true,
+    antialias: !isMobile, // skip AA on mobile for perf
     powerPreference: 'high-performance',
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
   container.appendChild(renderer.domElement);
 
   /* --- Lights --- */
-  const ambient = new THREE.AmbientLight(0xffffff, 0.4);
-  scene.add(ambient);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
   const light1 = new THREE.PointLight(0x2CB0A8, 80, 50);
-  light1.position.set(8, 6, 8);
+  light1.position.set(6, 5, 6);
   scene.add(light1);
 
-  const light2 = new THREE.PointLight(0xCCD4FD, 60, 50);
-  light2.position.set(-8, -4, 6);
+  const light2 = new THREE.PointLight(0xCCD4FD, 50, 50);
+  light2.position.set(-6, -3, 5);
   scene.add(light2);
 
-  const light3 = new THREE.PointLight(0xFAFFAF, 30, 40);
-  light3.position.set(0, 8, -4);
+  const light3 = new THREE.PointLight(0xFAFFAF, 25, 40);
+  light3.position.set(0, 6, -3);
   scene.add(light3);
 
   /* --- Materials --- */
@@ -51,10 +57,7 @@
       metalness: 0.1,
       roughness: 0.15,
       transparent: true,
-      opacity: opacity || 0.7,
-      transmission: 0.4,
-      thickness: 1.5,
-      envMapIntensity: 0.5,
+      opacity: opacity || 0.65,
       clearcoat: 1.0,
       clearcoatRoughness: 0.1,
       side: THREE.DoubleSide,
@@ -88,33 +91,33 @@
   const colors = [turquoise, violet, yellow, deepGreen, white, turquoise, violet, yellow, turquoise, violet];
   const matTypes = ['glass', 'solid', 'glass', 'solid', 'glass', 'glass', 'solid', 'glass', 'solid', 'glass'];
 
-  /* --- Create floating objects --- */
+  /* --- Create floating objects — centered distribution --- */
   const objects = [];
-  const COUNT = 18;
+  const COUNT = isMobile ? 12 : 18;
 
   for (let i = 0; i < COUNT; i++) {
     const geoIndex = i % geos.length;
     const colorIndex = i % colors.length;
     const isGlass = matTypes[geoIndex] === 'glass';
     const mat = isGlass
-      ? glassMat(colors[colorIndex], 0.5 + Math.random() * 0.3)
+      ? glassMat(colors[colorIndex], 0.4 + Math.random() * 0.3)
       : solidMat(colors[colorIndex]);
 
     const mesh = new THREE.Mesh(geos[geoIndex], mat);
 
-    // Distribute in a sphere-like pattern
+    // Fibonacci sphere distribution — CENTERED at origin
     const phi = Math.acos(1 - 2 * (i + 0.5) / COUNT);
     const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-    const radius = 4 + Math.random() * 4;
+    const radius = 2.5 + Math.random() * 3.5;
 
     const basePos = new THREE.Vector3(
       radius * Math.sin(phi) * Math.cos(theta),
       radius * Math.sin(phi) * Math.sin(theta),
-      radius * Math.cos(phi) - 2
+      radius * Math.cos(phi) * 0.5 // flatten Z spread to keep centered
     );
 
     mesh.position.copy(basePos);
-    const s = 0.4 + Math.random() * 0.6;
+    const s = 0.35 + Math.random() * 0.55;
     mesh.scale.setScalar(s);
     mesh.rotation.set(
       Math.random() * Math.PI * 2,
@@ -125,25 +128,25 @@
     scene.add(mesh);
 
     objects.push({
-      mesh: mesh,
+      mesh,
       basePos: basePos.clone(),
+      baseOpacity: mat.opacity,
       scale: s,
       rotSpeed: {
-        x: (Math.random() - 0.5) * 0.008,
-        y: (Math.random() - 0.5) * 0.008,
-        z: (Math.random() - 0.5) * 0.005,
+        x: (Math.random() - 0.5) * 0.006,
+        y: (Math.random() - 0.5) * 0.006,
+        z: (Math.random() - 0.5) * 0.004,
       },
-      floatSpeed: 0.3 + Math.random() * 0.7,
-      floatAmp: 0.3 + Math.random() * 0.5,
+      floatSpeed: 0.3 + Math.random() * 0.6,
+      floatAmp: 0.2 + Math.random() * 0.4,
       floatPhase: Math.random() * Math.PI * 2,
-      // For mouse repulsion
       velocity: new THREE.Vector3(0, 0, 0),
     });
   }
 
   /* --- Central logo sphere (glowing dot) --- */
-  const logoGeo = new THREE.SphereGeometry(0.6, 64, 64);
-  const logoMat = new THREE.MeshPhysicalMaterial({
+  const logoGeo = new THREE.SphereGeometry(0.5, 48, 48);
+  const logoMat = new THREE.MeshStandardMaterial({
     color: turquoise,
     emissive: turquoise,
     emissiveIntensity: 0.8,
@@ -151,21 +154,14 @@
     roughness: 0.1,
     transparent: true,
     opacity: 0.9,
-    transmission: 0.3,
-    thickness: 2,
-    clearcoat: 1,
   });
   const logoMesh = new THREE.Mesh(logoGeo, logoMat);
   logoMesh.position.set(0, 0, 0);
   scene.add(logoMesh);
 
-  // Glow ring around logo
-  const ringGeo = new THREE.TorusGeometry(1.2, 0.02, 16, 100);
-  const ringMat = new THREE.MeshBasicMaterial({
-    color: turquoise,
-    transparent: true,
-    opacity: 0.3,
-  });
+  // Orbital rings
+  const ringGeo = new THREE.TorusGeometry(1.0, 0.015, 16, 100);
+  const ringMat = new THREE.MeshBasicMaterial({ color: turquoise, transparent: true, opacity: 0.25 });
   const ring1 = new THREE.Mesh(ringGeo, ringMat);
   scene.add(ring1);
   const ring2 = new THREE.Mesh(ringGeo, ringMat.clone());
@@ -177,38 +173,36 @@
   scene.add(ring3);
 
   /* --- Particle field --- */
-  const particleCount = 200;
+  const particleCount = isMobile ? 80 : 200;
   const particleGeo = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
-  const particleSizes = new Float32Array(particleCount);
 
   for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 30;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 30;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5;
-    particleSizes[i] = Math.random() * 2 + 0.5;
+    positions[i * 3] = (Math.random() - 0.5) * 24;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 24;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 12 - 3;
   }
-
   particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  particleGeo.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
 
   const particleMat = new THREE.PointsMaterial({
-    color: turquoise,
-    size: 0.04,
-    transparent: true,
-    opacity: 0.4,
-    sizeAttenuation: true,
+    color: turquoise, size: 0.04, transparent: true, opacity: 0.35, sizeAttenuation: true,
   });
   const particles = new THREE.Points(particleGeo, particleMat);
   scene.add(particles);
 
   /* --- Mouse tracking --- */
   const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
-  const mouseWorld = new THREE.Vector3();
 
   document.addEventListener('mousemove', (e) => {
     mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouse.targetX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+      mouse.targetY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+    }
   }, { passive: true });
 
   /* --- Scroll tracking --- */
@@ -219,19 +213,14 @@
     scrollTarget = Math.min(window.scrollY / heroH, 1);
   }, { passive: true });
 
-  /* --- Touch support --- */
-  document.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
-      mouse.targetX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-      mouse.targetY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-    }
-  }, { passive: true });
-
   /* --- Resize --- */
   function resize() {
     const w = container.clientWidth;
     const h = container.clientHeight;
+    if (w === 0 || h === 0) return;
     camera.aspect = w / h;
+    // Adjust camera Z based on aspect ratio to keep scene centered
+    camera.fov = w < h ? 65 : 50; // wider FOV on portrait
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   }
@@ -240,6 +229,9 @@
   ro.observe(container);
   resize();
 
+  /* --- Reusable temp vector --- */
+  const _tmpVec = new THREE.Vector3();
+
   /* --- Animation loop --- */
   const clock = new THREE.Clock();
   let animId;
@@ -247,73 +239,74 @@
   function animate() {
     animId = requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
-    const dt = clock.getDelta();
 
-    // Smooth mouse
+    // Smooth mouse (lerp)
     mouse.x += (mouse.targetX - mouse.x) * 0.05;
     mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
     // Smooth scroll
     scrollProgress += (scrollTarget - scrollProgress) * 0.08;
 
-    // Camera parallax from mouse
-    camera.position.x = mouse.x * 2.5;
-    camera.position.y = mouse.y * 1.5;
-    camera.position.z = 14 + scrollProgress * 8;
+    // Camera — centered with subtle mouse parallax
+    camera.position.x = mouse.x * 1.5;
+    camera.position.y = mouse.y * 1.0;
+    camera.position.z = 10 + scrollProgress * 6;
     camera.lookAt(0, 0, 0);
 
     // Logo pulse
-    const pulse = 1 + Math.sin(t * 2) * 0.05;
+    const pulse = 1 + Math.sin(t * 2) * 0.04;
     logoMesh.scale.setScalar(pulse);
-    logoMat.emissiveIntensity = 0.6 + Math.sin(t * 3) * 0.3;
-    logoMesh.rotation.y = t * 0.3;
+    logoMat.emissiveIntensity = 0.6 + Math.sin(t * 3) * 0.25;
+    logoMesh.rotation.y = t * 0.25;
 
-    // Rings rotation
-    ring1.rotation.z = t * 0.2;
-    ring2.rotation.z = -t * 0.15;
-    ring2.rotation.x = Math.PI / 3 + Math.sin(t * 0.5) * 0.1;
-    ring3.rotation.z = t * 0.1;
-    ring3.rotation.y = Math.PI / 3 + Math.cos(t * 0.3) * 0.1;
+    // Rings
+    ring1.rotation.z = t * 0.15;
+    ring2.rotation.z = -t * 0.12;
+    ring2.rotation.x = Math.PI / 3 + Math.sin(t * 0.5) * 0.08;
+    ring3.rotation.z = t * 0.08;
+    ring3.rotation.y = Math.PI / 3 + Math.cos(t * 0.3) * 0.08;
+
+    // Mouse position in 3D space for repulsion
+    _tmpVec.set(mouse.x * 6, mouse.y * 4, 1.5);
 
     // Animate objects
-    const mouseWorld3D = new THREE.Vector3(mouse.x * 8, mouse.y * 5, 2);
-
     for (let i = 0; i < objects.length; i++) {
       const obj = objects[i];
       const mesh = obj.mesh;
 
-      // Floating motion
+      // Floating
       const ft = t * obj.floatSpeed + obj.floatPhase;
       const floatY = Math.sin(ft) * obj.floatAmp;
-      const floatX = Math.cos(ft * 0.7) * obj.floatAmp * 0.5;
+      const floatX = Math.cos(ft * 0.7) * obj.floatAmp * 0.4;
 
-      // Target position (base + float + scroll spread)
-      const spreadFactor = 1 + scrollProgress * 0.8;
-      const targetX = obj.basePos.x * spreadFactor + floatX;
-      const targetY = obj.basePos.y * spreadFactor + floatY;
-      const targetZ = obj.basePos.z - scrollProgress * 6;
+      // Target position with scroll spread
+      const spread = 1 + scrollProgress * 0.6;
+      const targetX = obj.basePos.x * spread + floatX;
+      const targetY = obj.basePos.y * spread + floatY;
+      const targetZ = obj.basePos.z - scrollProgress * 4;
 
       // Mouse repulsion
-      const dx = mesh.position.x - mouseWorld3D.x;
-      const dy = mesh.position.y - mouseWorld3D.y;
-      const dz = mesh.position.z - mouseWorld3D.z;
-      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-      const repulseRadius = 4;
+      const dx = mesh.position.x - _tmpVec.x;
+      const dy = mesh.position.y - _tmpVec.y;
+      const dz = mesh.position.z - _tmpVec.z;
+      const distSq = dx * dx + dy * dy + dz * dz;
+      const repulseRadiusSq = 16; // 4^2
 
-      if (dist < repulseRadius && dist > 0.01) {
-        const force = (1 - dist / repulseRadius) * 0.15;
+      if (distSq < repulseRadiusSq && distSq > 0.01) {
+        const dist = Math.sqrt(distSq);
+        const force = (1 - dist / 4) * 0.12;
         obj.velocity.x += (dx / dist) * force;
         obj.velocity.y += (dy / dist) * force;
         obj.velocity.z += (dz / dist) * force;
       }
 
-      // Spring back to target
-      obj.velocity.x += (targetX - mesh.position.x) * 0.02;
-      obj.velocity.y += (targetY - mesh.position.y) * 0.02;
-      obj.velocity.z += (targetZ - mesh.position.z) * 0.02;
+      // Spring back
+      obj.velocity.x += (targetX - mesh.position.x) * 0.025;
+      obj.velocity.y += (targetY - mesh.position.y) * 0.025;
+      obj.velocity.z += (targetZ - mesh.position.z) * 0.025;
 
       // Damping
-      obj.velocity.multiplyScalar(0.92);
+      obj.velocity.multiplyScalar(0.9);
 
       // Apply
       mesh.position.add(obj.velocity);
@@ -323,32 +316,32 @@
       mesh.rotation.y += obj.rotSpeed.y;
       mesh.rotation.z += obj.rotSpeed.z;
 
-      // Fade on scroll
-      mesh.material.opacity = mesh.material.opacity * 0.95 +
-        (obj.mesh.material === logoMat ? 0.9 : (0.5 + Math.random() * 0.3) * (1 - scrollProgress * 0.5)) * 0.05;
+      // Opacity — stable value, no random flicker
+      const targetOpacity = obj.baseOpacity * (1 - scrollProgress * 0.4);
+      mesh.material.opacity += (targetOpacity - mesh.material.opacity) * 0.05;
     }
 
-    // Animate particles
-    particles.rotation.y = t * 0.02;
-    particles.rotation.x = Math.sin(t * 0.01) * 0.1;
+    // Particles
+    particles.rotation.y = t * 0.015;
+    particles.rotation.x = Math.sin(t * 0.008) * 0.08;
 
-    // Animate lights
-    light1.position.x = 8 + Math.sin(t * 0.5) * 3;
-    light1.position.y = 6 + Math.cos(t * 0.3) * 2;
-    light2.position.x = -8 + Math.cos(t * 0.4) * 3;
-    light2.position.y = -4 + Math.sin(t * 0.6) * 2;
+    // Lights
+    light1.position.x = 6 + Math.sin(t * 0.4) * 2;
+    light1.position.y = 5 + Math.cos(t * 0.25) * 1.5;
+    light2.position.x = -6 + Math.cos(t * 0.35) * 2;
+    light2.position.y = -3 + Math.sin(t * 0.5) * 1.5;
 
     renderer.render(scene, camera);
   }
 
   animate();
 
-  /* --- Cleanup on page hide --- */
+  /* --- Pause when tab hidden --- */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       cancelAnimationFrame(animId);
     } else {
-      clock.getDelta(); // reset delta
+      clock.getDelta();
       animate();
     }
   });
