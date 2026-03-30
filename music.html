@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="noise-overlay"></div>
+  <div class="scroll-progress"></div>
   <div class="cursor-glow"></div>
 
   <nav class="nav">
@@ -28,7 +30,7 @@
         <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
         <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
       </div>
-      <h1 class="hero-title" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.5s var(--ease) forwards;">
+      <h1 class="hero-title split-words" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.5s var(--ease) forwards;">
         Музыка <span class="hi">семьи</span>
       </h1>
       <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.7s var(--ease) forwards;">
@@ -37,7 +39,7 @@
     </div>
   </section>
 
-  <!-- Наша музыка — infinite scroll -->
+  <!-- Наша музыка -->
   <section class="section">
     <div class="pattern-bg"></div>
     <div style="position:relative;z-index:1;">
@@ -51,36 +53,38 @@
           Apple Music
         </a>
       </div>
-      <div class="scroll-strip">
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-          <div class="album-cover"><div class="album-cover-bg cov1"></div></div>
-          <div class="album-body"><h4>Точка отсчёта</h4><p>12 треков · 2024</p></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-          <div class="album-cover"><div class="album-cover-bg cov2"></div></div>
-          <div class="album-body"><h4>Семейный вечер</h4><p>8 треков · 2024</p></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-          <div class="album-cover"><div class="album-cover-bg cov3"></div></div>
-          <div class="album-body"><h4>Корни</h4><p>10 треков · 2023</p></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-          <div class="album-cover"><div class="album-cover-bg cov4"></div></div>
-          <div class="album-body"><h4>Горизонт</h4><p>6 треков · 2023</p></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-          <div class="album-cover"><div class="album-cover-bg cov5"></div></div>
-          <div class="album-body"><h4>Первые шаги</h4><p>14 треков · 2022</p></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-          <div class="album-cover"><div class="album-cover-bg cov6"></div></div>
-          <div class="album-body"><h4>Ночные мысли</h4><p>7 треков · 2022</p></div>
-        </a>
+      <div class="scroll-strip-wrap">
+        <div class="scroll-strip">
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
+            <div class="album-cover"><div class="album-cover-bg cov1"></div></div>
+            <div class="album-body"><h4>Точка отсчёта</h4><p>12 треков · 2024</p></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
+            <div class="album-cover"><div class="album-cover-bg cov2"></div></div>
+            <div class="album-body"><h4>Семейный вечер</h4><p>8 треков · 2024</p></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
+            <div class="album-cover"><div class="album-cover-bg cov3"></div></div>
+            <div class="album-body"><h4>Корни</h4><p>10 треков · 2023</p></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
+            <div class="album-cover"><div class="album-cover-bg cov4"></div></div>
+            <div class="album-body"><h4>Горизонт</h4><p>6 треков · 2023</p></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
+            <div class="album-cover"><div class="album-cover-bg cov5"></div></div>
+            <div class="album-body"><h4>Первые шаги</h4><p>14 треков · 2022</p></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
+            <div class="album-cover"><div class="album-cover-bg cov6"></div></div>
+            <div class="album-body"><h4>Ночные мысли</h4><p>7 треков · 2022</p></div>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Плейлисты — infinite scroll -->
+  <!-- Плейлисты -->
   <section class="section" style="background:var(--deep-green);">
     <div class="pattern-bg"></div>
     <div style="position:relative;z-index:1;">
@@ -94,31 +98,33 @@
           Все плейлисты
         </a>
       </div>
-      <div class="scroll-strip">
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-          <div class="pl-cover"><div style="width:100%;height:100%;" class="cov1"></div></div>
-          <div class="pl-body"><h4>Утренний фокус</h4><p>Ambient & Piano · 24 трека</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-          <div class="pl-cover"><div style="width:100%;height:100%;" class="cov2"></div></div>
-          <div class="pl-body"><h4>Семейный вечер</h4><p>Jazz & Soul · 32 трека</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-          <div class="pl-cover"><div style="width:100%;height:100%;" class="cov3"></div></div>
-          <div class="pl-body"><h4>Deep Work</h4><p>Electronic & Lo-fi · 18 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-          <div class="pl-cover"><div style="width:100%;height:100%;" class="cov4"></div></div>
-          <div class="pl-body"><h4>Выходные</h4><p>Indie & Alternative · 28 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-          <div class="pl-cover"><div style="width:100%;height:100%;" class="cov5"></div></div>
-          <div class="pl-body"><h4>Дорога</h4><p>Rock & Pop · 40 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-        </a>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-          <div class="pl-cover"><div style="width:100%;height:100%;" class="cov6"></div></div>
-          <div class="pl-body"><h4>Ночные мысли</h4><p>Classical · 15 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-        </a>
+      <div class="scroll-strip-wrap">
+        <div class="scroll-strip">
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
+            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov1"></div></div>
+            <div class="pl-body"><h4>Утренний фокус</h4><p>Ambient & Piano · 24 трека</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
+            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov2"></div></div>
+            <div class="pl-body"><h4>Семейный вечер</h4><p>Jazz & Soul · 32 трека</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
+            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov3"></div></div>
+            <div class="pl-body"><h4>Deep Work</h4><p>Electronic & Lo-fi · 18 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
+            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov4"></div></div>
+            <div class="pl-body"><h4>Выходные</h4><p>Indie & Alternative · 28 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
+            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov5"></div></div>
+            <div class="pl-body"><h4>Дорога</h4><p>Rock & Pop · 40 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
+          </a>
+          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
+            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov6"></div></div>
+            <div class="pl-body"><h4>Ночные мысли</h4><p>Classical · 15 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
+          </a>
+        </div>
       </div>
     </div>
   </section>
