@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="noise-overlay"></div>
+  <div class="scroll-progress"></div>
   <div class="cursor-glow"></div>
 
   <nav class="nav">
@@ -28,7 +30,7 @@
     </div>
     <div class="pattern-bg"></div>
     <div style="position:relative;z-index:1;width:100%;">
-      <h1 class="hero-title" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;">
+      <h1 class="hero-title split-words" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;">
         Семейные <span class="hi">игры</span>
       </h1>
       <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.6s var(--ease) forwards;">
@@ -37,7 +39,7 @@
     </div>
   </section>
 
-  <!-- Games — infinite scroll -->
+  <!-- Games -->
   <section class="section">
     <div class="pattern-bg"></div>
     <div style="position:relative;z-index:1;">
@@ -47,86 +49,88 @@
           <h2 class="section-title" style="margin-bottom:0;">Наши игры</h2>
         </div>
       </div>
-      <div class="scroll-strip">
+      <div class="scroll-strip-wrap">
+        <div class="scroll-strip">
 
-        <a href="#" class="game-card">
-          <div class="game-preview">
-            <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Snake</div></div>
-            <span class="game-badge new">New</span>
-            <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-          </div>
-          <div class="game-info">
-            <h3>Змейка Mednov</h3>
-            <p>Классическая змейка в фирменном стиле.</p>
-            <div class="game-tags"><span class="game-tag">Аркада</span><span class="game-tag">1 игрок</span></div>
-          </div>
-        </a>
+          <a href="#" class="game-card">
+            <div class="game-preview">
+              <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Snake</div></div>
+              <span class="game-badge new">New</span>
+              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
+            </div>
+            <div class="game-info">
+              <h3>Змейка Mednov</h3>
+              <p>Классическая змейка в фирменном стиле.</p>
+              <div class="game-tags"><span class="game-tag">Аркада</span><span class="game-tag">1 игрок</span></div>
+            </div>
+          </a>
 
-        <a href="#" class="game-card">
-          <div class="game-preview">
-            <div class="game-art ga2"><div class="game-art-grid"></div><div class="game-art-text">Memory</div></div>
-            <span class="game-badge pop">Popular</span>
-            <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-          </div>
-          <div class="game-info">
-            <h3>Мемори: Семейный</h3>
-            <p>Найди все пары карточек с семейными символами.</p>
-            <div class="game-tags"><span class="game-tag">Логика</span><span class="game-tag">1-2 игрока</span></div>
-          </div>
-        </a>
+          <a href="#" class="game-card">
+            <div class="game-preview">
+              <div class="game-art ga2"><div class="game-art-grid"></div><div class="game-art-text">Memory</div></div>
+              <span class="game-badge pop">Popular</span>
+              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
+            </div>
+            <div class="game-info">
+              <h3>Мемори: Семейный</h3>
+              <p>Найди все пары карточек с семейными символами.</p>
+              <div class="game-tags"><span class="game-tag">Логика</span><span class="game-tag">1-2 игрока</span></div>
+            </div>
+          </a>
 
-        <a href="#" class="game-card">
-          <div class="game-preview">
-            <div class="game-art ga3"><div class="game-art-grid"></div><div class="game-art-text">Tetris</div></div>
-            <span class="game-badge cls">Classic</span>
-            <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-          </div>
-          <div class="game-info">
-            <h3>Тетрис M.</h3>
-            <p>Тетрис с фирменными геометрическими фигурами.</p>
-            <div class="game-tags"><span class="game-tag">Аркада</span><span class="game-tag">1 игрок</span></div>
-          </div>
-        </a>
+          <a href="#" class="game-card">
+            <div class="game-preview">
+              <div class="game-art ga3"><div class="game-art-grid"></div><div class="game-art-text">Tetris</div></div>
+              <span class="game-badge cls">Classic</span>
+              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
+            </div>
+            <div class="game-info">
+              <h3>Тетрис M.</h3>
+              <p>Тетрис с фирменными геометрическими фигурами.</p>
+              <div class="game-tags"><span class="game-tag">Аркада</span><span class="game-tag">1 игрок</span></div>
+            </div>
+          </a>
 
-        <a href="#" class="game-card">
-          <div class="game-preview">
-            <div class="game-art ga4"><div class="game-art-grid"></div><div class="game-art-text">Quiz</div></div>
-            <span class="game-badge new">New</span>
-            <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-          </div>
-          <div class="game-info">
-            <h3>Семейная викторина</h3>
-            <p>Проверь, как хорошо ты знаешь свою семью.</p>
-            <div class="game-tags"><span class="game-tag">Викторина</span><span class="game-tag">2+ игрока</span></div>
-          </div>
-        </a>
+          <a href="#" class="game-card">
+            <div class="game-preview">
+              <div class="game-art ga4"><div class="game-art-grid"></div><div class="game-art-text">Quiz</div></div>
+              <span class="game-badge new">New</span>
+              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
+            </div>
+            <div class="game-info">
+              <h3>Семейная викторина</h3>
+              <p>Проверь, как хорошо ты знаешь свою семью.</p>
+              <div class="game-tags"><span class="game-tag">Викторина</span><span class="game-tag">2+ игрока</span></div>
+            </div>
+          </a>
 
-        <a href="#" class="game-card">
-          <div class="game-preview">
-            <div class="game-art ga5"><div class="game-art-grid"></div><div class="game-art-text">2048</div></div>
-            <span class="game-badge pop">Popular</span>
-            <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-          </div>
-          <div class="game-info">
-            <h3>2048: Mednov Edition</h3>
-            <p>Складывай плитки в фирменных цветах.</p>
-            <div class="game-tags"><span class="game-tag">Головоломка</span><span class="game-tag">1 игрок</span></div>
-          </div>
-        </a>
+          <a href="#" class="game-card">
+            <div class="game-preview">
+              <div class="game-art ga5"><div class="game-art-grid"></div><div class="game-art-text">2048</div></div>
+              <span class="game-badge pop">Popular</span>
+              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
+            </div>
+            <div class="game-info">
+              <h3>2048: Mednov Edition</h3>
+              <p>Складывай плитки в фирменных цветах.</p>
+              <div class="game-tags"><span class="game-tag">Головоломка</span><span class="game-tag">1 игрок</span></div>
+            </div>
+          </a>
 
-        <a href="#" class="game-card">
-          <div class="game-preview">
-            <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Draw</div></div>
-            <span class="game-badge cls">Classic</span>
-            <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-          </div>
-          <div class="game-info">
-            <h3>Рисовалка</h3>
-            <p>Рисуй вместе с семьёй в реальном времени.</p>
-            <div class="game-tags"><span class="game-tag">Творчество</span><span class="game-tag">2+ игрока</span></div>
-          </div>
-        </a>
+          <a href="#" class="game-card">
+            <div class="game-preview">
+              <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Draw</div></div>
+              <span class="game-badge cls">Classic</span>
+              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
+            </div>
+            <div class="game-info">
+              <h3>Рисовалка</h3>
+              <p>Рисуй вместе с семьёй в реальном времени.</p>
+              <div class="game-tags"><span class="game-tag">Творчество</span><span class="game-tag">2+ игрока</span></div>
+            </div>
+          </a>
 
+        </div>
       </div>
     </div>
   </section>
