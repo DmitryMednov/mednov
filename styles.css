@@ -223,7 +223,8 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   66% { transform:translate(-20px,30px); }
 }
 
-.hero-content { position:relative; z-index:1; text-align:center; max-width:900px; }
+.hero-content { position:relative; z-index:2; text-align:center; max-width:900px; pointer-events:none; }
+.hero-content a, .hero-content button { pointer-events:auto; }
 .hero-eyebrow {
   font-family:var(--font-main); font-size:0.8rem; font-weight:700;
   letter-spacing:0.3em; text-transform:uppercase; color:var(--turquoise);
@@ -273,7 +274,16 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   to { opacity:1; transform:translateY(0); }
 }
 
-/* 3D Logo visual */
+/* 3D Canvas */
+.hero-3d-canvas {
+  position:absolute; inset:0; z-index:1;
+  pointer-events:auto;
+}
+.hero-3d-canvas canvas {
+  display:block; width:100% !important; height:100% !important;
+}
+
+/* 3D Logo visual (fallback if no Three.js) */
 .hero-3d-logo {
   position:absolute; z-index:1;
   right:5%; top:50%; transform:translateY(-50%);
@@ -292,6 +302,7 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
   display:flex; flex-direction:column; align-items:center; gap:0.5rem;
   opacity:0; animation: fadeUp 0.8s 1.1s var(--ease) forwards;
+  z-index:3;
 }
 .hero-scroll span { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
 .hero-scroll-line {
