@@ -367,21 +367,4 @@ function initGamesBg() {
   resize(); create(); draw();
 }
 
-/* --- Hero parallax --- */
-(function() {
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const hero = document.querySelector('.hero-content');
-        if (hero) {
-          const y = window.scrollY;
-          hero.style.transform = `translateY(${y * 0.12}px)`;
-          hero.style.opacity = Math.max(1 - y / 700, 0);
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-})();
+/* --- Hero parallax (3D scene handles its own scroll via hero-3d.js) --- */

@@ -1,26 +1,21 @@
-/* ===== MEDNOV 3D HERO SCENE — v2.1 ===== */
-/* Three.js interactive scene — centered, responsive, optimized */
+/* ===== MEDNOV 3D HERO SCENE — v3 ===== */
+/* Three.js: logo-3d.png as central 3D object, floating geometry, mouse parallax */
 
 (function () {
   const container = document.getElementById('hero-3d');
   if (!container) return;
 
-  // Bail on very low-end devices
   const isMobile = window.innerWidth < 768;
-  const isLowEnd = isMobile && window.devicePixelRatio < 2;
 
   /* --- Setup --- */
   const scene = new THREE.Scene();
-
-  // Adaptive FOV: wider on mobile for better framing
-  const baseFov = isMobile ? 60 : 50;
-  const camera = new THREE.PerspectiveCamera(baseFov, 1, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(isMobile ? 60 : 50, 1, 0.1, 100);
   camera.position.set(0, 0, 10);
   camera.lookAt(0, 0, 0);
 
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
-    antialias: !isMobile, // skip AA on mobile for perf
+    antialias: !isMobile,
     powerPreference: 'high-performance',
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
@@ -30,21 +25,21 @@
   container.appendChild(renderer.domElement);
 
   /* --- Lights --- */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-  const light1 = new THREE.PointLight(0x2CB0A8, 80, 50);
+  const light1 = new THREE.PointLight(0x2CB0A8, 60, 50);
   light1.position.set(6, 5, 6);
   scene.add(light1);
 
-  const light2 = new THREE.PointLight(0xCCD4FD, 50, 50);
+  const light2 = new THREE.PointLight(0xCCD4FD, 40, 50);
   light2.position.set(-6, -3, 5);
   scene.add(light2);
 
-  const light3 = new THREE.PointLight(0xFAFFAF, 25, 40);
+  const light3 = new THREE.PointLight(0xFAFFAF, 20, 40);
   light3.position.set(0, 6, -3);
   scene.add(light3);
 
-  /* --- Materials --- */
+  /* --- Colors & Materials --- */
   const turquoise = 0x2CB0A8;
   const violet = 0xCCD4FD;
   const yellow = 0xFAFFAF;
@@ -53,24 +48,15 @@
 
   function glassMat(color, opacity) {
     return new THREE.MeshPhysicalMaterial({
-      color: color,
-      metalness: 0.1,
-      roughness: 0.15,
-      transparent: true,
-      opacity: opacity || 0.65,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
-      side: THREE.DoubleSide,
+      color, metalness: 0.1, roughness: 0.15,
+      transparent: true, opacity: opacity || 0.65,
+      clearcoat: 1.0, clearcoatRoughness: 0.1, side: THREE.DoubleSide,
     });
   }
 
   function solidMat(color) {
     return new THREE.MeshStandardMaterial({
-      color: color,
-      metalness: 0.3,
-      roughness: 0.4,
-      transparent: true,
-      opacity: 0.85,
+      color, metalness: 0.3, roughness: 0.4, transparent: true, opacity: 0.85,
     });
   }
 
@@ -91,52 +77,39 @@
   const colors = [turquoise, violet, yellow, deepGreen, white, turquoise, violet, yellow, turquoise, violet];
   const matTypes = ['glass', 'solid', 'glass', 'solid', 'glass', 'glass', 'solid', 'glass', 'solid', 'glass'];
 
-  /* --- Create floating objects — centered distribution --- */
+  /* --- Floating objects --- */
   const objects = [];
   const COUNT = isMobile ? 12 : 18;
 
   for (let i = 0; i < COUNT; i++) {
     const geoIndex = i % geos.length;
     const colorIndex = i % colors.length;
-    const isGlass = matTypes[geoIndex] === 'glass';
-    const mat = isGlass
+    const mat = matTypes[geoIndex] === 'glass'
       ? glassMat(colors[colorIndex], 0.4 + Math.random() * 0.3)
       : solidMat(colors[colorIndex]);
 
     const mesh = new THREE.Mesh(geos[geoIndex], mat);
 
-    // Fibonacci sphere distribution — CENTERED at origin
+    // Fibonacci sphere — centered, with inner gap to leave room for logo
     const phi = Math.acos(1 - 2 * (i + 0.5) / COUNT);
     const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-    const radius = 2.5 + Math.random() * 3.5;
+    const radius = 3.5 + Math.random() * 3; // minimum 3.5 to avoid logo overlap
 
     const basePos = new THREE.Vector3(
       radius * Math.sin(phi) * Math.cos(theta),
       radius * Math.sin(phi) * Math.sin(theta),
-      radius * Math.cos(phi) * 0.5 // flatten Z spread to keep centered
+      radius * Math.cos(phi) * 0.4
     );
 
     mesh.position.copy(basePos);
     const s = 0.35 + Math.random() * 0.55;
     mesh.scale.setScalar(s);
-    mesh.rotation.set(
-      Math.random() * Math.PI * 2,
-      Math.random() * Math.PI * 2,
-      Math.random() * Math.PI * 2
-    );
-
+    mesh.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
     scene.add(mesh);
 
     objects.push({
-      mesh,
-      basePos: basePos.clone(),
-      baseOpacity: mat.opacity,
-      scale: s,
-      rotSpeed: {
-        x: (Math.random() - 0.5) * 0.006,
-        y: (Math.random() - 0.5) * 0.006,
-        z: (Math.random() - 0.5) * 0.004,
-      },
+      mesh, basePos: basePos.clone(), baseOpacity: mat.opacity, scale: s,
+      rotSpeed: { x: (Math.random() - 0.5) * 0.006, y: (Math.random() - 0.5) * 0.006, z: (Math.random() - 0.5) * 0.004 },
       floatSpeed: 0.3 + Math.random() * 0.6,
       floatAmp: 0.2 + Math.random() * 0.4,
       floatPhase: Math.random() * Math.PI * 2,
@@ -144,53 +117,50 @@
     });
   }
 
-  /* --- Central logo sphere (glowing dot) --- */
-  const logoGeo = new THREE.SphereGeometry(0.5, 48, 48);
-  const logoMat = new THREE.MeshStandardMaterial({
-    color: turquoise,
-    emissive: turquoise,
-    emissiveIntensity: 0.8,
-    metalness: 0.2,
-    roughness: 0.1,
-    transparent: true,
-    opacity: 0.9,
-  });
-  const logoMesh = new THREE.Mesh(logoGeo, logoMat);
-  logoMesh.position.set(0, 0, 0);
-  scene.add(logoMesh);
+  /* --- Central 3D Logo (logo-3d.png as textured plane) --- */
+  let logoMesh = null;
+  const logoSize = isMobile ? 3 : 4; // size in 3D units
 
-  // Orbital rings
-  const ringGeo = new THREE.TorusGeometry(1.0, 0.015, 16, 100);
-  const ringMat = new THREE.MeshBasicMaterial({ color: turquoise, transparent: true, opacity: 0.25 });
-  const ring1 = new THREE.Mesh(ringGeo, ringMat);
-  scene.add(ring1);
-  const ring2 = new THREE.Mesh(ringGeo, ringMat.clone());
-  ring2.rotation.x = Math.PI / 3;
-  scene.add(ring2);
-  const ring3 = new THREE.Mesh(ringGeo, ringMat.clone());
-  ring3.rotation.x = -Math.PI / 4;
-  ring3.rotation.y = Math.PI / 3;
-  scene.add(ring3);
+  const loader = new THREE.TextureLoader();
+  loader.load('logo-3d.png', (texture) => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    // Calculate aspect ratio from loaded image
+    const img = texture.image;
+    const aspect = img.width / img.height;
+    const planeW = logoSize * aspect;
+    const planeH = logoSize;
+
+    const geo = new THREE.PlaneGeometry(planeW, planeH);
+    const mat = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+
+    logoMesh = new THREE.Mesh(geo, mat);
+    logoMesh.position.set(0, 0, 0.5); // slightly forward
+    scene.add(logoMesh);
+  });
 
   /* --- Particle field --- */
   const particleCount = isMobile ? 80 : 200;
   const particleGeo = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
-
   for (let i = 0; i < particleCount; i++) {
     positions[i * 3] = (Math.random() - 0.5) * 24;
     positions[i * 3 + 1] = (Math.random() - 0.5) * 24;
     positions[i * 3 + 2] = (Math.random() - 0.5) * 12 - 3;
   }
   particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
   const particleMat = new THREE.PointsMaterial({
     color: turquoise, size: 0.04, transparent: true, opacity: 0.35, sizeAttenuation: true,
   });
   const particles = new THREE.Points(particleGeo, particleMat);
   scene.add(particles);
 
-  /* --- Mouse tracking --- */
+  /* --- Mouse --- */
   const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
   document.addEventListener('mousemove', (e) => {
@@ -205,7 +175,7 @@
     }
   }, { passive: true });
 
-  /* --- Scroll tracking --- */
+  /* --- Scroll --- */
   let scrollProgress = 0;
   let scrollTarget = 0;
   window.addEventListener('scroll', () => {
@@ -219,20 +189,16 @@
     const h = container.clientHeight;
     if (w === 0 || h === 0) return;
     camera.aspect = w / h;
-    // Adjust camera Z based on aspect ratio to keep scene centered
-    camera.fov = w < h ? 65 : 50; // wider FOV on portrait
+    camera.fov = w < h ? 65 : 50;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   }
-
   const ro = new ResizeObserver(() => resize());
   ro.observe(container);
   resize();
 
-  /* --- Reusable temp vector --- */
+  /* --- Animation --- */
   const _tmpVec = new THREE.Vector3();
-
-  /* --- Animation loop --- */
   const clock = new THREE.Clock();
   let animId;
 
@@ -240,46 +206,44 @@
     animId = requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // Smooth mouse (lerp)
+    // Smooth mouse
     mouse.x += (mouse.targetX - mouse.x) * 0.05;
     mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
     // Smooth scroll
     scrollProgress += (scrollTarget - scrollProgress) * 0.08;
 
-    // Camera — centered with subtle mouse parallax
+    // Camera parallax
     camera.position.x = mouse.x * 1.5;
     camera.position.y = mouse.y * 1.0;
     camera.position.z = 10 + scrollProgress * 6;
     camera.lookAt(0, 0, 0);
 
-    // Logo pulse
-    const pulse = 1 + Math.sin(t * 2) * 0.04;
-    logoMesh.scale.setScalar(pulse);
-    logoMat.emissiveIntensity = 0.6 + Math.sin(t * 3) * 0.25;
-    logoMesh.rotation.y = t * 0.25;
+    // Logo: gentle float + always face camera + slight tilt from mouse
+    if (logoMesh) {
+      logoMesh.lookAt(camera.position);
+      // Subtle floating
+      logoMesh.position.y = Math.sin(t * 0.8) * 0.15;
+      logoMesh.position.z = 0.5 + Math.cos(t * 0.6) * 0.1;
+      // Scale pulse
+      const pulse = 1 + Math.sin(t * 1.5) * 0.02;
+      logoMesh.scale.setScalar(pulse);
+      // Fade on scroll
+      logoMesh.material.opacity = 1 - scrollProgress * 0.6;
+    }
 
-    // Rings
-    ring1.rotation.z = t * 0.15;
-    ring2.rotation.z = -t * 0.12;
-    ring2.rotation.x = Math.PI / 3 + Math.sin(t * 0.5) * 0.08;
-    ring3.rotation.z = t * 0.08;
-    ring3.rotation.y = Math.PI / 3 + Math.cos(t * 0.3) * 0.08;
-
-    // Mouse position in 3D space for repulsion
+    // Repulsion origin
     _tmpVec.set(mouse.x * 6, mouse.y * 4, 1.5);
 
-    // Animate objects
+    // Animate floating objects
     for (let i = 0; i < objects.length; i++) {
       const obj = objects[i];
       const mesh = obj.mesh;
 
-      // Floating
       const ft = t * obj.floatSpeed + obj.floatPhase;
       const floatY = Math.sin(ft) * obj.floatAmp;
       const floatX = Math.cos(ft * 0.7) * obj.floatAmp * 0.4;
 
-      // Target position with scroll spread
       const spread = 1 + scrollProgress * 0.6;
       const targetX = obj.basePos.x * spread + floatX;
       const targetY = obj.basePos.y * spread + floatY;
@@ -290,9 +254,7 @@
       const dy = mesh.position.y - _tmpVec.y;
       const dz = mesh.position.z - _tmpVec.z;
       const distSq = dx * dx + dy * dy + dz * dz;
-      const repulseRadiusSq = 16; // 4^2
-
-      if (distSq < repulseRadiusSq && distSq > 0.01) {
+      if (distSq < 16 && distSq > 0.01) {
         const dist = Math.sqrt(distSq);
         const force = (1 - dist / 4) * 0.12;
         obj.velocity.x += (dx / dist) * force;
@@ -300,23 +262,17 @@
         obj.velocity.z += (dz / dist) * force;
       }
 
-      // Spring back
+      // Spring + damping
       obj.velocity.x += (targetX - mesh.position.x) * 0.025;
       obj.velocity.y += (targetY - mesh.position.y) * 0.025;
       obj.velocity.z += (targetZ - mesh.position.z) * 0.025;
-
-      // Damping
       obj.velocity.multiplyScalar(0.9);
-
-      // Apply
       mesh.position.add(obj.velocity);
 
-      // Rotation
       mesh.rotation.x += obj.rotSpeed.x;
       mesh.rotation.y += obj.rotSpeed.y;
       mesh.rotation.z += obj.rotSpeed.z;
 
-      // Opacity — stable value, no random flicker
       const targetOpacity = obj.baseOpacity * (1 - scrollProgress * 0.4);
       mesh.material.opacity += (targetOpacity - mesh.material.opacity) * 0.05;
     }
@@ -336,13 +292,8 @@
 
   animate();
 
-  /* --- Pause when tab hidden --- */
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      cancelAnimationFrame(animId);
-    } else {
-      clock.getDelta();
-      animate();
-    }
+    if (document.hidden) cancelAnimationFrame(animId);
+    else { clock.getDelta(); animate(); }
   });
 })();
