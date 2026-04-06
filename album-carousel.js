@@ -6,9 +6,9 @@ function createCarousel(containerId, infoId, dotsId, items) {
   const container = document.getElementById(containerId);
   if (!container || typeof THREE === 'undefined') return;
 
-  const PLANE_W = 2.8;
-  const PLANE_H = 2.8;
-  const GAP = 0.6;
+  const PLANE_W = 3.8;
+  const PLANE_H = 3.8;
+  const GAP = 0.8;
   const TOTAL_W = PLANE_W + GAP;
 
   /* --- Three.js Setup --- */
@@ -187,6 +187,60 @@ function createCarousel(containerId, infoId, dotsId, items) {
   container.addEventListener('pointerup', endDrag);
   container.addEventListener('pointercancel', endDrag);
 
+  /* --- Fullscreen zoom overlay --- */
+  let zoomedItem = null;
+  let zoomProgress = 0;
+  let zoomTarget = 0;
+
+  // Create overlay DOM
+  const overlay = document.createElement('div');
+  overlay.className = 'carousel-overlay';
+  overlay.innerHTML = `
+    <div class="carousel-overlay-bg"></div>
+    <div class="carousel-overlay-content">
+      <div class="carousel-overlay-cover"></div>
+      <h2 class="carousel-overlay-title"></h2>
+      <p class="carousel-overlay-artist"></p>
+      <a class="carousel-overlay-btn" href="#" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        Прослушать
+      </a>
+      <button class="carousel-overlay-close" aria-label="Закрыть">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+      </button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  function openZoom(item) {
+    zoomedItem = item;
+    const ov = overlay;
+    ov.querySelector('.carousel-overlay-title').textContent = item.title;
+    ov.querySelector('.carousel-overlay-artist').textContent = item.artist || item.subtitle || '';
+    ov.querySelector('.carousel-overlay-btn').href = item.url || '#';
+
+    // Set cover gradient
+    const coverEl = ov.querySelector('.carousel-overlay-cover');
+    coverEl.style.background = `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`;
+
+    ov.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeZoom() {
+    zoomedItem = null;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  overlay.querySelector('.carousel-overlay-close').addEventListener('click', closeZoom);
+  overlay.querySelector('.carousel-overlay-bg').addEventListener('click', closeZoom);
+
+  // Keyboard close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeZoom();
+  });
+
   container.addEventListener('click', (e) => {
     if (Math.abs(e.clientX - dragStart) > 10) return;
     const rect = container.getBoundingClientRect();
@@ -199,9 +253,7 @@ function createCarousel(containerId, infoId, dotsId, items) {
     const hits = raycaster.intersectObjects(planes.map(p => p.mesh));
     if (hits.length > 0) {
       const plane = planes.find(p => p.mesh === hits[0].object);
-      if (plane && plane.item.url) {
-        window.open(plane.item.url, '_blank');
-      }
+      if (plane) openZoom(plane.item);
     }
   });
 
