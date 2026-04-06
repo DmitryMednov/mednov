@@ -1,5 +1,6 @@
 /* ===== BAYER DITHERING WebGL BACKGROUND ===== */
-/* Animated dithering pattern for games hero section */
+/* Based on zavalit/bayer-dithering-webgl-demo */
+/* Ordered dithering with visible pixel grid, animated noise, click ripples */
 
 (function () {
   const canvas = document.getElementById('dither-canvas');
@@ -16,6 +17,7 @@
     }
   `;
 
+  // Fragment shader: true Bayer ordered dithering with visible pixel grid
   const fragSrc = `
     precision highp float;
     uniform vec2 uResolution;
@@ -23,99 +25,135 @@
     uniform vec2 uClickPos[6];
     uniform float uClickTimes[6];
     uniform float uNow;
+    uniform float uPixelSize;
 
-    // Bayer 8x8 dithering matrix
-    float bayer8(vec2 p) {
-      ivec2 ip = ivec2(mod(p, 8.0));
-      int idx = ip.x + ip.y * 8;
-      // Bayer 8x8 threshold values (normalized 0-1)
-      float m[64];
-      m[0]=0.0; m[1]=32.0; m[2]=8.0; m[3]=40.0; m[4]=2.0; m[5]=34.0; m[6]=10.0; m[7]=42.0;
-      m[8]=48.0; m[9]=16.0; m[10]=56.0; m[11]=24.0; m[12]=50.0; m[13]=18.0; m[14]=58.0; m[15]=26.0;
-      m[16]=12.0; m[17]=44.0; m[18]=4.0; m[19]=36.0; m[20]=14.0; m[21]=46.0; m[22]=6.0; m[23]=38.0;
-      m[24]=60.0; m[25]=28.0; m[26]=52.0; m[27]=20.0; m[28]=62.0; m[29]=30.0; m[30]=54.0; m[31]=22.0;
-      m[32]=3.0; m[33]=35.0; m[34]=11.0; m[35]=43.0; m[36]=1.0; m[37]=33.0; m[38]=9.0; m[39]=41.0;
-      m[40]=51.0; m[41]=19.0; m[42]=59.0; m[43]=27.0; m[44]=49.0; m[45]=17.0; m[46]=57.0; m[47]=25.0;
-      m[48]=15.0; m[49]=47.0; m[50]=7.0; m[51]=39.0; m[52]=13.0; m[53]=45.0; m[54]=5.0; m[55]=37.0;
-      m[56]=63.0; m[57]=31.0; m[58]=55.0; m[59]=23.0; m[60]=61.0; m[61]=29.0; m[62]=53.0; m[63]=21.0;
+    // --- Bayer 8x8 ordered dithering ---
+    // Returns threshold 0.0-1.0 based on position in 8x8 Bayer matrix
+    float bayer8x8(vec2 pos) {
+      // Bayer 8x8 matrix encoded as bit operations
+      ivec2 p = ivec2(mod(pos, 8.0));
+      int x = p.x;
+      int y = p.y;
 
-      float val = 0.0;
-      for (int i = 0; i < 64; i++) {
-        if (i == idx) { val = m[i]; break; }
+      // Classic Bayer 8x8 using recursive formula
+      int v = 0;
+      // 2x2 base
+      int bx = x;
+      int by = y;
+
+      // Bit-reverse interleave to compute Bayer index
+      // For 8x8: 3 levels of recursion
+      int result = 0;
+      for (int bit = 2; bit >= 0; bit--) {
+        int mask = 1 << bit;
+        int xbit = (bx & mask) >> bit;
+        int ybit = (by & mask) >> bit;
+        result = result * 4 + xbit * 2 + (xbit ^ ybit);
       }
-      return val / 64.0;
+
+      return float(result) / 64.0;
     }
 
-    // Value noise
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+    // --- Noise functions ---
+    float hash21(vec2 p) {
+      p = fract(p * vec2(123.34, 456.21));
+      p += dot(p, p + 45.32);
+      return fract(p.x * p.y);
     }
 
-    float vnoise(vec2 p) {
+    float noise(vec2 p) {
       vec2 i = floor(p);
       vec2 f = fract(p);
-      f = f * f * (3.0 - 2.0 * f);
-      float a = hash(i);
-      float b = hash(i + vec2(1.0, 0.0));
-      float c = hash(i + vec2(0.0, 1.0));
-      float d = hash(i + vec2(1.0, 1.0));
+      f = f * f * (3.0 - 2.0 * f); // smoothstep
+
+      float a = hash21(i);
+      float b = hash21(i + vec2(1.0, 0.0));
+      float c = hash21(i + vec2(0.0, 1.0));
+      float d = hash21(i + vec2(1.0, 1.0));
+
       return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
     }
 
-    // Fractal Brownian Motion
+    // FBM — 4 octaves
     float fbm(vec2 p) {
       float v = 0.0;
-      float a = 0.5;
-      vec2 shift = vec2(100.0);
+      float amp = 0.5;
       for (int i = 0; i < 4; i++) {
-        v += a * vnoise(p);
-        p = p * 2.0 + shift;
-        a *= 0.5;
+        v += amp * noise(p);
+        p *= 2.0;
+        p += vec2(1.7, 9.2);
+        amp *= 0.5;
       }
       return v;
     }
 
-    void main() {
-      vec2 uv = gl_FragCoord.xy / uResolution;
-      float pixelSize = 4.0;
-      vec2 pixUV = floor(gl_FragCoord.xy / pixelSize);
+    // --- Shape mask: square coverage within pixel ---
+    float squareMask(vec2 uv, float coverage) {
+      vec2 d = abs(uv - 0.5);
+      float halfSize = coverage * 0.5;
+      return step(d.x, halfSize) * step(d.y, halfSize);
+    }
 
-      // Animated noise
-      float t = uTime * 0.15;
-      float noise = fbm(pixUV * 0.04 + vec2(t, t * 0.7));
-      noise += 0.15 * fbm(pixUV * 0.08 - vec2(t * 1.3, t * 0.5));
+    void main() {
+      float pixSize = uPixelSize;
+
+      // Quantize coordinates to pixel grid
+      vec2 pixCoord = floor(gl_FragCoord.xy / pixSize);
+      vec2 pixUV = fract(gl_FragCoord.xy / pixSize); // position within pixel cell
+
+      // Animated noise field
+      float t = uTime * 0.12;
+      float n = fbm(pixCoord * 0.035 + vec2(t, t * 0.7));
+      n += 0.2 * fbm(pixCoord * 0.07 + vec2(-t * 0.8, t * 0.4));
 
       // Click ripples
       for (int i = 0; i < 6; i++) {
-        float ct = uClickTimes[i];
-        if (ct > 0.0) {
-          float elapsed = uNow - ct;
-          if (elapsed < 3.0) {
-            vec2 cp = uClickPos[i];
-            float dist = distance(gl_FragCoord.xy, cp);
-            float ripple = sin(dist * 0.05 - elapsed * 4.0) * 0.3;
-            float decay = exp(-elapsed * 1.2) * exp(-dist * 0.003);
-            noise += ripple * decay;
+        if (uClickTimes[i] > 0.0) {
+          float elapsed = uNow - uClickTimes[i];
+          if (elapsed < 4.0 && elapsed > 0.0) {
+            // Convert click pos to pixel grid coordinates
+            vec2 clickPix = uClickPos[i] / pixSize;
+            float dist = distance(pixCoord, clickPix);
+
+            // Ring wave
+            float wave = sin(dist * 0.3 - elapsed * 5.0);
+            float envelope = exp(-elapsed * 0.8) * smoothstep(0.0, 3.0, elapsed);
+            float decay = exp(-dist * 0.008);
+
+            n += wave * 0.35 * envelope * decay;
           }
         }
       }
 
+      // Clamp noise to valid range
+      n = clamp(n, 0.0, 1.0);
+
       // Bayer threshold
-      float threshold = bayer8(gl_FragCoord.xy / pixelSize);
-      float dither = step(threshold, noise);
+      float threshold = bayer8x8(pixCoord);
 
-      // Colors — site palette
+      // Dither: binary decision per pixel
+      float dither = step(threshold, n);
+
+      // Square shape within each pixel cell (with small gap for grid visibility)
+      float cellCoverage = 0.85; // 85% coverage = visible grid gaps
+      float shape = squareMask(pixUV, cellCoverage);
+
+      // Apply dithering through shape
+      float pixel = dither * shape;
+
+      // Colors
       vec3 bgColor = vec3(0.059, 0.129, 0.125);    // #0F2120
-      vec3 fgColor = vec3(0.173, 0.69, 0.659);      // #2CB0A8
-      vec3 fgDim = vec3(0.02, 0.231, 0.228);        // #053B3A
+      vec3 inkColor = vec3(0.173, 0.69, 0.659);      // #2CB0A8
 
-      // Mix fg between bright and dim based on noise intensity
-      vec3 fg = mix(fgDim, fgColor, noise * 0.6 + 0.2);
-      vec3 color = mix(bgColor, fg, dither * 0.85);
+      // Intensity variation based on noise for richer look
+      vec3 ink = mix(inkColor * 0.5, inkColor, n * 0.6 + 0.4);
 
-      // Vignette
-      float vig = 1.0 - smoothstep(0.3, 0.9, length(uv - 0.5) * 1.2);
-      color *= 0.7 + vig * 0.3;
+      vec3 color = mix(bgColor, ink, pixel);
+
+      // Subtle vignette
+      vec2 uv = gl_FragCoord.xy / uResolution;
+      float vig = 1.0 - smoothstep(0.4, 1.0, length(uv - 0.5) * 1.4);
+      color *= 0.75 + vig * 0.25;
 
       gl_FragColor = vec4(color, 1.0);
     }
@@ -127,7 +165,7 @@
     gl.shaderSource(s, src);
     gl.compileShader(s);
     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-      console.error('Shader error:', gl.getShaderInfoLog(s));
+      console.error('Shader compile error:', gl.getShaderInfoLog(s));
       gl.deleteShader(s);
       return null;
     }
@@ -143,16 +181,15 @@
   gl.attachShader(program, frag);
   gl.linkProgram(program);
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error('Program error:', gl.getProgramInfoLog(program));
+    console.error('Program link error:', gl.getProgramInfoLog(program));
     return;
   }
   gl.useProgram(program);
 
   /* --- Full-screen quad --- */
-  const posBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-
   const posLoc = gl.getAttribLocation(program, 'position');
   gl.enableVertexAttribArray(posLoc);
   gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
@@ -161,6 +198,7 @@
   const uResolution = gl.getUniformLocation(program, 'uResolution');
   const uTime = gl.getUniformLocation(program, 'uTime');
   const uNow = gl.getUniformLocation(program, 'uNow');
+  const uPixelSize = gl.getUniformLocation(program, 'uPixelSize');
   const uClickPos = [];
   const uClickTimes = [];
   for (let i = 0; i < 6; i++) {
@@ -175,10 +213,10 @@
 
   canvas.addEventListener('pointerdown', (e) => {
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const y = canvas.height - (e.clientY - rect.top) * (canvas.height / rect.height);
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    const x = (e.clientX - rect.left) * dpr;
+    const y = canvas.height - (e.clientY - rect.top) * dpr;
     const now = performance.now() / 1000 - startTime;
-
     clicks[clickIdx % 6] = { x, y, time: now };
     clickIdx++;
   });
@@ -187,8 +225,9 @@
   function resize() {
     const w = canvas.parentElement.offsetWidth;
     const h = canvas.parentElement.offsetHeight;
-    canvas.width = w * Math.min(window.devicePixelRatio, 2);
-    canvas.height = h * Math.min(window.devicePixelRatio, 2);
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -197,6 +236,10 @@
   const ro = new ResizeObserver(() => resize());
   ro.observe(canvas.parentElement);
   resize();
+
+  // Pixel size: visible squares, adapts to DPR
+  const dpr = Math.min(window.devicePixelRatio, 2);
+  const pixelSize = Math.round(6 * dpr); // 6 CSS pixels per dither cell
 
   /* --- Render loop --- */
   let animId;
@@ -208,6 +251,7 @@
     gl.uniform2f(uResolution, canvas.width, canvas.height);
     gl.uniform1f(uTime, now);
     gl.uniform1f(uNow, now);
+    gl.uniform1f(uPixelSize, pixelSize);
 
     for (let i = 0; i < 6; i++) {
       const c = clicks[i];
@@ -216,7 +260,7 @@
         gl.uniform1f(uClickTimes[i], c.time);
       } else {
         gl.uniform2f(uClickPos[i], 0, 0);
-        gl.uniform1f(uClickTimes[i], 0);
+        gl.uniform1f(uClickTimes[i], -10.0);
       }
     }
 
@@ -225,7 +269,6 @@
 
   render();
 
-  /* --- Pause on hidden --- */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(animId);
     else render();
