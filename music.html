@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Музыка семьи — Mednov</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    html { scroll-snap-type: y mandatory; }
+    .slide {
+      min-height:100vh; scroll-snap-align:start;
+      display:flex; flex-direction:column; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    .slide .pattern-bg { position:absolute; inset:0; pointer-events:none; z-index:0; }
+    .slide-inner {
+      position:relative; z-index:1; width:100%;
+      padding:6rem 3rem 3rem;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      flex:1;
+    }
+    /* Hero slide: left-aligned */
+    .slide-hero .slide-inner {
+      align-items:flex-start; justify-content:flex-end;
+      padding-bottom:4rem;
+    }
+    /* Carousel fills most of the slide */
+    .slide .album-carousel { height:50vh; max-height:500px; }
+    @media(max-width:768px) {
+      .slide-inner { padding:5rem 1.5rem 2rem; }
+      .slide .album-carousel { height:40vh; }
+    }
+  </style>
 </head>
 <body>
   <div class="noise-overlay"></div>
@@ -21,11 +47,10 @@
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Hero -->
-  <section class="music-hero">
-    <div class="page-hero-bg"></div>
+  <!-- Slide 1: Hero -->
+  <section class="slide slide-hero" style="background:linear-gradient(180deg, var(--dark-green), var(--deep-green));">
     <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;width:100%;">
+    <div class="slide-inner">
       <div class="visualizer" style="opacity:0;animation:fadeUp 0.8s 0.3s var(--ease) forwards;">
         <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
         <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
@@ -39,10 +64,10 @@
     </div>
   </section>
 
-  <!-- Альбомы — WebGL Carousel -->
-  <section class="section">
+  <!-- Slide 2: Альбомы -->
+  <section class="slide" style="background:var(--deep-green);">
     <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;">
+    <div class="slide-inner">
       <div class="reveal" style="text-align:center;">
         <p class="section-label">Коллекция</p>
         <h2 class="section-title" style="margin-bottom:0.5rem;">Альбомы</h2>
@@ -56,54 +81,24 @@
     </div>
   </section>
 
-  <!-- Плейлисты -->
-  <section class="section" style="background:var(--deep-green);">
+  <!-- Slide 3: Плейлисты -->
+  <section class="slide" style="background:var(--dark-green);">
     <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;">
-      <div class="reveal">
+    <div class="slide-inner">
+      <div class="reveal" style="text-align:center;">
         <p class="section-label">Подборки</p>
-        <h2 class="section-title" style="margin-bottom:1.5rem;">Плейлисты</h2>
+        <h2 class="section-title" style="margin-bottom:0.5rem;">Плейлисты</h2>
       </div>
-      <div class="scroll-strip-wrap">
-        <div class="scroll-strip">
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov1"></div></div>
-            <div class="pl-body"><h4>Утренний фокус</h4><p>Ambient & Piano · 24 трека</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov2"></div></div>
-            <div class="pl-body"><h4>Семейный вечер</h4><p>Jazz & Soul · 32 трека</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov3"></div></div>
-            <div class="pl-body"><h4>Deep Work</h4><p>Electronic & Lo-fi · 18 треков</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov4"></div></div>
-            <div class="pl-body"><h4>Выходные</h4><p>Indie & Alternative · 28 треков</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov5"></div></div>
-            <div class="pl-body"><h4>Дорога</h4><p>Rock & Pop · 40 треков</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov6"></div></div>
-            <div class="pl-body"><h4>Ночные мысли</h4><p>Classical · 15 треков</p></div>
-          </a>
-        </div>
+      <div id="playlist-carousel" class="album-carousel"></div>
+      <div id="playlist-info" class="album-info">
+        <div class="album-info-title">Утренний фокус</div>
+        <div class="album-info-artist">Ambient & Piano · 24 трека</div>
       </div>
+      <div id="playlist-dots" class="carousel-dots"></div>
     </div>
   </section>
 
-  <!-- Marquee -->
-  <div class="marquee-wrap">
-    <div class="marquee">
-      <span>Ambient</span><span>Jazz</span><span>Classical</span><span>Electronic</span><span>Lo-fi</span><span>Piano</span><span>Soul</span><span>Indie</span>
-      <span>Ambient</span><span>Jazz</span><span>Classical</span><span>Electronic</span><span>Lo-fi</span><span>Piano</span><span>Soul</span><span>Indie</span>
-    </div>
-  </div>
-
-  <footer class="footer">
+  <footer class="footer" style="scroll-snap-align:end;">
     <img src="logo-mark.svg" alt="Mednov" class="footer-logo">
     <p>Family Office &copy; 2024 — Объединяя поколения</p>
   </footer>
