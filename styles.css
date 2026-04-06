@@ -24,24 +24,37 @@
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html {
-  scroll-behavior:smooth; overflow-x:hidden;
-  scroll-snap-type: y mandatory;
+  overflow:hidden;
+}
+body {
+  font-family: var(--font-text);
+  background: var(--dark-green);
+  color: var(--white);
+  overflow:hidden;
+  height:100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* === FULL-SCREEN SLIDES === */
+/* === FULL-SCREEN SLIDES (JS-driven) === */
+.slides-container {
+  position:fixed; inset:0;
+  overflow:hidden;
+}
 .slide {
-  min-height:100vh;
-  scroll-snap-align:start;
-  scroll-snap-stop:always;
+  position:absolute; inset:0;
+  width:100%; height:100vh;
   display:flex; flex-direction:column; justify-content:center;
-  position:relative; overflow:hidden;
+  overflow:hidden;
+  will-change:transform;
+  transition:transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
 }
 .slide .pattern-bg { position:absolute; inset:0; pointer-events:none; z-index:0; }
 .slide-inner {
   position:relative; z-index:1; width:100%;
   padding:6rem 3rem 3rem;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  flex:1;
+  flex:1; overflow-y:auto; overflow-x:hidden;
+  max-height:100vh;
 }
 .slide-hero .slide-inner {
   align-items:flex-start; justify-content:flex-end;
@@ -51,13 +64,6 @@ html {
 @media(max-width:768px) {
   .slide-inner { padding:5rem 1.5rem 2rem; }
   .slide .album-carousel { height:40vh; }
-}
-body {
-  font-family: var(--font-text);
-  background: var(--dark-green);
-  color: var(--white);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
 }
 a { color:inherit; text-decoration:none; }
 img { max-width:100%; display:block; }
@@ -330,7 +336,7 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
   display:flex; flex-direction:column; align-items:center; gap:0.5rem;
   opacity:0; animation: fadeUp 0.8s 1.1s var(--ease) forwards;
-  z-index:3;
+  z-index:3; cursor:pointer;
 }
 .hero-scroll span { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
 .hero-scroll-line {
