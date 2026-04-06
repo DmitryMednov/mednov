@@ -1,171 +1,187 @@
-/* ===== PIXEL DISSOLVE TRANSITIONS BETWEEN SECTIONS ===== */
-/* Inspired by Codrops Pixel-Voxel-Drop — pixelation effect on scroll transitions */
+/* ===== PIXEL DISSOLVE TRANSITION — 100K PARTICLES ===== */
+/* Full-screen dissolve to black, then reassemble. Uses Canvas ImageData for speed. */
 
 (function () {
-  const sections = document.querySelectorAll('.hero, .section, .marquee-wrap');
-  if (sections.length < 2) return;
+  const slides = document.querySelectorAll('.slide');
+  if (slides.length < 2) return;
 
   // Create overlay canvas
-  const overlay = document.createElement('canvas');
-  overlay.id = 'pixel-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;z-index:999;pointer-events:none;';
-  document.body.appendChild(overlay);
+  const cvs = document.createElement('canvas');
+  cvs.style.cssText = 'position:fixed;inset:0;z-index:998;pointer-events:none;';
+  document.body.appendChild(cvs);
+  const ctx = cvs.getContext('2d', { willReadFrequently: false });
 
-  const ctx = overlay.getContext('2d');
-  let w, h;
-
+  let W, H;
   function resize() {
-    w = overlay.width = window.innerWidth;
-    h = overlay.height = window.innerHeight;
+    W = cvs.width = window.innerWidth;
+    H = cvs.height = window.innerHeight;
   }
   window.addEventListener('resize', resize);
   resize();
 
-  // Transition state
-  let transitioning = false;
-  let transProgress = 0; // 0 = no effect, 1 = full pixelation
-  let transDirection = 0; // 1 = entering, -1 = leaving
-  let transStartTime = 0;
-  const TRANS_DURATION = 600; // ms
+  // --- Particle system (100k) ---
+  const COUNT = 100000;
+  const PIXEL_SIZE = 2; // each particle = 2x2 px
 
-  // Pixel grid config
-  const BASE_PIXEL = 40; // max pixel block size
-  const COLS_COUNT = () => Math.ceil(w / BASE_PIXEL);
-  const ROWS_COUNT = () => Math.ceil(h / BASE_PIXEL);
+  // Pre-allocate typed arrays for performance
+  const px = new Float32Array(COUNT); // x position
+  const py = new Float32Array(COUNT); // y position
+  const vx = new Float32Array(COUNT); // velocity x
+  const vy = new Float32Array(COUNT); // velocity y
+  const delay = new Float32Array(COUNT); // stagger delay 0-1
+  const cr = new Uint8Array(COUNT); // color r
+  const cg = new Uint8Array(COUNT); // color g
+  const cb = new Uint8Array(COUNT); // color b
 
-  // Track which section is in view
-  let lastSection = -1;
-  let scrollTicking = false;
-
-  // Colors from site palette
-  const COLORS = [
-    [15, 33, 32],    // --dark-green
-    [5, 59, 58],     // --deep-green
-    [44, 176, 168],  // --turquoise
+  // Site palette
+  const PALETTE = [
+    [44, 176, 168],   // turquoise
+    [5, 59, 58],      // deep-green
+    [15, 33, 32],     // dark-green
+    [204, 212, 253],  // violet
+    [250, 255, 175],  // yellow
+    [44, 176, 168],   // turquoise again (weighted)
   ];
 
-  function pickColor() {
-    return COLORS[Math.floor(Math.random() * COLORS.length)];
-  }
+  function initParticles() {
+    for (let i = 0; i < COUNT; i++) {
+      // Start grid position (fills screen)
+      px[i] = Math.random() * W;
+      py[i] = Math.random() * H;
 
-  // Generate staggered delay grid (ripple from center)
-  function makeDelayGrid(cols, rows) {
-    const cx = cols / 2;
-    const cy = rows / 2;
-    const maxDist = Math.sqrt(cx * cx + cy * cy);
-    const grid = [];
+      // Random velocity for scatter
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 8;
+      vx[i] = Math.cos(angle) * speed;
+      vy[i] = Math.sin(angle) * speed;
 
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const dist = Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
-        // Normalize to 0-1 with some randomness
-        grid.push(dist / maxDist + (Math.random() * 0.15));
-      }
-    }
-    return grid;
-  }
+      // Stagger from center
+      const cx = W / 2, cy = H / 2;
+      const dx = px[i] - cx, dy = py[i] - cy;
+      const maxDist = Math.sqrt(cx * cx + cy * cy);
+      delay[i] = Math.sqrt(dx * dx + dy * dy) / maxDist + Math.random() * 0.1;
 
-  // Pixel grid with per-cell state
-  let pixelGrid = null;
-
-  function initGrid() {
-    const cols = COLS_COUNT();
-    const rows = ROWS_COUNT();
-    const delays = makeDelayGrid(cols, rows);
-    pixelGrid = [];
-
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const idx = y * cols + x;
-        const color = pickColor();
-        pixelGrid.push({
-          x: x * BASE_PIXEL,
-          y: y * BASE_PIXEL,
-          delay: delays[idx],
-          color: color,
-          alpha: 0,
-        });
-      }
+      // Color
+      const c = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+      cr[i] = c[0];
+      cg[i] = c[1];
+      cb[i] = c[2];
     }
   }
 
-  function triggerTransition(dir) {
+  // --- Transition state ---
+  let transitioning = false;
+  let transStart = 0;
+  const DURATION = 900; // total ms
+  let lastSlide = -1;
+
+  function triggerTransition() {
     if (transitioning) return;
     transitioning = true;
-    transDirection = dir;
-    transStartTime = performance.now();
-    initGrid();
-    animateTransition();
+    transStart = performance.now();
+    initParticles();
+    requestAnimationFrame(renderTransition);
   }
 
-  function animateTransition() {
+  function renderTransition() {
     if (!transitioning) return;
 
-    const elapsed = performance.now() - transStartTime;
-    const halfDur = TRANS_DURATION / 2;
+    const elapsed = performance.now() - transStart;
+    const t = Math.min(elapsed / DURATION, 1.0);
 
-    // Phase 1: pixelate in (0 to halfDur)
-    // Phase 2: pixelate out (halfDur to TRANS_DURATION)
-    let phase;
-    if (elapsed < halfDur) {
-      phase = elapsed / halfDur; // 0 -> 1
+    // Phase 1 (0-0.5): scatter to black
+    // Phase 2 (0.5-1): reassemble from black
+    const half = 0.5;
+    let phase, scatter;
+    if (t < half) {
+      phase = t / half; // 0 -> 1 (dissolving)
+      scatter = phase;
     } else {
-      phase = 1 - (elapsed - halfDur) / halfDur; // 1 -> 0
+      phase = (t - half) / half; // 0 -> 1 (assembling)
+      scatter = 1 - phase;
     }
-    phase = Math.max(0, Math.min(1, phase));
 
     // Easing
-    const eased = phase < 0.5
-      ? 4 * phase * phase * phase
-      : 1 - Math.pow(-2 * phase + 2, 3) / 2;
+    const eased = scatter < 0.5
+      ? 2 * scatter * scatter
+      : 1 - Math.pow(-2 * scatter + 2, 2) / 2;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, w, h);
+    // Black fill — peaks at midpoint
+    const blackAlpha = t < half
+      ? eased
+      : (1 - phase) * (1 - phase); // fade out black
 
-    if (pixelGrid && eased > 0.01) {
-      for (let i = 0; i < pixelGrid.length; i++) {
-        const p = pixelGrid[i];
-        // Staggered: cells with lower delay appear first
-        const cellProgress = Math.max(0, Math.min(1, (eased - p.delay * 0.4) / 0.6));
+    ctx.clearRect(0, 0, W, H);
 
-        if (cellProgress > 0.01) {
-          const size = BASE_PIXEL * cellProgress;
-          const offset = (BASE_PIXEL - size) / 2;
-          const alpha = cellProgress * 0.92;
+    // Draw black background
+    if (blackAlpha > 0.01) {
+      ctx.globalAlpha = Math.min(blackAlpha * 1.2, 1);
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
+    }
 
-          ctx.fillStyle = `rgba(${p.color[0]},${p.color[1]},${p.color[2]},${alpha})`;
-          ctx.fillRect(p.x + offset, p.y + offset, size, size);
+    // Draw particles
+    const imageData = ctx.getImageData(0, 0, W, H);
+    const data = imageData.data;
+
+    for (let i = 0; i < COUNT; i++) {
+      // Staggered progress for this particle
+      const p = Math.max(0, Math.min(1, (eased - delay[i] * 0.3) / 0.7));
+      if (p < 0.01) continue;
+
+      // Current position: lerp between grid and scattered
+      const scatterX = px[i] + vx[i] * p * 30;
+      const scatterY = py[i] + vy[i] * p * 30 + p * p * 40; // gravity
+
+      const drawX = Math.round(scatterX);
+      const drawY = Math.round(scatterY);
+
+      // Bounds check
+      if (drawX < 0 || drawX >= W - PIXEL_SIZE || drawY < 0 || drawY >= H - PIXEL_SIZE) continue;
+
+      // Alpha based on particle progress
+      const alpha = Math.round(p * 220);
+
+      // Draw 2x2 pixel block directly into ImageData
+      for (let dy = 0; dy < PIXEL_SIZE; dy++) {
+        for (let dx = 0; dx < PIXEL_SIZE; dx++) {
+          const idx = ((drawY + dy) * W + (drawX + dx)) * 4;
+          // Additive blend
+          data[idx] = Math.min(255, data[idx] + cr[i]);
+          data[idx + 1] = Math.min(255, data[idx + 1] + cg[i]);
+          data[idx + 2] = Math.min(255, data[idx + 2] + cb[i]);
+          data[idx + 3] = Math.min(255, data[idx + 3] + alpha);
         }
       }
     }
 
-    if (elapsed >= TRANS_DURATION) {
+    ctx.putImageData(imageData, 0, 0);
+    ctx.globalAlpha = 1;
+
+    if (t >= 1) {
       transitioning = false;
-      ctx.clearRect(0, 0, w, h);
+      ctx.clearRect(0, 0, W, H);
       return;
     }
 
-    requestAnimationFrame(animateTransition);
+    requestAnimationFrame(renderTransition);
   }
 
-  // Detect section changes via IntersectionObserver
-  const sectionIndices = new Map();
-  sections.forEach((s, i) => sectionIndices.set(s, i));
+  // --- Detect slide changes ---
+  const slideMap = new Map();
+  slides.forEach((s, i) => slideMap.set(s, i));
 
-  const observer = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
-        const idx = sectionIndices.get(entry.target);
-        if (idx !== undefined && idx !== lastSection) {
-          const dir = idx > lastSection ? 1 : -1;
-          if (lastSection >= 0) {
-            triggerTransition(dir);
-          }
-          lastSection = idx;
+      if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+        const idx = slideMap.get(entry.target);
+        if (idx !== undefined && idx !== lastSlide) {
+          if (lastSlide >= 0) triggerTransition();
+          lastSlide = idx;
         }
       }
     });
-  }, { threshold: [0.3, 0.5] });
+  }, { threshold: [0.4, 0.6] });
 
-  sections.forEach(s => observer.observe(s));
+  slides.forEach(s => obs.observe(s));
 })();

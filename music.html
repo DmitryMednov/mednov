@@ -5,32 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Музыка семьи — Mednov</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-    html { scroll-snap-type: y mandatory; }
-    .slide {
-      min-height:100vh; scroll-snap-align:start;
-      display:flex; flex-direction:column; justify-content:center;
-      position:relative; overflow:hidden;
-    }
-    .slide .pattern-bg { position:absolute; inset:0; pointer-events:none; z-index:0; }
-    .slide-inner {
-      position:relative; z-index:1; width:100%;
-      padding:6rem 3rem 3rem;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      flex:1;
-    }
-    /* Hero slide: left-aligned */
-    .slide-hero .slide-inner {
-      align-items:flex-start; justify-content:flex-end;
-      padding-bottom:4rem;
-    }
-    /* Carousel fills most of the slide */
-    .slide .album-carousel { height:50vh; max-height:500px; }
-    @media(max-width:768px) {
-      .slide-inner { padding:5rem 1.5rem 2rem; }
-      .slide .album-carousel { height:40vh; }
-    }
-  </style>
 </head>
 <body>
   <div class="noise-overlay"></div>
@@ -47,9 +21,9 @@
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Slide 1: Hero -->
+  <!-- Slide 1: Hero with interactive droplets -->
   <section class="slide slide-hero" style="background:linear-gradient(180deg, var(--dark-green), var(--deep-green));">
-    <div class="pattern-bg"></div>
+    <div id="droplets-canvas" style="position:absolute;inset:0;z-index:0;"></div>
     <div class="slide-inner">
       <div class="visualizer" style="opacity:0;animation:fadeUp 0.8s 0.3s var(--ease) forwards;">
         <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
@@ -106,6 +80,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script src="script.js"></script>
   <script src="album-carousel.js"></script>
+  <script src="droplets.js"></script>
   <script src="pixel-transition.js"></script>
 </body>
 </html>
