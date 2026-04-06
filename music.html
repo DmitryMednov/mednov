@@ -21,19 +21,13 @@
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Slide 1: Hero with interactive droplets -->
+  <!-- Slide 1: Hero — particles title + droplets background -->
   <section class="slide slide-hero" style="background:linear-gradient(180deg, var(--dark-green), var(--deep-green));">
     <div id="droplets-canvas" style="position:absolute;inset:0;z-index:0;"></div>
-    <div class="slide-inner">
-      <div class="visualizer" style="opacity:0;animation:fadeUp 0.8s 0.3s var(--ease) forwards;">
-        <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-        <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-      </div>
-      <h1 class="hero-title split-words" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.5s var(--ease) forwards;">
-        Музыка <span class="hi">семьи</span>
-      </h1>
-      <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.7s var(--ease) forwards;">
-        Саундтрек нашей жизни. Все альбомы и плейлисты.
+    <div class="slide-inner" style="align-items:center;justify-content:center;">
+      <div id="particles-title" class="particles-title-wrap" data-text="Музыка&#10;семьи"></div>
+      <p class="hero-sub" style="text-align:center;margin:1rem 0 0;opacity:0;animation:fadeUp 0.8s 0.7s var(--ease) forwards;">
+        Саундтрек нашей жизни
       </p>
     </div>
   </section>
@@ -44,7 +38,7 @@
     <div class="slide-inner">
       <div class="reveal" style="text-align:center;">
         <p class="section-label">Коллекция</p>
-        <h2 class="section-title" style="margin-bottom:0.5rem;">Альбомы</h2>
+        <h2 class="section-title sdf-title" style="margin-bottom:0.5rem;">Альбомы</h2>
       </div>
       <div id="album-carousel" class="album-carousel"></div>
       <div id="album-info" class="album-info">
@@ -61,7 +55,7 @@
     <div class="slide-inner">
       <div class="reveal" style="text-align:center;">
         <p class="section-label">Подборки</p>
-        <h2 class="section-title" style="margin-bottom:0.5rem;">Плейлисты</h2>
+        <h2 class="section-title sdf-title" style="margin-bottom:0.5rem;">Плейлисты</h2>
       </div>
       <div id="playlist-carousel" class="album-carousel"></div>
       <div id="playlist-info" class="album-info">
@@ -81,6 +75,8 @@
   <script src="script.js"></script>
   <script src="album-carousel.js"></script>
   <script src="droplets.js"></script>
+  <script src="particles-text.js"></script>
+  <script src="sdf-titles.js"></script>
   <script src="slide-controller.js"></script>
 </body>
 </html>

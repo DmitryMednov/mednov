@@ -693,6 +693,23 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 .ga4 { background:linear-gradient(135deg, #053B3A, #CCD4FD); }
 .ga5 { background:linear-gradient(135deg, #121417, #2CB0A8); }
 
+/* === PARTICLES TITLE === */
+.particles-title-wrap {
+  width:100%; height:50vh; max-height:400px;
+  position:relative;
+}
+.particles-title-wrap canvas {
+  display:block; width:100%!important; height:100%!important;
+}
+
+/* === SDF TITLE === */
+.sdf-title {
+  position:relative; overflow:visible;
+}
+.sdf-title canvas {
+  display:block;
+}
+
 /* === ALBUM CAROUSEL === */
 .album-carousel {
   width:100%; height:400px; position:relative;
