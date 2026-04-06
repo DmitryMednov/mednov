@@ -25,16 +25,15 @@
   <section class="games-hero">
     <div class="page-hero-bg">
       <div style="position:absolute;inset:0;z-index:0;">
-        <canvas id="games-canvas" style="width:100%;height:100%;"></canvas>
+        <canvas id="dither-canvas" style="width:100%;height:100%;display:block;"></canvas>
       </div>
     </div>
-    <div class="pattern-bg"></div>
     <div style="position:relative;z-index:1;width:100%;">
       <h1 class="hero-title split-words" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;">
         Семейные <span class="hi">игры</span>
       </h1>
       <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.6s var(--ease) forwards;">
-        Играйте прямо в браузере — без установки.
+        Играй в браузере — без установки.
       </p>
     </div>
   </section>
@@ -149,5 +148,7 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="dither-bg.js"></script>
+  <script src="pixel-transition.js"></script>
 </body>
 </html>
