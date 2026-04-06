@@ -12,7 +12,7 @@
     container.className = 'slides-container';
     const parent = slides[0].parentNode;
     // Move all slides + footer into container
-    const els = document.querySelectorAll('.slide, .footer');
+    const els = document.querySelectorAll('.slide');
     els.forEach(el => container.appendChild(el));
     parent.appendChild(container);
   }
@@ -27,18 +27,6 @@
     slides.forEach((slide, i) => {
       slide.style.transform = `translateY(${(i - current) * 100}vh)`;
     });
-    // Footer
-    const footer = container.querySelector('.footer');
-    if (footer) {
-      footer.style.position = 'absolute';
-      footer.style.bottom = '0';
-      footer.style.left = '0';
-      footer.style.right = '0';
-      footer.style.zIndex = '1';
-      // Show footer on last slide
-      footer.style.transform = `translateY(${(count - 1 - current) * 100}vh)`;
-      footer.style.transition = `transform ${DURATION}ms cubic-bezier(0.76, 0, 0.24, 1)`;
-    }
   }
 
   function goTo(index) {
@@ -50,13 +38,6 @@
       slide.style.transform = `translateY(${(i - current) * 100}vh)`;
     });
 
-    // Footer
-    const footer = container.querySelector('.footer');
-    if (footer) {
-      footer.style.transform = `translateY(${(count - 1 - current) * 100}vh)`;
-    }
-
-    // Update nav dots if present
     updateIndicators();
 
     setTimeout(() => { isAnimating = false; }, DURATION);
