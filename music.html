@@ -39,30 +39,20 @@
     </div>
   </section>
 
-  <!-- Наша музыка -->
+  <!-- Альбомы — WebGL Carousel -->
   <section class="section">
     <div class="pattern-bg"></div>
     <div style="position:relative;z-index:1;">
-      <div class="reveal">
+      <div class="reveal" style="text-align:center;">
         <p class="section-label">Коллекция</p>
-        <h2 class="section-title" style="margin-bottom:1.5rem;">Альбомы Сергея Меднова</h2>
+        <h2 class="section-title" style="margin-bottom:0.5rem;">Альбомы</h2>
       </div>
-      <div class="scroll-strip-wrap" data-no-clone>
-        <div class="scroll-strip" style="justify-content:flex-start;">
-          <a href="https://music.apple.com/ru/album/45-20/1830794383?l=en-GB" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov1"></div></div>
-            <div class="album-body"><h4>45/20</h4><p>Сергей Меднов</p></div>
-          </a>
-          <a href="https://music.apple.com/ru/album/50-50/1831921447?l=en-GB" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov2"></div></div>
-            <div class="album-body"><h4>50/50</h4><p>Сергей Меднов</p></div>
-          </a>
-          <a href="https://music.apple.com/ru/album/between-the-roads-and-the-waves-ep/1847331974?l=en-GB" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov3"></div></div>
-            <div class="album-body"><h4>Between the Roads and the Waves</h4><p>Сергей Меднов · EP</p></div>
-          </a>
-        </div>
+      <div id="album-carousel" class="album-carousel"></div>
+      <div id="album-info" class="album-info">
+        <div class="album-info-title">45/20</div>
+        <div class="album-info-artist">Сергей Меднов</div>
       </div>
+      <div id="carousel-dots" class="carousel-dots"></div>
     </div>
   </section>
 
@@ -118,7 +108,9 @@
     <p>Family Office &copy; 2024 — Объединяя поколения</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script src="script.js"></script>
+  <script src="album-carousel.js"></script>
   <script src="pixel-transition.js"></script>
 </body>
 </html>
