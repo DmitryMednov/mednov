@@ -16,8 +16,12 @@ function createCarousel(containerId, infoId, dotsId, items) {
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
   camera.position.z = 5;
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: window.innerWidth > 768,
+    powerPreference: 'high-performance',
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
@@ -292,6 +296,14 @@ function createCarousel(containerId, infoId, dotsId, items) {
     const h = container.clientHeight;
     if (w === 0 || h === 0) return;
     camera.aspect = w / h;
+
+    // Fit carousel width to viewport: adjust camera Z so all visible planes fit
+    // Reference: 3 planes (TOTAL_W each) should span ~70% of viewport width
+    const fovRad = camera.fov * Math.PI / 180;
+    const visibleW = 3 * TOTAL_W * 0.9;
+    const neededZ = (visibleW / (2 * camera.aspect)) / Math.tan(fovRad / 2);
+    camera.position.z = Math.max(5, Math.min(12, neededZ));
+
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   }
