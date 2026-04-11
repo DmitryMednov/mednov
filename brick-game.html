@@ -130,7 +130,17 @@ const emitBtn = id => { tap(); window.dispatchEvent(new CustomEvent("gameBtn", {
 const SG = 24;
 
 // Preserve state across orientation changes
-const gs = { game: "tetris", theme: "gray", soundOn: false, powerOn: false };
+// Read initial game from URL params (?game=tetris|snake|arkanoid&autostart=1)
+const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+const urlGame = urlParams?.get("game");
+const urlAuto = urlParams?.get("autostart") === "1";
+const validGames = ["tetris", "snake", "arkanoid"];
+const gs = {
+  game: validGames.includes(urlGame) ? urlGame : "tetris",
+  theme: "gray",
+  soundOn: false,
+  powerOn: urlAuto, // auto power on if autostart param present
+};
 
 // ═══ ENTRY ═══
 function BrickGame() {
@@ -175,6 +185,18 @@ function GameController() {
   useEffect(() => { gs.theme = theme; }, [theme]);
   useEffect(() => { gs.soundOn = soundOn; }, [soundOn]);
   useEffect(() => { gs.powerOn = powerOn; }, [powerOn]);
+
+  // Auto-start from URL param (?autostart=1) — fires ONCE after initial mount
+  const autoStartedRef = useRef(false);
+  useEffect(() => {
+    if (urlAuto && powerOn && !autoStartedRef.current) {
+      autoStartedRef.current = true;
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("gameBtn", { detail: "startpause" }));
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [powerOn]);
 
   const sfx = useCallback(n => { if (soundOn) SFX[n]?.(); }, [soundOn]);
   const sw = g => { tap(); setGame(g); setGk(k => k + 1); };
