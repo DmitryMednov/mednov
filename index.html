@@ -32,68 +32,89 @@
     <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
   </section>
 
-  <!-- Slide 2: Philosophy (Вайб) — с анимированным WebGL-элементом -->
+  <!-- Slide 2: Stats -->
+  <section class="slide" style="background:var(--deep-green);">
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="stats-row stagger">
+        <div class="stat-glass"><div class="stat-num" data-count="12" data-suffix="+">0</div><div class="stat-label">Активных проектов</div></div>
+        <div class="stat-glass"><div class="stat-num" data-count="3">0</div><div class="stat-label">Поколения семьи</div></div>
+        <div class="stat-glass"><div class="stat-num" data-count="8">0</div><div class="stat-label">Направлений</div></div>
+        <div class="stat-glass"><div class="stat-num" data-count="100" data-suffix="%">0</div><div class="stat-label">Вовлечённость</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3: Philosophy -->
   <section class="slide" style="background:var(--dark-green);" id="philosophy">
     <div class="pattern-bg"></div>
     <div class="slide-inner">
-      <div class="philosophy-grid">
-        <div class="philosophy-text reveal-left">
+      <div class="split">
+        <div class="reveal-left">
           <p class="section-label">Вайб</p>
           <h2 class="section-title split-lines">Творческое<br>начало семьи</h2>
-          <p class="section-text">Музыка, игры, технологии — всё начинается с точки отсчёта.</p>
+          <p class="section-text">Музыка, игры, технологии — всё начинается с точки. Нашей точки отсчёта.</p>
         </div>
-        <div class="philosophy-visual reveal-right">
-          <div id="philosophy-canvas" class="philosophy-canvas"></div>
+        <div class="reveal-right" style="text-align:center;">
+          <img src="glass-shapes.png" alt="Brand elements" class="glass-shapes-img">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Slide 3: Directions — полноэкранные плашки с анимациями -->
+  <!-- Slide 4: Values -->
+  <section class="slide" style="background:var(--deep-green);">
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="reveal">
+        <p class="section-label">ДНК</p>
+        <h2 class="section-title split-words">Что нас объединяет</h2>
+      </div>
+      <div class="cards-grid stagger">
+        <div class="glass-card">
+          <div class="glass-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3>Доверие</h3>
+          <p>Основа всего — в семье и деле.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <h3>Преемственность</h3>
+          <p>Опыт поколений — наша сила.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h3>Технологии</h3>
+          <p>ИИ, музыка, игры — инструменты.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <h3>Творчество</h3>
+          <p>Создаём то, что вдохновляет.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5: Directions -->
   <section class="slide" style="background:var(--dark-green);">
-    <div class="slide-inner slide-inner-directions">
-      <div class="reveal directions-header">
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="reveal">
         <p class="section-label">Направления</p>
         <h2 class="section-title split-chars">Мир Mednov</h2>
       </div>
-      <div class="direction-tiles">
-        <a href="music.html" class="direction-tile direction-tile-music">
-          <canvas class="direction-anim" data-anim="music"></canvas>
-          <div class="direction-tile-content">
-            <div class="direction-tile-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 18V5l12-2v13"/>
-                <circle cx="6" cy="18" r="3"/>
-                <circle cx="18" cy="16" r="3"/>
-              </svg>
-            </div>
-            <h3>Музыка</h3>
-            <p>Саундтрек семьи</p>
-            <span class="direction-tile-cta">
-              Слушать
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </span>
-          </div>
+      <div class="cards-grid stagger" style="margin-top:2rem;">
+        <a href="music.html" class="glass-card" style="text-decoration:none;">
+          <div class="glass-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+          <h3>Музыка</h3>
+          <p>Саундтрек семьи.</p>
+          <span style="color:var(--turquoise);font-family:var(--font-main);font-size:0.85rem;font-weight:600;margin-top:0.8rem;display:inline-flex;align-items:center;gap:0.4rem;">Слушать <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
         </a>
-        <a href="games.html" class="direction-tile direction-tile-games">
-          <canvas class="direction-anim" data-anim="games"></canvas>
-          <div class="direction-tile-content">
-            <div class="direction-tile-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="6" width="20" height="12" rx="2"/>
-                <path d="M6 12h4"/>
-                <path d="M8 10v4"/>
-                <circle cx="17" cy="10" r="1"/>
-                <circle cx="15" cy="14" r="1"/>
-              </svg>
-            </div>
-            <h3>Игры</h3>
-            <p>Играй в браузере</p>
-            <span class="direction-tile-cta">
-              Играть
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </span>
-          </div>
+        <a href="games.html" class="glass-card" style="text-decoration:none;">
+          <div class="glass-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="17" cy="10" r="1"/><circle cx="15" cy="14" r="1"/></svg></div>
+          <h3>Игры</h3>
+          <p>Играй в браузере.</p>
+          <span style="color:var(--turquoise);font-family:var(--font-main);font-size:0.85rem;font-weight:600;margin-top:0.8rem;display:inline-flex;align-items:center;gap:0.4rem;">Играть <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
         </a>
       </div>
       <footer class="slide-footer">
@@ -106,8 +127,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script src="script.js"></script>
   <script src="hero-3d.js"></script>
-  <script src="philosophy-scene.js"></script>
-  <script src="direction-tiles.js"></script>
+
   <script src="slide-controller.js"></script>
 </body>
 </html>
