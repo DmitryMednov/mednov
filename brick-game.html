@@ -144,31 +144,31 @@ const gs = {
 
 // ═══ ENTRY ═══
 function BrickGame() {
-  const [mobile, setMobile] = useState(true);
-  const [portrait, setPortrait] = useState(true);
+  // Works on any device — no mobile/portrait restriction
+  // Keyboard controls for desktop
   useEffect(() => {
-    const ck = () => { setMobile(isMobilePhone()); setPortrait(isPortrait()); };
-    ck(); window.addEventListener("resize", ck);
-    const oc = () => setTimeout(ck, 150);
-    window.addEventListener("orientationchange", oc);
-    return () => { window.removeEventListener("resize", ck); window.removeEventListener("orientationchange", oc); };
+    const onKey = (e) => {
+      const map = {
+        ArrowUp: "up",
+        ArrowDown: "down",
+        ArrowLeft: "left",
+        ArrowRight: "right",
+        " ": "startpause",
+        Enter: "startpause",
+        w: "up", W: "up",
+        s: "down", S: "down",
+        a: "left", A: "left",
+        d: "right", D: "right",
+      };
+      const action = map[e.key];
+      if (action) {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent("gameBtn", { detail: action }));
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
-
-  if (!mobile) return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", background: "#111", fontFamily: "'Courier New',monospace", color: "#888", padding: 40, textAlign: "center" }}>
-      <div><div style={{ fontSize: 48, marginBottom: 20 }}>📱</div>
-      <div style={{ fontSize: 20, fontWeight: "bold", color: "#ccc", marginBottom: 12 }}>BRICK GAME v2.0</div>
-      <div style={{ fontSize: 14, lineHeight: 1.6, maxWidth: 360 }}>Эта игра доступна только на мобильном телефоне.</div></div>
-    </div>
-  );
-
-  if (!portrait) return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", background: "#111", fontFamily: "'Courier New',monospace", color: "#888", padding: 40, textAlign: "center" }}>
-      <div><div style={{ fontSize: 48, marginBottom: 20 }}>🔄</div>
-      <div style={{ fontSize: 18, fontWeight: "bold", color: "#ccc", marginBottom: 12 }}>Поверните телефон</div>
-      <div style={{ fontSize: 14, lineHeight: 1.6 }}>Игра работает только в вертикальном режиме.</div></div>
-    </div>
-  );
 
   return (<GameController />);
 }
