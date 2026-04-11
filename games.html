@@ -21,133 +21,82 @@
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Hero -->
-  <section class="games-hero">
-    <div class="page-hero-bg">
-      <div style="position:absolute;inset:0;z-index:0;">
-        <canvas id="games-canvas" style="width:100%;height:100%;"></canvas>
-      </div>
+  <!-- Slide 1: Hero with Bayer dithering -->
+  <section class="slide slide-hero" style="background:var(--dark-green);">
+    <div style="position:absolute;inset:0;z-index:0;">
+      <canvas id="dither-canvas" style="width:100%;height:100%;display:block;"></canvas>
     </div>
-    <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;width:100%;">
+    <div class="slide-inner">
       <h1 class="hero-title split-words" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;">
-        Семейные <span class="hi">игры</span>
+        <span class="hi">Ностальгия</span>
       </h1>
       <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.6s var(--ease) forwards;">
-        Играйте прямо в браузере — без установки.
+        Играй в браузере — без установки.
       </p>
     </div>
   </section>
 
-  <!-- Games -->
-  <section class="section">
+  <!-- Slide 2: Games library -->
+  <section class="slide" style="background:var(--deep-green);">
     <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;">
-      <div class="section-head reveal">
-        <div>
-          <p class="section-label">Библиотека</p>
-          <h2 class="section-title" style="margin-bottom:0;">Наши игры</h2>
-        </div>
+    <div class="slide-inner" style="justify-content:flex-start;padding-top:5rem;">
+      <div class="reveal" style="width:100%;">
+        <p class="section-label">Библиотека</p>
+        <h2 class="section-title" style="margin-bottom:1.5rem;">Игры</h2>
       </div>
-      <div class="scroll-strip-wrap">
+      <div class="scroll-strip-wrap" style="width:100%;">
         <div class="scroll-strip">
 
-          <a href="#" class="game-card">
-            <div class="game-preview">
-              <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Snake</div></div>
-              <span class="game-badge new">New</span>
-              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-            </div>
-            <div class="game-info">
-              <h3>Змейка Mednov</h3>
-              <p>Классическая змейка в фирменном стиле.</p>
-              <div class="game-tags"><span class="game-tag">Аркада</span><span class="game-tag">1 игрок</span></div>
-            </div>
-          </a>
-
-          <a href="#" class="game-card">
-            <div class="game-preview">
-              <div class="game-art ga2"><div class="game-art-grid"></div><div class="game-art-text">Memory</div></div>
-              <span class="game-badge pop">Popular</span>
-              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-            </div>
-            <div class="game-info">
-              <h3>Мемори: Семейный</h3>
-              <p>Найди все пары карточек с семейными символами.</p>
-              <div class="game-tags"><span class="game-tag">Логика</span><span class="game-tag">1-2 игрока</span></div>
-            </div>
-          </a>
-
-          <a href="#" class="game-card">
+          <a href="brick-game.html?game=tetris&autostart=1" class="game-card">
             <div class="game-preview">
               <div class="game-art ga3"><div class="game-art-grid"></div><div class="game-art-text">Tetris</div></div>
-              <span class="game-badge cls">Classic</span>
+              <span class="game-badge cls">Классика</span>
               <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
             </div>
             <div class="game-info">
-              <h3>Тетрис M.</h3>
-              <p>Тетрис с фирменными геометрическими фигурами.</p>
-              <div class="game-tags"><span class="game-tag">Аркада</span><span class="game-tag">1 игрок</span></div>
+              <h3>Тетрис</h3>
+              <p>Складывай блоки — очищай линии.</p>
+              <div class="game-tags"><span class="game-tag">Ретро</span><span class="game-tag">Аркада</span></div>
             </div>
           </a>
 
-          <a href="#" class="game-card">
+          <a href="brick-game.html?game=snake&autostart=1" class="game-card">
             <div class="game-preview">
-              <div class="game-art ga4"><div class="game-art-grid"></div><div class="game-art-text">Quiz</div></div>
-              <span class="game-badge new">New</span>
+              <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Snake</div></div>
+              <span class="game-badge cls">Классика</span>
               <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
             </div>
             <div class="game-info">
-              <h3>Семейная викторина</h3>
-              <p>Проверь, как хорошо ты знаешь свою семью.</p>
-              <div class="game-tags"><span class="game-tag">Викторина</span><span class="game-tag">2+ игрока</span></div>
+              <h3>Змейка</h3>
+              <p>Ешь еду — расти в длину.</p>
+              <div class="game-tags"><span class="game-tag">Ретро</span><span class="game-tag">Аркада</span></div>
             </div>
           </a>
 
-          <a href="#" class="game-card">
+          <a href="brick-game.html?game=arkanoid&autostart=1" class="game-card">
             <div class="game-preview">
-              <div class="game-art ga5"><div class="game-art-grid"></div><div class="game-art-text">2048</div></div>
-              <span class="game-badge pop">Popular</span>
+              <div class="game-art ga4"><div class="game-art-grid"></div><div class="game-art-text">Arkanoid</div></div>
+              <span class="game-badge cls">Классика</span>
               <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
             </div>
             <div class="game-info">
-              <h3>2048: Mednov Edition</h3>
-              <p>Складывай плитки в фирменных цветах.</p>
-              <div class="game-tags"><span class="game-tag">Головоломка</span><span class="game-tag">1 игрок</span></div>
-            </div>
-          </a>
-
-          <a href="#" class="game-card">
-            <div class="game-preview">
-              <div class="game-art ga1"><div class="game-art-grid"></div><div class="game-art-text">Draw</div></div>
-              <span class="game-badge cls">Classic</span>
-              <div class="game-play-overlay"><div class="game-play-btn">PLAY</div></div>
-            </div>
-            <div class="game-info">
-              <h3>Рисовалка</h3>
-              <p>Рисуй вместе с семьёй в реальном времени.</p>
-              <div class="game-tags"><span class="game-tag">Творчество</span><span class="game-tag">2+ игрока</span></div>
+              <h3>Арканоид</h3>
+              <p>Разбивай кирпичи отскоком мяча.</p>
+              <div class="game-tags"><span class="game-tag">Ретро</span><span class="game-tag">Аркада</span></div>
             </div>
           </a>
 
         </div>
       </div>
+      <footer class="slide-footer">
+        <img src="logo-mark.svg" alt="Mednov" class="footer-logo">
+        <p>Family Office &copy; 2024 — Объединяя поколения</p>
+      </footer>
     </div>
   </section>
 
-  <!-- Marquee -->
-  <div class="marquee-wrap">
-    <div class="marquee">
-      <span>Snake</span><span>Memory</span><span>Tetris</span><span>Quiz</span><span>2048</span><span>Draw</span><span>Arcade</span><span>Family</span>
-      <span>Snake</span><span>Memory</span><span>Tetris</span><span>Quiz</span><span>2048</span><span>Draw</span><span>Arcade</span><span>Family</span>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <img src="logo-mark.svg" alt="Mednov" class="footer-logo">
-    <p>Family Office &copy; 2024 — Объединяя поколения</p>
-  </footer>
-
   <script src="script.js"></script>
+  <script src="dither-bg.js"></script>
+  <script src="slide-controller.js"></script>
 </body>
 </html>

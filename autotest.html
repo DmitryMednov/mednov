@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autotest — Mednov All Resolutions</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0a0a0a; color:#fff; font-family:'Courier New',monospace; padding:20px; }
+    h1 { font-size:24px; margin-bottom:8px; color:#2CB0A8; }
+    .subtitle { font-size:13px; color:#666; margin-bottom:24px; }
+    .controls { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:24px; }
+    .controls button {
+      padding:8px 16px; border:1px solid #333; border-radius:6px;
+      background:#1a1a1a; color:#aaa; font-family:inherit; font-size:12px;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .controls button:hover, .controls button.active { background:#2CB0A8; color:#fff; border-color:#2CB0A8; }
+    .page-tabs { display:flex; gap:8px; margin-bottom:20px; }
+    .page-tabs button {
+      padding:6px 14px; border:1px solid #333; border-radius:4px;
+      background:#111; color:#888; font-family:inherit; font-size:11px;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .page-tabs button:hover, .page-tabs button.active { background:#2CB0A8; color:#fff; border-color:#2CB0A8; }
+    .grid { display:flex; flex-wrap:wrap; gap:24px; }
+    .device {
+      background:#111; border:1px solid #222; border-radius:12px; padding:16px;
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .device-header { display:flex; justify-content:space-between; align-items:center; }
+    .device-name { font-size:12px; font-weight:bold; color:#ccc; }
+    .device-res { font-size:11px; color:#555; }
+    .device-type { font-size:10px; padding:2px 8px; border-radius:10px; }
+    .device-type.desktop { background:rgba(44,176,168,0.15); color:#2CB0A8; }
+    .device-type.tablet { background:rgba(204,212,253,0.15); color:#CCD4FD; }
+    .device-type.mobile { background:rgba(250,255,175,0.15); color:#FAFFAF; }
+    .frame-wrap {
+      border:1px solid #333; border-radius:4px; overflow:hidden;
+      background:#000; position:relative;
+    }
+    .frame-wrap iframe {
+      border:none; display:block;
+      transform-origin:top left;
+    }
+    .status {
+      display:flex; justify-content:space-between; font-size:10px; color:#444;
+      margin-top:4px;
+    }
+    .status .ok { color:#2CB0A8; }
+    .summary {
+      margin-top:24px; padding:16px; background:#111; border:1px solid #222;
+      border-radius:8px; font-size:12px; color:#888;
+    }
+    .summary h3 { color:#2CB0A8; font-size:14px; margin-bottom:8px; }
+    .check-list { list-style:none; }
+    .check-list li { padding:4px 0; display:flex; align-items:center; gap:8px; }
+    .check-list li::before { content:''; width:8px; height:8px; border-radius:50%; background:#2CB0A8; flex-shrink:0; }
+    .check-list li.warn::before { background:#FAFFAF; }
+    .check-list li.fail::before { background:#ff4444; }
+  </style>
+</head>
+<body>
+  <h1>MEDNOV AUTOTEST</h1>
+  <p class="subtitle">Visual regression test across all resolutions. Each iframe loads the actual page at its target resolution.</p>
+
+  <div class="page-tabs" id="pageTabs">
+    <button class="active" data-page="index.html">Главная</button>
+    <button data-page="music.html">Музыка</button>
+    <button data-page="games.html">Игры</button>
+    <button data-page="brick-game.html">Brick Game</button>
+  </div>
+
+  <div class="controls" id="filterBtns">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="desktop">Desktop</button>
+    <button data-filter="tablet">Tablet</button>
+    <button data-filter="mobile">Mobile</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="summary" id="summary"></div>
+
+  <script>
+    const DEVICES = [
+      // Desktop
+      { name: 'Full HD', w: 1920, h: 1080, type: 'desktop', scale: 0.22 },
+      { name: 'Laptop L', w: 1440, h: 900, type: 'desktop', scale: 0.25 },
+      { name: 'Laptop', w: 1366, h: 768, type: 'desktop', scale: 0.27 },
+      { name: 'Laptop S', w: 1280, h: 720, type: 'desktop', scale: 0.28 },
+      // Tablet
+      { name: 'iPad Pro 12.9"', w: 1024, h: 1366, type: 'tablet', scale: 0.24 },
+      { name: 'iPad Air', w: 820, h: 1180, type: 'tablet', scale: 0.26 },
+      { name: 'iPad Mini', w: 768, h: 1024, type: 'tablet', scale: 0.3 },
+      { name: 'Surface Pro', w: 912, h: 1368, type: 'tablet', scale: 0.23 },
+      // Mobile
+      { name: 'iPhone 15 Pro Max', w: 430, h: 932, type: 'mobile', scale: 0.35 },
+      { name: 'iPhone 14/15', w: 390, h: 844, type: 'mobile', scale: 0.38 },
+      { name: 'iPhone SE', w: 375, h: 667, type: 'mobile', scale: 0.42 },
+      { name: 'Samsung Galaxy S24', w: 412, h: 915, type: 'mobile', scale: 0.36 },
+      { name: 'Pixel 7', w: 393, h: 851, type: 'mobile', scale: 0.38 },
+      { name: 'Galaxy Fold', w: 280, h: 653, type: 'mobile', scale: 0.48 },
+      { name: 'Small Phone', w: 320, h: 568, type: 'mobile', scale: 0.48 },
+    ];
+
+    let currentPage = 'index.html';
+    let currentFilter = 'all';
+    const loadTimes = {};
+
+    function renderGrid() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      const filtered = currentFilter === 'all'
+        ? DEVICES
+        : DEVICES.filter(d => d.type === currentFilter);
+
+      filtered.forEach((device, i) => {
+        const div = document.createElement('div');
+        div.className = 'device';
+        const frameW = Math.round(device.w * device.scale);
+        const frameH = Math.round(device.h * device.scale);
+        const id = `frame-${device.name.replace(/\s+/g, '-')}`;
+
+        div.innerHTML = `
+          <div class="device-header">
+            <span class="device-name">${device.name}</span>
+            <span class="device-type ${device.type}">${device.type}</span>
+          </div>
+          <div class="device-res">${device.w} × ${device.h}</div>
+          <div class="frame-wrap" style="width:${frameW}px;height:${frameH}px;">
+            <iframe id="${id}"
+              src="${currentPage}"
+              width="${device.w}" height="${device.h}"
+              style="transform:scale(${device.scale});width:${device.w}px;height:${device.h}px;"
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin">
+            </iframe>
+          </div>
+          <div class="status">
+            <span>Scale: ${Math.round(device.scale * 100)}%</span>
+            <span class="ok" id="status-${id}">Loading...</span>
+          </div>
+        `;
+
+        grid.appendChild(div);
+
+        // Track load
+        const iframe = div.querySelector('iframe');
+        const start = performance.now();
+        iframe.addEventListener('load', () => {
+          const time = Math.round(performance.now() - start);
+          loadTimes[id] = time;
+          const statusEl = document.getElementById(`status-${id}`);
+          if (statusEl) statusEl.textContent = `Loaded ${time}ms`;
+          updateSummary();
+        });
+      });
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const summary = document.getElementById('summary');
+      const times = Object.values(loadTimes);
+      const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : 0;
+      const max = times.length ? Math.max(...times) : 0;
+      const loaded = times.length;
+      const total = document.querySelectorAll('.device').length;
+
+      const checks = [
+        { text: `${loaded}/${total} frames loaded`, ok: loaded === total },
+        { text: `Average load time: ${avg}ms`, ok: avg < 3000, warn: avg >= 3000 && avg < 5000 },
+        { text: `Slowest frame: ${max}ms`, ok: max < 5000, warn: max >= 5000 },
+        { text: `Page: ${currentPage}`, ok: true },
+        { text: `Breakpoints: 768px (mobile), 900px (tablet split)`, ok: true },
+      ];
+
+      summary.innerHTML = `
+        <h3>Test Summary</h3>
+        <ul class="check-list">
+          ${checks.map(c => `<li class="${c.ok ? '' : c.warn ? 'warn' : 'fail'}">${c.text}</li>`).join('')}
+        </ul>
+        <p style="margin-top:12px;color:#555;">Checklist: scroll strips, nav burger, hero layout, card grids, 3D scene, text overflow, button visibility</p>
+      `;
+    }
+
+    // Page tabs
+    document.getElementById('pageTabs').addEventListener('click', e => {
+      if (e.target.dataset.page) {
+        currentPage = e.target.dataset.page;
+        document.querySelectorAll('#pageTabs button').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        Object.keys(loadTimes).forEach(k => delete loadTimes[k]);
+        renderGrid();
+      }
+    });
+
+    // Filter buttons
+    document.getElementById('filterBtns').addEventListener('click', e => {
+      if (e.target.dataset.filter) {
+        currentFilter = e.target.dataset.filter;
+        document.querySelectorAll('#filterBtns button').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        Object.keys(loadTimes).forEach(k => delete loadTimes[k]);
+        renderGrid();
+      }
+    });
+
+    renderGrid();
+  </script>
+</body>
+</html>

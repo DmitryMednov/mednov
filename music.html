@@ -21,127 +21,61 @@
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Hero -->
-  <section class="music-hero">
-    <div class="page-hero-bg"></div>
-    <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;width:100%;">
-      <div class="visualizer" style="opacity:0;animation:fadeUp 0.8s 0.3s var(--ease) forwards;">
-        <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-        <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
-      </div>
-      <h1 class="hero-title split-words" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.5s var(--ease) forwards;">
-        Музыка <span class="hi">семьи</span>
-      </h1>
-      <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.7s var(--ease) forwards;">
-        Саундтрек нашей жизни. Все альбомы и плейлисты в Apple Music.
+  <!-- Slide 1: Hero — particles title + droplets background -->
+  <section class="slide slide-hero" style="background:linear-gradient(180deg, var(--dark-green), var(--deep-green));">
+    <div id="droplets-canvas" style="position:absolute;inset:0;z-index:0;"></div>
+    <div class="slide-inner" style="align-items:center;justify-content:center;">
+      <div id="particles-title" class="particles-title-wrap" data-text="Музыка&#10;семьи"></div>
+      <p class="hero-sub" style="text-align:center;margin:1rem 0 0;opacity:0;animation:fadeUp 0.8s 0.7s var(--ease) forwards;">
+        Саундтрек нашей жизни
       </p>
     </div>
   </section>
 
-  <!-- Наша музыка -->
-  <section class="section">
+  <!-- Slide 2: Альбомы -->
+  <section class="slide" style="background:var(--deep-green);">
     <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;">
-      <div class="section-head reveal">
-        <div>
-          <p class="section-label">Коллекция</p>
-          <h2 class="section-title" style="margin-bottom:0;">Наша музыка</h2>
-        </div>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="am-btn" style="font-size:0.8rem;padding:0.45rem 1rem;">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.073-.005-.146-.01-.22-.015H5.988c-.076.005-.15.01-.224.015-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414-.005.073-.01.147-.015.22v13.37c.005.076.01.15.015.224.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35.185.017.37.03.554.04h12.37c.149-.01.297-.017.446-.03a9.875 9.875 0 001.636-.27c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382.007-.14.01-.28.015-.42V6.17l-.015-.046z"/></svg>
-          Apple Music
-        </a>
+    <div class="slide-inner">
+      <div class="reveal" style="text-align:center;">
+        <p class="section-label">Коллекция</p>
+        <h2 class="section-title" style="margin-bottom:0.5rem;">Альбомы</h2>
       </div>
-      <div class="scroll-strip-wrap">
-        <div class="scroll-strip">
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov1"></div></div>
-            <div class="album-body"><h4>Точка отсчёта</h4><p>12 треков · 2024</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov2"></div></div>
-            <div class="album-body"><h4>Семейный вечер</h4><p>8 треков · 2024</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov3"></div></div>
-            <div class="album-body"><h4>Корни</h4><p>10 треков · 2023</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov4"></div></div>
-            <div class="album-body"><h4>Горизонт</h4><p>6 треков · 2023</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov5"></div></div>
-            <div class="album-body"><h4>Первые шаги</h4><p>14 треков · 2022</p></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="album-card">
-            <div class="album-cover"><div class="album-cover-bg cov6"></div></div>
-            <div class="album-body"><h4>Ночные мысли</h4><p>7 треков · 2022</p></div>
-          </a>
-        </div>
+      <div id="album-carousel" class="album-carousel"></div>
+      <div id="album-info" class="album-info">
+        <div class="album-info-title">45/20</div>
+        <div class="album-info-artist">Сергей Меднов</div>
       </div>
+      <div id="carousel-dots" class="carousel-dots"></div>
     </div>
   </section>
 
-  <!-- Плейлисты -->
-  <section class="section" style="background:var(--deep-green);">
+  <!-- Slide 3: Плейлисты -->
+  <section class="slide" style="background:var(--dark-green);">
     <div class="pattern-bg"></div>
-    <div style="position:relative;z-index:1;">
-      <div class="section-head reveal">
-        <div>
-          <p class="section-label">Подборки</p>
-          <h2 class="section-title" style="margin-bottom:0;">Плейлисты</h2>
-        </div>
-        <a href="https://music.apple.com" target="_blank" rel="noopener" class="am-btn" style="font-size:0.8rem;padding:0.45rem 1rem;">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.073-.005-.146-.01-.22-.015H5.988c-.076.005-.15.01-.224.015-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414-.005.073-.01.147-.015.22v13.37c.005.076.01.15.015.224.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35.185.017.37.03.554.04h12.37c.149-.01.297-.017.446-.03a9.875 9.875 0 001.636-.27c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382.007-.14.01-.28.015-.42V6.17l-.015-.046z"/></svg>
-          Все плейлисты
-        </a>
+    <div class="slide-inner">
+      <div class="reveal" style="text-align:center;">
+        <p class="section-label">Подборки</p>
+        <h2 class="section-title" style="margin-bottom:0.5rem;">Плейлисты</h2>
       </div>
-      <div class="scroll-strip-wrap">
-        <div class="scroll-strip">
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov1"></div></div>
-            <div class="pl-body"><h4>Утренний фокус</h4><p>Ambient & Piano · 24 трека</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov2"></div></div>
-            <div class="pl-body"><h4>Семейный вечер</h4><p>Jazz & Soul · 32 трека</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov3"></div></div>
-            <div class="pl-body"><h4>Deep Work</h4><p>Electronic & Lo-fi · 18 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov4"></div></div>
-            <div class="pl-body"><h4>Выходные</h4><p>Indie & Alternative · 28 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov5"></div></div>
-            <div class="pl-body"><h4>Дорога</h4><p>Rock & Pop · 40 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-          </a>
-          <a href="https://music.apple.com" target="_blank" rel="noopener" class="pl-card">
-            <div class="pl-cover"><div style="width:100%;height:100%;" class="cov6"></div></div>
-            <div class="pl-body"><h4>Ночные мысли</h4><p>Classical · 15 треков</p><span class="am-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043C20.553.24 19.07.04 17.89.016H5.988c-.5.032-1 .1-1.48.218C3.1.56 2.214 1.162 1.53 2.05a4.91 4.91 0 00-.75 1.634c-.12.46-.19.934-.22 1.414v13.814c.032.5.1 1 .218 1.48.186.768.518 1.475 1 2.1a4.986 4.986 0 002.196 1.57c.508.18 1.034.298 1.57.35h13.37c1.065-.33 1.94-.907 2.59-1.82.417-.585.68-1.24.83-1.94.1-.455.157-.917.18-1.382V6.17z"/></svg>Слушать</span></div>
-          </a>
-        </div>
+      <div id="playlist-carousel" class="album-carousel"></div>
+      <div id="playlist-info" class="album-info">
+        <div class="album-info-title">Утренний фокус</div>
+        <div class="album-info-artist">Ambient & Piano · 24 трека</div>
       </div>
+      <div id="playlist-dots" class="carousel-dots"></div>
+      <footer class="slide-footer">
+        <img src="logo-mark.svg" alt="Mednov" class="footer-logo">
+        <p>Family Office &copy; 2024 — Объединяя поколения</p>
+      </footer>
     </div>
   </section>
 
-  <!-- Marquee -->
-  <div class="marquee-wrap">
-    <div class="marquee">
-      <span>Ambient</span><span>Jazz</span><span>Classical</span><span>Electronic</span><span>Lo-fi</span><span>Piano</span><span>Soul</span><span>Indie</span>
-      <span>Ambient</span><span>Jazz</span><span>Classical</span><span>Electronic</span><span>Lo-fi</span><span>Piano</span><span>Soul</span><span>Indie</span>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <img src="logo-mark.svg" alt="Mednov" class="footer-logo">
-    <p>Family Office &copy; 2024 — Объединяя поколения</p>
-  </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script src="script.js"></script>
+  <script src="album-carousel.js"></script>
+  <script src="droplets.js"></script>
+  <script src="particles-text.js"></script>
+
+  <script src="slide-controller.js"></script>
 </body>
 </html>
