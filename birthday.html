@@ -8,8 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="birthday.css">
 </head>
-<body class="bday-body">
-
+<body>
   <!-- Preloader -->
   <div class="preloader">
     <img src="logo-mark.svg" alt="Mednov" class="preloader-logo">
@@ -17,29 +16,34 @@
   </div>
 
   <div class="noise-overlay"></div>
+  <div class="scroll-progress"></div>
   <div class="cursor-glow"></div>
 
-  <!-- Fixed background -->
+  <!-- Global background -->
   <div class="global-bg">
     <div class="hero-orb"></div>
     <div class="hero-orb"></div>
   </div>
 
-  <!-- Nav (minimal) -->
-  <nav class="nav bday-nav">
+  <nav class="nav">
     <a href="index.html" class="nav-logo"><img src="logo-mark.svg" alt="Mednov"></a>
-    <a href="#gift" class="bday-nav-gift">Подарок</a>
+    <div class="nav-links">
+      <a href="index.html">Главная</a>
+      <a href="music.html">Музыка</a>
+      <a href="games.html">Игры</a>
+    </div>
+    <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- ===== SECTION 1: HERO ===== -->
-  <section class="bday-section bday-hero">
-    <div class="bday-hero-particles" id="bday-particles"></div>
-    <div class="bday-hero-content">
-      <p class="bday-eyebrow">Приглашение на юбилей</p>
+  <!-- ═══════════════ SLIDE 1: HERO ═══════════════ -->
+  <section class="slide">
+    <p class="music-hero-sub">Приглашение</p>
+    <div class="slide-inner bday-hero-inner">
       <h1 class="bday-title">Сергей<br>Меднов</h1>
-      <div class="bday-age">60</div>
-      <p class="bday-date-main">10 мая 2025</p>
-      <div class="bday-countdown" id="countdown">
+      <div id="glass-60" class="bday-glass-60"></div>
+      <p class="bday-age-label">лет</p>
+      <p class="bday-date-main">10 мая 2026</p>
+      <div class="bday-countdown">
         <div class="bday-countdown-item">
           <span class="bday-countdown-num" id="cd-days">--</span>
           <span class="bday-countdown-label">дней</span>
@@ -60,32 +64,39 @@
           <span class="bday-countdown-label">секунд</span>
         </div>
       </div>
-      <div class="bday-scroll-hint">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-      </div>
     </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
   </section>
 
-  <!-- ===== SECTION 2: GREETING ===== -->
-  <section class="bday-section bday-greeting">
-    <div class="bday-section-inner">
-      <p class="bday-section-label">Дорогие друзья и близкие</p>
-      <h2 class="bday-section-title">Приглашаем вас<br>на празднование юбилея</h2>
-      <p class="bday-section-text">
-        Шестьдесят &mdash; это не просто цифра. Это целая жизнь, наполненная музыкой, семьёй и вдохновением.
-        Будем рады разделить этот особенный день вместе с вами.
-      </p>
+  <!-- ═══════════════ SLIDE 2: GREETING ═══════════════ -->
+  <section class="slide">
+    <p class="music-hero-sub">Дорогие друзья и близкие</p>
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="reveal">
+        <h2 class="section-title" style="text-align:center;">Приглашаем вас<br>на юбилей</h2>
+      </div>
+      <div class="reveal">
+        <p class="section-text bday-center-text">
+          Шестьдесят &mdash; это не просто цифра. Это целая жизнь, наполненная
+          музыкой, семьёй и вдохновением. Будем рады разделить этот особенный
+          день вместе с вами.
+        </p>
+      </div>
       <div class="bday-divider"></div>
     </div>
   </section>
 
-  <!-- ===== SECTION 3: SCHEDULE ===== -->
-  <section class="bday-section bday-schedule">
-    <div class="bday-section-inner">
-      <p class="bday-section-label">Программа</p>
-      <h2 class="bday-section-title">Два дня праздника</h2>
+  <!-- ═══════════════ SLIDE 3: SCHEDULE ═══════════════ -->
+  <section class="slide">
+    <p class="music-hero-sub">Программа</p>
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="reveal">
+        <h2 class="section-title" style="text-align:center;">Два дня праздника</h2>
+      </div>
 
-      <div class="bday-timeline">
+      <div class="bday-timeline stagger">
         <!-- Day 1 -->
         <div class="bday-timeline-day">
           <div class="bday-timeline-date">
@@ -94,23 +105,19 @@
           </div>
           <div class="bday-timeline-card glass-card">
             <div class="bday-timeline-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <circle cx="12" cy="12" r="5"/>
-                <path d="M12 1v2"/>
-                <path d="M12 21v2"/>
-                <path d="M4.22 4.22l1.42 1.42"/>
-                <path d="M18.36 18.36l1.42 1.42"/>
-                <path d="M1 12h2"/>
-                <path d="M21 12h2"/>
-                <path d="M4.22 19.78l1.42-1.42"/>
-                <path d="M18.36 5.64l1.42-1.42"/>
+                <path d="M12 1v2"/><path d="M12 21v2"/>
+                <path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/>
+                <path d="M1 12h2"/><path d="M21 12h2"/>
+                <path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/>
               </svg>
             </div>
             <h3>Пляжный день</h3>
-            <p class="bday-timeline-time">Утро — День</p>
+            <p class="bday-timeline-time">Утро &mdash; День</p>
             <p>Встречаемся на пляже. Солнце, море и хорошая компания.</p>
             <div class="bday-timeline-location">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <span>Локация уточняется</span>
             </div>
           </div>
@@ -124,21 +131,21 @@
           </div>
           <div class="bday-timeline-card glass-card">
             <div class="bday-timeline-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M9 18V5l12-2v13"/>
                 <circle cx="6" cy="18" r="3"/>
                 <circle cx="18" cy="16" r="3"/>
               </svg>
             </div>
-            <h3>Ужин с живой музыкой</h3>
+            <h3>Ужин с джазом</h3>
             <p class="bday-timeline-time">Вечер</p>
-            <p>Праздничный ужин в ресторане. Живая джаз-группа, тёплая атмосфера и общение.</p>
+            <p>Праздничный ужин в ресторане. Живая джаз-группа и тёплая атмосфера.</p>
             <div class="bday-timeline-location">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <span>Ресторан уточняется</span>
             </div>
             <div class="bday-timeline-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
               Live Jazz
             </div>
           </div>
@@ -147,26 +154,30 @@
     </div>
   </section>
 
-  <!-- ===== SECTION 4: GIFT ===== -->
-  <section class="bday-section bday-gift" id="gift">
-    <div class="bday-section-inner">
-      <p class="bday-section-label">Подарок</p>
-      <h2 class="bday-section-title">Лучший подарок &mdash;<br>делать добро вместе</h2>
-      <p class="bday-section-text">
-        Вместо подарков мы собираем средства для параолимпийской команды по настольному теннису
-        <strong>Fuerte (ФУЭРТЕ)</strong>. Все средства будут направлены в НКО фонд для поддержки спортсменов.
-      </p>
+  <!-- ═══════════════ SLIDE 4: GIFT ═══════════════ -->
+  <section class="slide" id="gift">
+    <p class="music-hero-sub">Подарок</p>
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="reveal" style="text-align:center;">
+        <h2 class="section-title">Лучший подарок &mdash;<br>делать добро вместе</h2>
+        <p class="section-text bday-center-text">
+          Вместо подарков мы собираем средства для параолимпийской команды
+          по настольному теннису <strong>Fuerte (ФУЭРТЕ)</strong>. Все средства
+          будут направлены в НКО фонд для поддержки спортсменов.
+        </p>
+      </div>
 
-      <div class="bday-gift-card">
+      <div class="bday-gift-card reveal">
         <div class="bday-gift-icon">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
         </div>
         <h3>Параолимпийская команда Fuerte</h3>
-        <p>Настольный теннис &middot; НКО фонд поддержки</p>
+        <p>Настольный теннис &middot; НКО фонд</p>
         <a href="#" class="bday-gift-btn" id="gift-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           Сделать подарок
         </a>
         <p class="bday-gift-note">Перевод через Т-Банк</p>
@@ -174,36 +185,36 @@
     </div>
   </section>
 
-  <!-- ===== SECTION 5: FOOTER ===== -->
-  <section class="bday-section bday-footer-section">
-    <div class="bday-section-inner">
-      <div class="bday-final-message">
-        <p class="bday-final-quote">&laquo;Жизнь &mdash; это музыка. Главное &mdash; играть свою мелодию.&raquo;</p>
-        <p class="bday-final-date">10 мая 2025 &middot; 60 лет</p>
+  <!-- ═══════════════ SLIDE 5: FINAL ═══════════════ -->
+  <section class="slide">
+    <p class="music-hero-sub">Юбилей</p>
+    <div class="pattern-bg"></div>
+    <div class="slide-inner">
+      <div class="reveal bday-final-message">
+        <p class="bday-final-quote">&laquo;Жизнь &mdash; это музыка.<br>Главное &mdash; играть свою мелодию.&raquo;</p>
+        <p class="bday-final-date">10 мая 2026 &middot; 60 лет</p>
       </div>
-      <footer class="bday-page-footer">
+      <footer class="slide-footer">
         <img src="logo-mark.svg" alt="Mednov" class="footer-logo">
-        <p>Mednov Family Office</p>
+        <p>Mednov Family Office &copy; 2026 &mdash; Объединяя поколения</p>
       </footer>
     </div>
   </section>
 
+  <!-- ═══════════════ SCRIPTS ═══════════════ -->
   <script>
-    /* === Countdown Timer === */
+    /* === Countdown Timer (target: 10 May 2026 18:00 MSK) === */
     (function() {
-      const target = new Date('2025-05-10T18:00:00+03:00').getTime();
+      const target = new Date('2026-05-10T18:00:00+03:00').getTime();
       const els = {
         days: document.getElementById('cd-days'),
         hours: document.getElementById('cd-hours'),
         mins: document.getElementById('cd-mins'),
         secs: document.getElementById('cd-secs'),
       };
-
       function pad(n) { return String(n).padStart(2, '0'); }
-
       function update() {
-        const now = Date.now();
-        const diff = Math.max(0, target - now);
+        const diff = Math.max(0, target - Date.now());
         const d = Math.floor(diff / 86400000);
         const h = Math.floor((diff % 86400000) / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
@@ -216,55 +227,21 @@
       update();
       setInterval(update, 1000);
     })();
-
-    /* === Smooth scroll for anchor links === */
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-
-    /* === Scroll reveal === */
-    (function() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.15 });
-
-      document.querySelectorAll('.bday-section-inner, .bday-timeline-day, .bday-gift-card, .bday-final-message').forEach(el => {
-        el.classList.add('bday-reveal');
-        observer.observe(el);
-      });
-    })();
-
-    /* === Preloader === */
-    window.addEventListener('load', () => {
-      const preloader = document.querySelector('.preloader');
-      if (preloader) {
-        setTimeout(() => {
-          preloader.classList.add('hidden');
-          setTimeout(() => preloader.remove(), 700);
-        }, 600);
-      }
-    });
-
-    /* === Parallax scroll for hero === */
-    (function() {
-      const hero = document.querySelector('.bday-hero-content');
-      if (!hero) return;
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        hero.style.transform = `translateY(${y * 0.3}px)`;
-        hero.style.opacity = Math.max(0, 1 - y / 600);
-      }, { passive: true });
-    })();
   </script>
+
+  <!-- Three.js ES modules for glass "60" -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="birthday-glass-60.js"></script>
+
+  <!-- Vanilla scripts -->
+  <script src="script.js"></script>
+  <script src="slide-controller.js"></script>
 </body>
 </html>
