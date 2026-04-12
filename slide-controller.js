@@ -78,10 +78,11 @@
   function findInnerScroller(startEl, deltaY) {
     let el = startEl;
     while (el && el !== container && el !== document.body) {
-      if (el.scrollHeight > el.clientHeight + 1) {
-        // Can scroll in requested direction?
-        if (deltaY > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) return el;
-        if (deltaY < 0 && el.scrollTop > 0) return el;
+      // Must have meaningful overflow (> 20px) to count as scrollable
+      const overflow = el.scrollHeight - el.clientHeight;
+      if (overflow > 20) {
+        if (deltaY > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 5) return el;
+        if (deltaY < 0 && el.scrollTop > 5) return el;
       }
       el = el.parentElement;
     }
@@ -98,7 +99,7 @@
   /* --- Wheel --- */
   let wheelAccum = 0;
   let wheelTimer = null;
-  const WHEEL_THRESHOLD = 50;
+  const WHEEL_THRESHOLD = 30;
 
   container.addEventListener('wheel', (e) => {
     if (isBlocked()) return;
