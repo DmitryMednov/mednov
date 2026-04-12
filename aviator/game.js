@@ -366,7 +366,7 @@ class ModelManager {
 	}
 }
 
-const modelManager = new ModelManager('/models')
+const modelManager = new ModelManager('models')
 
 
 
@@ -1923,35 +1923,35 @@ function startMap() {
 
 function onWebsiteLoaded(event) {
 	// load audio
-	audioManager.load('ocean', null, '/audio/ocean.mp3')
-	audioManager.load('propeller', null, '/audio/propeller.mp3')
+	audioManager.load('ocean', null, 'audio/ocean.mp3')
+	audioManager.load('propeller', null, 'audio/propeller.mp3')
 
-	audioManager.load('coin-1', 'coin', '/audio/coin-1.mp3')
-	audioManager.load('coin-2', 'coin', '/audio/coin-2.mp3')
-	audioManager.load('coin-3', 'coin', '/audio/coin-3.mp3')
-	audioManager.load('jar-1', 'coin', '/audio/jar-1.mp3')
-	audioManager.load('jar-2', 'coin', '/audio/jar-2.mp3')
-	audioManager.load('jar-3', 'coin', '/audio/jar-3.mp3')
-	audioManager.load('jar-4', 'coin', '/audio/jar-4.mp3')
-	audioManager.load('jar-5', 'coin', '/audio/jar-5.mp3')
-	audioManager.load('jar-6', 'coin', '/audio/jar-6.mp3')
-	audioManager.load('jar-7', 'coin', '/audio/jar-7.mp3')
+	audioManager.load('coin-1', 'coin', 'audio/coin-1.mp3')
+	audioManager.load('coin-2', 'coin', 'audio/coin-2.mp3')
+	audioManager.load('coin-3', 'coin', 'audio/coin-3.mp3')
+	audioManager.load('jar-1', 'coin', 'audio/jar-1.mp3')
+	audioManager.load('jar-2', 'coin', 'audio/jar-2.mp3')
+	audioManager.load('jar-3', 'coin', 'audio/jar-3.mp3')
+	audioManager.load('jar-4', 'coin', 'audio/jar-4.mp3')
+	audioManager.load('jar-5', 'coin', 'audio/jar-5.mp3')
+	audioManager.load('jar-6', 'coin', 'audio/jar-6.mp3')
+	audioManager.load('jar-7', 'coin', 'audio/jar-7.mp3')
 
-	audioManager.load('airplane-crash-1', 'airplane-crash', '/audio/airplane-crash-1.mp3')
-	audioManager.load('airplane-crash-2', 'airplane-crash', '/audio/airplane-crash-2.mp3')
-	audioManager.load('airplane-crash-3', 'airplane-crash', '/audio/airplane-crash-3.mp3')
+	audioManager.load('airplane-crash-1', 'airplane-crash', 'audio/airplane-crash-1.mp3')
+	audioManager.load('airplane-crash-2', 'airplane-crash', 'audio/airplane-crash-2.mp3')
+	audioManager.load('airplane-crash-3', 'airplane-crash', 'audio/airplane-crash-3.mp3')
 
-	audioManager.load('bubble', 'bubble', '/audio/bubble.mp3')
+	audioManager.load('bubble', 'bubble', 'audio/bubble.mp3')
 
-	audioManager.load('shot-soft', 'shot-soft', '/audio/shot-soft.mp3')
+	audioManager.load('shot-soft', 'shot-soft', 'audio/shot-soft.mp3')
 
-	audioManager.load('shot-hard', 'shot-hard', '/audio/shot-hard.mp3')
+	audioManager.load('shot-hard', 'shot-hard', 'audio/shot-hard.mp3')
 
-	audioManager.load('bullet-impact', 'bullet-impact', '/audio/bullet-impact-rock.mp3')
+	audioManager.load('bullet-impact', 'bullet-impact', 'audio/bullet-impact-rock.mp3')
 
-	audioManager.load('water-splash', 'water-splash', '/audio/water-splash.mp3')
-	audioManager.load('rock-shatter-1', 'rock-shatter', '/audio/rock-shatter-1.mp3')
-	audioManager.load('rock-shatter-2', 'rock-shatter', '/audio/rock-shatter-2.mp3')
+	audioManager.load('water-splash', 'water-splash', 'audio/water-splash.mp3')
+	audioManager.load('rock-shatter-1', 'rock-shatter', 'audio/rock-shatter-1.mp3')
+	audioManager.load('rock-shatter-2', 'rock-shatter', 'audio/rock-shatter-2.mp3')
 
 	// load models
 	modelManager.load('heart')
