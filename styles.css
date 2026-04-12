@@ -848,6 +848,32 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   display:block; width:100%!important; height:100%!important;
 }
 
+/* Fullscreen particles title (fills entire slide) */
+.particles-title-fullscreen {
+  position:absolute; inset:0; z-index:1;
+}
+.particles-title-fullscreen canvas {
+  display:block; width:100%!important; height:100%!important;
+}
+
+/* Music hero subtitle — under the nav logo, turquoise uppercase */
+.music-hero-sub {
+  position:absolute;
+  top:clamp(3.5rem, 5.5vh, 4.5rem);
+  left:clamp(1.25rem, 3vw, 3rem);
+  z-index:2;
+  font-family:var(--font-main);
+  font-size:clamp(0.65rem, 0.8vw, 0.8rem);
+  font-weight:700;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--turquoise);
+  opacity:0;
+  animation:fadeUp 0.6s 0.5s var(--ease) forwards;
+  white-space:nowrap;
+  margin:0;
+}
+
 /* === SDF TITLE === */
 .sdf-title {
   position:relative; overflow:visible;
