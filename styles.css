@@ -47,11 +47,24 @@ body {
   text-rendering:optimizeLegibility;
 }
 
+/* === GLOBAL BACKGROUND (fixed behind all slides) === */
+.global-bg {
+  position:fixed; inset:0; z-index:0;
+  background: var(--dark-green);
+  pointer-events:none;
+}
+.global-bg::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(44,176,168,0.1) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(204,212,253,0.05) 0%, transparent 50%);
+}
+
 /* === FULL-SCREEN SLIDES (JS-driven) === */
 .slides-container {
   position:fixed; inset:0;
   overflow:hidden;
   height:var(--app-h);
+  z-index:1;
 }
 .slide {
   position:absolute; inset:0;
@@ -61,6 +74,8 @@ body {
   overflow:hidden;
   will-change:transform;
   transition:transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  /* Transparent by default — shows global-bg through */
+  background:transparent;
 }
 .slide .pattern-bg { position:absolute; inset:0; pointer-events:none; z-index:0; }
 .slide-inner {
@@ -274,12 +289,7 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   min-height:100vh; display:flex; align-items:center; justify-content:center;
   position:relative; overflow:hidden; padding:6rem 3rem;
 }
-.hero-bg { position:absolute; inset:0; z-index:0; }
-.hero-bg::before {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(44,176,168,0.12) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, rgba(204,212,253,0.06) 0%, transparent 50%);
-}
+/* hero-bg removed — orbs now in .global-bg */
 .hero-orb {
   position:absolute; border-radius:50%; filter:blur(80px);
   will-change:transform;
