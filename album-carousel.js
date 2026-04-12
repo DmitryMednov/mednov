@@ -386,8 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   ]);
 
-  // Playlists carousel
-  createCarousel('playlist-carousel', 'playlist-info', 'playlist-dots', [
+  // Playlists carousel — deferred (slide 3, not visible immediately)
+  setTimeout(() => createCarousel('playlist-carousel', 'playlist-info', 'playlist-dots', [
     {
       title: 'Утренний фокус',
       subtitle: 'Ambient & Piano · 24 трека',
@@ -424,5 +424,5 @@ document.addEventListener('DOMContentLoaded', () => {
       url: 'https://music.apple.com',
       gradient: ['#053B3A', '#FAFFAF'],
     },
-  ]);
+  ]), 800); // 800ms delay — loads after albums carousel is done
 });

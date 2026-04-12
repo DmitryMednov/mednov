@@ -2,9 +2,18 @@
 /* Text rendered as particles with curl noise and mouse interaction */
 /* Inspired by tgcnzn/Interactive-Particles-Music-Visualizer */
 
+// Defer init so preloader renders first and page doesn't hang
 (function () {
-  const container = document.getElementById('particles-title');
-  if (!container || typeof THREE === 'undefined') return;
+  const init = () => {
+    const container = document.getElementById('particles-title');
+    if (!container || typeof THREE === 'undefined') return;
+    _initParticles(container);
+  };
+  if (document.readyState === 'complete') setTimeout(init, 100);
+  else window.addEventListener('load', () => setTimeout(init, 100));
+})();
+
+function _initParticles(container) {
 
   const text = container.dataset.text || 'Музыка';
   const isMobile = window.innerWidth < 768;
@@ -311,4 +320,4 @@
     if (document.hidden) cancelAnimationFrame(animId);
     else animate();
   });
-})();
+}
