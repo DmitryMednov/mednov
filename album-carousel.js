@@ -312,11 +312,13 @@ function createCarousel(containerId, infoId, dotsId, items) {
     camera.aspect = w / h;
 
     // Fit carousel width to viewport: adjust camera Z so all visible planes fit
-    // Reference: 3 planes (TOTAL_W each) should span ~70% of viewport width
     const fovRad = camera.fov * Math.PI / 180;
-    const visibleW = 3 * TOTAL_W * 0.9;
+    const isMobile = w < 768;
+    // On mobile show fewer planes so each one is larger
+    const visiblePlanes = isMobile ? 1.8 : 3;
+    const visibleW = visiblePlanes * TOTAL_W * 0.9;
     const neededZ = (visibleW / (2 * camera.aspect)) / Math.tan(fovRad / 2);
-    camera.position.z = Math.max(5, Math.min(12, neededZ));
+    camera.position.z = Math.max(isMobile ? 4 : 5, Math.min(12, neededZ));
 
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
