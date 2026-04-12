@@ -28,7 +28,11 @@
     cvs.height = h * scale;
     const ctx = cvs.getContext('2d');
 
-    const fontSize = Math.min(w * 0.22, 120) * scale;
+    // Fullscreen mode uses much bigger text
+    const isFullscreen = container.classList.contains('particles-title-fullscreen');
+    const maxSize = isFullscreen ? 320 : 120;
+    const sizeRatio = isFullscreen ? 0.35 : 0.22;
+    const fontSize = Math.min(w * sizeRatio, maxSize) * scale;
     ctx.font = `800 ${fontSize}px Montserrat, sans-serif`;
     ctx.fillStyle = '#fff';
     ctx.textAlign = 'center';

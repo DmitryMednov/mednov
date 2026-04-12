@@ -12,6 +12,12 @@
   <div class="scroll-progress"></div>
   <div class="cursor-glow"></div>
 
+  <!-- Global background -->
+  <div class="global-bg">
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+  </div>
+
   <nav class="nav">
     <a href="index.html" class="nav-logo"><img src="logo-mark.svg" alt="Mednov"></a>
     <div class="nav-links">
@@ -22,23 +28,18 @@
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Slide 1: Hero — particles title + droplets background -->
-  <section class="slide" style="background:linear-gradient(180deg, var(--dark-green), var(--deep-green));">
-    <div id="droplets-canvas" style="position:absolute;inset:0;z-index:0;"></div>
-    <div class="slide-inner">
-      <div id="particles-title" class="particles-title-wrap" data-text="Музыка&#10;семьи"></div>
-      <p class="hero-sub" style="text-align:center;margin:1rem 0 0;opacity:0;animation:fadeUp 0.8s 0.7s var(--ease) forwards;">
-        Саундтрек нашей жизни
-      </p>
-    </div>
+  <!-- Slide 1: Hero — only "Музыка" particles fullscreen + subtitle -->
+  <section class="slide">
+    <div id="particles-title" class="particles-title-fullscreen" data-text="Музыка"></div>
+    <p class="music-hero-sub">саундтреки жизни</p>
   </section>
 
   <!-- Slide 2: Альбомы -->
-  <section class="slide" style="background:var(--deep-green);">
+  <section class="slide">
+    <p class="music-hero-sub" style="animation-delay:0s;opacity:1;">коллекция</p>
     <div class="pattern-bg"></div>
     <div class="slide-inner">
       <div class="reveal" style="text-align:center;">
-        <p class="section-label">Коллекция</p>
         <h2 class="section-title" style="margin-bottom:0.5rem;">Альбомы</h2>
       </div>
       <div id="album-carousel" class="album-carousel"></div>
@@ -51,11 +52,11 @@
   </section>
 
   <!-- Slide 3: Плейлисты -->
-  <section class="slide" style="background:var(--dark-green);">
+  <section class="slide">
+    <p class="music-hero-sub" style="animation-delay:0s;opacity:1;">подборки</p>
     <div class="pattern-bg"></div>
     <div class="slide-inner">
       <div class="reveal" style="text-align:center;">
-        <p class="section-label">Подборки</p>
         <h2 class="section-title" style="margin-bottom:0.5rem;">Плейлисты</h2>
       </div>
       <div id="playlist-carousel" class="album-carousel"></div>
@@ -74,9 +75,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script src="script.js"></script>
   <script src="album-carousel.js"></script>
-  <script src="droplets.js"></script>
   <script src="particles-text.js"></script>
-
   <script src="slide-controller.js"></script>
 </body>
 </html>
