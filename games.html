@@ -37,16 +37,13 @@
   <!-- Slide 1: Hero with Bayer dithering -->
   <section class="slide slide-hero">
     <p class="music-hero-sub">Играй в браузере</p>
-    <div style="position:absolute;inset:0;z-index:0;">
-      <canvas id="dither-canvas" style="width:100%;height:100%;display:block;"></canvas>
+    <div style="position:absolute;inset:0;z-index:0;pointer-events:auto;">
+      <canvas id="dither-canvas" style="width:100%;height:100%;display:block;cursor:crosshair;"></canvas>
     </div>
-    <div class="slide-inner">
-      <h1 class="hero-title" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;">
+    <div class="slide-inner" style="pointer-events:none;">
+      <h1 class="hero-title" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;pointer-events:auto;">
         <span class="hi">Игры</span>
       </h1>
-      <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.6s var(--ease) forwards;">
-        Ретро-аркады от Сергея Меднова. Без установки — прямо в браузере.
-      </p>
     </div>
   </section>
 
@@ -54,9 +51,9 @@
   <section class="slide">
     <p class="music-hero-sub">Библиотека</p>
     <div class="pattern-bg"></div>
-    <div class="slide-inner" style="justify-content:flex-start;padding-top:5rem;">
-      <div class="reveal" style="width:100%;">
-        <h2 class="section-title" style="margin-bottom:1.5rem;">Ностальгия</h2>
+    <div class="slide-inner" style="justify-content:center;">
+      <div class="reveal" style="width:100%;text-align:center;">
+        <h2 class="section-title" style="margin-bottom:1.5rem;">Ностальгия по 80-ым</h2>
       </div>
       <div class="scroll-strip-wrap" style="width:100%;">
         <div class="scroll-strip">
