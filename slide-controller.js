@@ -213,6 +213,22 @@
   layout(false);
   updateIndicators();
 
+  // Reveal slides (CSS hides them until positioned to prevent FOUC)
+  requestAnimationFrame(() => {
+    document.body.classList.add('slides-ready');
+
+    // Hide preloader after slides are positioned
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+      // Small delay so the layout settles
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+        // Remove from DOM after fade
+        setTimeout(() => { preloader.remove(); }, 700);
+      }, 400);
+    }
+  });
+
   // Hash navigation
   if (window.location.hash) {
     const target = document.querySelector(window.location.hash);

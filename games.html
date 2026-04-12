@@ -8,9 +8,21 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Preloader -->
+  <div class="preloader">
+    <img src="logo-mark.svg" alt="Mednov" class="preloader-logo">
+    <div class="preloader-bar"></div>
+  </div>
+
   <div class="noise-overlay"></div>
   <div class="scroll-progress"></div>
   <div class="cursor-glow"></div>
+
+  <!-- Global background -->
+  <div class="global-bg">
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+  </div>
 
   <nav class="nav">
     <a href="index.html" class="nav-logo"><img src="logo-mark.svg" alt="Mednov"></a>
@@ -23,7 +35,8 @@
   </nav>
 
   <!-- Slide 1: Hero with Bayer dithering -->
-  <section class="slide slide-hero" style="background:var(--dark-green);">
+  <section class="slide slide-hero">
+    <p class="music-hero-sub">Играй в браузере</p>
     <div style="position:absolute;inset:0;z-index:0;">
       <canvas id="dither-canvas" style="width:100%;height:100%;display:block;"></canvas>
     </div>
@@ -31,18 +44,15 @@
       <h1 class="hero-title" style="text-align:left;opacity:0;animation:fadeUp 0.8s 0.4s var(--ease) forwards;">
         <span class="hi">Игры</span>
       </h1>
-      <p class="hero-sub" style="text-align:left;margin:0;opacity:0;animation:fadeUp 0.8s 0.6s var(--ease) forwards;">
-        Играй в браузере — без установки.
-      </p>
     </div>
   </section>
 
   <!-- Slide 2: Games library -->
-  <section class="slide" style="background:var(--deep-green);">
+  <section class="slide">
+    <p class="music-hero-sub">Библиотека</p>
     <div class="pattern-bg"></div>
     <div class="slide-inner" style="justify-content:flex-start;padding-top:5rem;">
       <div class="reveal" style="width:100%;">
-        <p class="section-label">Библиотека</p>
         <h2 class="section-title" style="margin-bottom:1.5rem;">Ностальгия</h2>
       </div>
       <div class="scroll-strip-wrap" style="width:100%;">
