@@ -85,24 +85,36 @@
   <script>
     const DEVICES = [
       // Desktop
-      { name: 'Full HD', w: 1920, h: 1080, type: 'desktop', scale: 0.22 },
-      { name: 'Laptop L', w: 1440, h: 900, type: 'desktop', scale: 0.25 },
-      { name: 'Laptop', w: 1366, h: 768, type: 'desktop', scale: 0.27 },
-      { name: 'Laptop S', w: 1280, h: 720, type: 'desktop', scale: 0.28 },
+      { name: 'Full HD', w: 1920, h: 1080, type: 'desktop' },
+      { name: '4K', w: 2560, h: 1440, type: 'desktop' },
+      { name: 'Laptop L', w: 1440, h: 900, type: 'desktop' },
+      { name: 'Laptop', w: 1366, h: 768, type: 'desktop' },
+      { name: 'Laptop S', w: 1280, h: 720, type: 'desktop' },
       // Tablet
-      { name: 'iPad Pro 12.9"', w: 1024, h: 1366, type: 'tablet', scale: 0.24 },
-      { name: 'iPad Air', w: 820, h: 1180, type: 'tablet', scale: 0.26 },
-      { name: 'iPad Mini', w: 768, h: 1024, type: 'tablet', scale: 0.3 },
-      { name: 'Surface Pro', w: 912, h: 1368, type: 'tablet', scale: 0.23 },
+      { name: 'iPad Pro 12.9"', w: 1024, h: 1366, type: 'tablet' },
+      { name: 'iPad Pro LS', w: 1366, h: 1024, type: 'tablet' },
+      { name: 'iPad Air', w: 820, h: 1180, type: 'tablet' },
+      { name: 'iPad Mini', w: 768, h: 1024, type: 'tablet' },
+      { name: 'Surface Pro', w: 912, h: 1368, type: 'tablet' },
       // Mobile
-      { name: 'iPhone 15 Pro Max', w: 430, h: 932, type: 'mobile', scale: 0.35 },
-      { name: 'iPhone 14/15', w: 390, h: 844, type: 'mobile', scale: 0.38 },
-      { name: 'iPhone SE', w: 375, h: 667, type: 'mobile', scale: 0.42 },
-      { name: 'Samsung Galaxy S24', w: 412, h: 915, type: 'mobile', scale: 0.36 },
-      { name: 'Pixel 7', w: 393, h: 851, type: 'mobile', scale: 0.38 },
-      { name: 'Galaxy Fold', w: 280, h: 653, type: 'mobile', scale: 0.48 },
-      { name: 'Small Phone', w: 320, h: 568, type: 'mobile', scale: 0.48 },
+      { name: 'iPhone 15 Pro Max', w: 430, h: 932, type: 'mobile' },
+      { name: 'iPhone 14/15', w: 390, h: 844, type: 'mobile' },
+      { name: 'iPhone SE', w: 375, h: 667, type: 'mobile' },
+      { name: 'Samsung Galaxy S24', w: 412, h: 915, type: 'mobile' },
+      { name: 'Pixel 7', w: 393, h: 851, type: 'mobile' },
+      { name: 'Galaxy Fold', w: 280, h: 653, type: 'mobile' },
+      { name: 'Small Phone', w: 320, h: 568, type: 'mobile' },
+      // Landscape mobile
+      { name: 'iPhone 15 Landscape', w: 932, h: 430, type: 'mobile' },
+      { name: 'iPhone SE Landscape', w: 667, h: 375, type: 'mobile' },
     ];
+
+    // Dynamic scale: fit iframe to ~340px max dimension
+    function computeScale(device) {
+      const maxDim = 340;
+      const max = Math.max(device.w, device.h);
+      return Math.min(0.5, Math.max(0.15, maxDim / max));
+    }
 
     let currentPage = 'index.html';
     let currentFilter = 'all';
@@ -119,6 +131,7 @@
       filtered.forEach((device, i) => {
         const div = document.createElement('div');
         div.className = 'device';
+        device.scale = computeScale(device);
         const frameW = Math.round(device.w * device.scale);
         const frameH = Math.round(device.h * device.scale);
         const id = `frame-${device.name.replace(/\s+/g, '-')}`;

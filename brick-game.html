@@ -9,10 +9,34 @@
   <meta name="theme-color" content="#111111">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; overflow:hidden; background:#111; }
-    #root { height:100%; }
+    html, body {
+      height:100%;
+      min-height:100vh;
+      min-height:100dvh;
+      overflow:auto;
+      background:#111;
+      -webkit-text-size-adjust:100%;
+    }
+    body {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    #root {
+      width:100%;
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    /* Scale the game wrapper to fit short screens */
+    #root > div {
+      transform-origin:center center;
+      transform:scale(var(--game-scale, 1));
+    }
     .back-link {
-      position:fixed; top:12px; left:12px; z-index:9999;
+      position:fixed; top:max(12px, env(safe-area-inset-top)); left:max(12px, env(safe-area-inset-left)); z-index:9999;
       display:inline-flex; align-items:center; gap:6px;
       padding:8px 16px; border-radius:24px;
       background:rgba(255,255,255,0.08);
@@ -24,6 +48,25 @@
     .back-link:hover { background:rgba(255,255,255,0.15); color:#fff; }
     .back-link svg { width:14px; height:14px; }
   </style>
+  <script>
+    /* Scale brick game to fit current viewport */
+    function scaleGame() {
+      const GAME_HEIGHT = 720;
+      const GAME_WIDTH = 400;
+      const availH = window.innerHeight - 32;
+      const availW = window.innerWidth - 32;
+      const scale = Math.min(1, availH / GAME_HEIGHT, availW / GAME_WIDTH);
+      document.documentElement.style.setProperty('--game-scale', scale.toFixed(3));
+    }
+    window.addEventListener('resize', scaleGame);
+    window.addEventListener('orientationchange', scaleGame);
+    window.addEventListener('DOMContentLoaded', () => {
+      scaleGame();
+      // Re-scale after React mounts and adjusts content
+      setTimeout(scaleGame, 100);
+      setTimeout(scaleGame, 500);
+    });
+  </script>
 </head>
 <body>
   <a href="games.html" class="back-link">
