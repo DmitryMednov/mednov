@@ -132,12 +132,13 @@ function createCarousel(containerId, infoId, dotsId, items) {
   const geometry = new THREE.PlaneGeometry(PLANE_W, PLANE_H, 32, 32);
 
   items.forEach((item, i) => {
-    const texture = createGradientTexture(item.gradient, item.title, item.subtitle);
+    // Use gradient as initial fallback
+    const fallbackTexture = createGradientTexture(item.gradient, item.title, item.subtitle);
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
-        uTexture: { value: texture },
+        uTexture: { value: fallbackTexture },
         uProgress: { value: 0 },
         uSpeed: { value: 0 },
         uOpacity: { value: 1.0 },
@@ -145,6 +146,15 @@ function createCarousel(containerId, infoId, dotsId, items) {
       transparent: true,
       side: THREE.DoubleSide,
     });
+
+    // If cover image URL provided, load it and replace the gradient
+    if (item.cover) {
+      const loader = new THREE.TextureLoader();
+      loader.load(item.cover, (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        material.uniforms.uTexture.value = tex;
+      });
+    }
 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.x = i * TOTAL_W;
@@ -223,9 +233,13 @@ function createCarousel(containerId, infoId, dotsId, items) {
     ov.querySelector('.carousel-overlay-artist').textContent = item.artist || item.subtitle || '';
     ov.querySelector('.carousel-overlay-btn').href = item.url || '#';
 
-    // Set cover gradient
+    // Set cover: use real image if available, else gradient
     const coverEl = ov.querySelector('.carousel-overlay-cover');
-    coverEl.style.background = `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`;
+    if (item.cover) {
+      coverEl.style.background = `url('${item.cover}') center/cover no-repeat`;
+    } else {
+      coverEl.style.background = `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`;
+    }
 
     ov.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -354,18 +368,21 @@ document.addEventListener('DOMContentLoaded', () => {
       artist: 'Сергей Меднов',
       url: 'https://music.apple.com/ru/album/45-20/1830794383?l=en-GB',
       gradient: ['#053B3A', '#2CB0A8'],
+      cover: 'Segey Mednov 45:20.png',
     },
     {
       title: '50/50',
       artist: 'Сергей Меднов',
       url: 'https://music.apple.com/ru/album/50-50/1831921447?l=en-GB',
       gradient: ['#0F2120', '#CCD4FD'],
+      cover: 'Sergey Mednov 50&50.png',
     },
     {
       title: 'Between the Roads and the Waves',
       artist: 'Сергей Меднов · EP',
       url: 'https://music.apple.com/ru/album/between-the-roads-and-the-waves-ep/1847331974?l=en-GB',
       gradient: ['#2CB0A8', '#FAFFAF'],
+      cover: 'Sergey Mednov - between the roads and the waves.png',
     },
   ]);
 
