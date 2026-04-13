@@ -49,35 +49,41 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   light3.position.set(0, 6, -3);
   scene.add(light3);
 
-  /* --- Brand colors (used as attenuation tints) --- */
-  const turquoise = 0x2cb0a8;
-  const violet = 0xccd4fd;
-  const yellow = 0xfaffaf;
-  const deepGreen = 0x053b3a;
-  const white = 0xeaecf2;
+  /* --- Brand palette --- */
+  const PALETTE = {
+    turquoise:    0x2cb0a8,
+    turquoiseHi:  0x5fd6ce,
+    deepTeal:     0x1a8580,
+    violet:       0xccd4fd,
+    violetDeep:   0x9aa8f0,
+    yellow:       0xfaffaf,
+    yellowWarm:   0xf0e68a,
+    mint:         0x8de6c8,
+  };
 
   /* --- Glass material factory ---
-     Same recipe as birthday-glass-60.js but semi-transparent so the
-     floating shapes feel airy and don't obscure the central logo. */
+     Tinted glass: the brand color is used as the surface color (not just
+     attenuation) so the tint reads clearly even at low opacity. */
   function glassMat(tintHex) {
+    const c = new THREE.Color(tintHex);
     const mat = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
+      color: c,
       metalness: 0.0,
-      roughness: 0.05,
+      roughness: 0.06,
       transmission: 1.0,
-      thickness: 0.6,
-      ior: 1.4,
+      thickness: 0.7,
+      ior: 1.42,
       clearcoat: 1.0,
       clearcoatRoughness: 0.05,
-      iridescence: isMobile ? 0.25 : 0.5,
+      iridescence: isMobile ? 0.25 : 0.45,
       iridescenceIOR: 1.3,
       iridescenceThicknessRange: [100, 800],
-      attenuationColor: new THREE.Color(tintHex),
-      attenuationDistance: 2.5,
-      envMapIntensity: 1.4,
+      attenuationColor: c.clone().multiplyScalar(0.85),
+      attenuationDistance: 1.8,
+      envMapIntensity: 1.5,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.7,
     });
     if ('dispersion' in mat) mat.dispersion = isMobile ? 0.6 : 1.0;
     return mat;
@@ -97,7 +103,23 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     new THREE.CylinderGeometry(0.3, 0.3, 1.2, 8),
   ];
 
-  const tints = [turquoise, violet, yellow, deepGreen, white, turquoise, violet, yellow, turquoise, violet];
+  /* Cycle through every palette color so adjacent shapes never share a tint */
+  const tints = [
+    PALETTE.turquoise,
+    PALETTE.violet,
+    PALETTE.yellow,
+    PALETTE.turquoiseHi,
+    PALETTE.violetDeep,
+    PALETTE.mint,
+    PALETTE.yellowWarm,
+    PALETTE.deepTeal,
+    PALETTE.turquoise,
+    PALETTE.violet,
+    PALETTE.yellow,
+    PALETTE.turquoiseHi,
+    PALETTE.violetDeep,
+    PALETTE.mint,
+  ];
 
   /* --- Floating objects --- */
   const objects = [];
@@ -179,7 +201,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   }
   particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   const particleMat = new THREE.PointsMaterial({
-    color: turquoise,
+    color: PALETTE.turquoise,
     size: 0.04,
     transparent: true,
     opacity: 0.35,
