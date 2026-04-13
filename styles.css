@@ -1489,23 +1489,28 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 
 /* ── Touch device tweaks: larger hit targets, no hover-only effects ── */
 @media (hover: none) and (pointer: coarse) {
-  /* Ensure interactive elements meet 44px minimum touch target */
+  /* Buttons get a 44px minimum touch target.
+     Dots (carousel, slide) keep their visual size — they're decoration,
+     and an invisible expanded hit area is added via ::before below. */
   .nav-links a,
-  .carousel-dot,
-  .slide-dot,
   .scroll-btn,
   .am-btn {
     min-height:44px;
-    min-width:44px;
   }
+  .nav-links a { display:flex; align-items:center; }
+
+  /* Expand the hit area of dots without changing their visual size */
   .carousel-dot,
   .slide-dot {
-    /* Add padding to expand hit area without changing visual size */
-    background-clip:content-box;
-    padding:8px;
-    box-sizing:content-box;
-    width:8px; height:8px;
+    position:relative;
   }
+  .carousel-dot::before,
+  .slide-dot::before {
+    content:'';
+    position:absolute;
+    inset:-14px;
+  }
+
   /* Hover states are dead weight on touch */
   .glass-card:hover,
   .game-card:hover,
