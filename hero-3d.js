@@ -9,6 +9,8 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   if (!container) return;
 
   const isMobile = window.innerWidth < 768;
+  const isSmallPhone = window.innerWidth < 400;
+  const isLowDpr = (window.devicePixelRatio || 1) < 2;
 
   /* --- Setup --- */
   const scene = new THREE.Scene();
@@ -123,7 +125,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
   /* --- Floating objects --- */
   const objects = [];
-  const COUNT = isMobile ? 9 : 14;
+  const COUNT = isSmallPhone ? 7 : (isMobile ? 9 : 14);
 
   for (let i = 0; i < COUNT; i++) {
     const geoIndex = i % geos.length;
@@ -191,7 +193,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   });
 
   /* --- Particle field --- */
-  const particleCount = isMobile ? 80 : 200;
+  const particleCount = isSmallPhone ? 50 : (isMobile ? 80 : 200);
   const particleGeo = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount; i++) {

@@ -508,17 +508,52 @@
 }
 
 /* Height-constrained screens — shrink hero a bit */
+@media (max-height: 860px) {
+  .bday-glass-60 { height: clamp(360px, 55vh, 540px); }
+}
 @media (max-height: 760px) {
   .bday-glass-60 { height: clamp(320px, 50vh, 480px); }
   .bday-age-label { margin-top: -0.5rem; }
   .bday-date-main { margin-bottom: 0.5rem; }
   .bday-countdown-num { font-size: clamp(1.3rem, 3vh, 2rem); }
 }
+@media (max-height: 640px) {
+  .bday-glass-60 { height: clamp(260px, 48vh, 380px); }
+  .bday-age-label { font-size: 0.65rem; margin-top: -0.4rem; }
+  .bday-hero-name { font-size: 1rem; }
+  .bday-date-main { font-size: 0.78rem; margin-bottom: 0.4rem; }
+  .bday-countdown { gap: 0.3rem; }
+  .bday-countdown-num { font-size: 1.4rem; }
+  .bday-countdown-label { font-size: 0.55rem; }
+}
 @media (max-height: 560px) {
-  .bday-glass-60 { height: clamp(220px, 42vh, 320px); }
+  .bday-glass-60 { height: clamp(200px, 45vh, 280px); }
   .bday-age-label { display: none; }
-  .bday-hero-name { font-size: 0.95rem; }
-  .bday-date-main { font-size: 0.75rem; }
+  .bday-hero-name { font-size: 0.92rem; }
+  .bday-date-main { font-size: 0.7rem; }
+  .bday-countdown-num { font-size: 1.25rem; }
+}
+@media (max-height: 480px) {
+  .bday-glass-60 { height: clamp(160px, 42vh, 220px); }
+  .bday-hero-name { display: none; }
+  .bday-date-main { font-size: 0.7rem; margin-bottom: 0.25rem; }
+  .bday-countdown-num { font-size: 1.1rem; }
+  .bday-countdown-item { min-width: 36px; }
+  /* Stack timeline horizontally on landscape phones to use width */
+  .bday-timeline { gap: 0.6rem; }
+  .bday-timeline-card { padding: 0.85rem 1rem !important; }
+  .bday-timeline-card p { font-size: 0.78rem; line-height: 1.4; }
+  .bday-final-quote { font-size: 1rem; line-height: 1.4; }
+  .bday-final-message { margin-bottom: 0; }
+  .bday-gift-card { padding: 1rem 1.2rem; }
+  .bday-gift-icon { width: 46px; height: 46px; margin-bottom: 0.5rem; }
+  .bday-gift-icon svg { width: 22px; height: 22px; }
+  .bday-gift-btn { margin-top: 0.85rem; padding: 0.7rem 1.6rem; font-size: 0.85rem; }
+}
+
+/* Ultrawide / 4K — keep hero centered, don't let glass 60 stretch past sensible bounds */
+@media (min-width: 1920px) {
+  .bday-glass-60 { width: min(60vw, 1320px); height: clamp(440px, 56vh, 800px); }
 }
 
 /* Reduced motion */
