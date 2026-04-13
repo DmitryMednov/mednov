@@ -173,14 +173,16 @@ const emitBtn = id => { tap(); window.dispatchEvent(new CustomEvent("gameBtn", {
 const SG = 24;
 
 // Preserve state across orientation changes
-// Read initial game from URL params (?game=tetris|snake|arkanoid&autostart=1)
+// Read initial game from URL params (?game=tetris|snake|arkanoid&autostart=1&theme=gray|pink|yellow)
 const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
 const urlGame = urlParams?.get("game");
 const urlAuto = urlParams?.get("autostart") === "1";
+const urlTheme = urlParams?.get("theme");
 const validGames = ["tetris", "snake", "arkanoid"];
+const validThemes = ["gray", "pink", "yellow"];
 const gs = {
   game: validGames.includes(urlGame) ? urlGame : "tetris",
-  theme: "gray",
+  theme: validThemes.includes(urlTheme) ? urlTheme : "gray",
   soundOn: false,
   powerOn: urlAuto, // auto power on if autostart param present
 };
