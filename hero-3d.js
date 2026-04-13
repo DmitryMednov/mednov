@@ -1,5 +1,8 @@
-/* ===== MEDNOV 3D HERO SCENE — v3 ===== */
-/* Three.js: logo-3d.png as central 3D object, floating geometry, mouse parallax */
+/* ===== MEDNOV 3D HERO SCENE — v4 ===== */
+/* ES module: glass material on all floating geometry, central logo, mouse parallax */
+
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 (function () {
   const container = document.getElementById('hero-3d');
@@ -24,40 +27,58 @@
   renderer.toneMappingExposure = 1.2;
   container.appendChild(renderer.domElement);
 
-  /* --- Lights --- */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  /* --- Environment for glass reflections (same as birthday "60") --- */
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  pmrem.compileEquirectangularShader();
+  const roomEnv = new RoomEnvironment();
+  scene.environment = pmrem.fromScene(roomEnv, 0.04).texture;
+  roomEnv.dispose?.();
 
-  const light1 = new THREE.PointLight(0x2CB0A8, 60, 50);
+  /* --- Lights --- */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+  const light1 = new THREE.PointLight(0x2cb0a8, 60, 50);
   light1.position.set(6, 5, 6);
   scene.add(light1);
 
-  const light2 = new THREE.PointLight(0xCCD4FD, 40, 50);
+  const light2 = new THREE.PointLight(0xccd4fd, 40, 50);
   light2.position.set(-6, -3, 5);
   scene.add(light2);
 
-  const light3 = new THREE.PointLight(0xFAFFAF, 20, 40);
+  const light3 = new THREE.PointLight(0xfaffaf, 20, 40);
   light3.position.set(0, 6, -3);
   scene.add(light3);
 
-  /* --- Colors & Materials --- */
-  const turquoise = 0x2CB0A8;
-  const violet = 0xCCD4FD;
-  const yellow = 0xFAFFAF;
-  const deepGreen = 0x053B3A;
-  const white = 0xEAECF2;
+  /* --- Brand colors (used as attenuation tints) --- */
+  const turquoise = 0x2cb0a8;
+  const violet = 0xccd4fd;
+  const yellow = 0xfaffaf;
+  const deepGreen = 0x053b3a;
+  const white = 0xeaecf2;
 
-  function glassMat(color, opacity) {
-    return new THREE.MeshPhysicalMaterial({
-      color, metalness: 0.1, roughness: 0.15,
-      transparent: true, opacity: opacity || 0.65,
-      clearcoat: 1.0, clearcoatRoughness: 0.1, side: THREE.DoubleSide,
+  /* --- Glass material factory ---
+     Identical recipe to birthday-glass-60.js. Each shape gets a tinted
+     glass material via attenuationColor. */
+  function glassMat(tintHex) {
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      metalness: 0.0,
+      roughness: 0.02,
+      transmission: 1.0,
+      thickness: 1.4,
+      ior: 1.5,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.0,
+      iridescence: isMobile ? 0.3 : 0.6,
+      iridescenceIOR: 1.3,
+      iridescenceThicknessRange: [100, 800],
+      attenuationColor: new THREE.Color(tintHex),
+      attenuationDistance: 4.0,
+      envMapIntensity: 1.6,
+      side: THREE.DoubleSide,
     });
-  }
-
-  function solidMat(color) {
-    return new THREE.MeshStandardMaterial({
-      color, metalness: 0.3, roughness: 0.4, transparent: true, opacity: 0.85,
-    });
+    if ('dispersion' in mat) mat.dispersion = isMobile ? 0.8 : 1.4;
+    return mat;
   }
 
   /* --- Geometries --- */
@@ -74,26 +95,23 @@
     new THREE.CylinderGeometry(0.3, 0.3, 1.2, 8),
   ];
 
-  const colors = [turquoise, violet, yellow, deepGreen, white, turquoise, violet, yellow, turquoise, violet];
-  const matTypes = ['glass', 'solid', 'glass', 'solid', 'glass', 'glass', 'solid', 'glass', 'solid', 'glass'];
+  const tints = [turquoise, violet, yellow, deepGreen, white, turquoise, violet, yellow, turquoise, violet];
 
   /* --- Floating objects --- */
   const objects = [];
-  const COUNT = isMobile ? 12 : 18;
+  const COUNT = isMobile ? 9 : 14;
 
   for (let i = 0; i < COUNT; i++) {
     const geoIndex = i % geos.length;
-    const colorIndex = i % colors.length;
-    const mat = matTypes[geoIndex] === 'glass'
-      ? glassMat(colors[colorIndex], 0.4 + Math.random() * 0.3)
-      : solidMat(colors[colorIndex]);
+    const tintIndex = i % tints.length;
+    const mat = glassMat(tints[tintIndex]);
 
     const mesh = new THREE.Mesh(geos[geoIndex], mat);
 
     // Fibonacci sphere — centered, with inner gap to leave room for logo
     const phi = Math.acos(1 - 2 * (i + 0.5) / COUNT);
     const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-    const radius = 3.5 + Math.random() * 3; // minimum 3.5 to avoid logo overlap
+    const radius = 3.5 + Math.random() * 3;
 
     const basePos = new THREE.Vector3(
       radius * Math.sin(phi) * Math.cos(theta),
@@ -108,8 +126,14 @@
     scene.add(mesh);
 
     objects.push({
-      mesh, basePos: basePos.clone(), baseOpacity: mat.opacity, scale: s,
-      rotSpeed: { x: (Math.random() - 0.5) * 0.006, y: (Math.random() - 0.5) * 0.006, z: (Math.random() - 0.5) * 0.004 },
+      mesh,
+      basePos: basePos.clone(),
+      scale: s,
+      rotSpeed: {
+        x: (Math.random() - 0.5) * 0.006,
+        y: (Math.random() - 0.5) * 0.006,
+        z: (Math.random() - 0.5) * 0.004,
+      },
       floatSpeed: 0.3 + Math.random() * 0.6,
       floatAmp: 0.2 + Math.random() * 0.4,
       floatPhase: Math.random() * Math.PI * 2,
@@ -119,13 +143,11 @@
 
   /* --- Central 3D Logo (logo-3d.png as textured plane) --- */
   let logoMesh = null;
-  const logoSize = isMobile ? 3 : 4; // size in 3D units
+  const logoSize = isMobile ? 3 : 4;
 
   const loader = new THREE.TextureLoader();
   loader.load('logo-3d.png', (texture) => {
     texture.colorSpace = THREE.SRGBColorSpace;
-
-    // Calculate aspect ratio from loaded image
     const img = texture.image;
     const aspect = img.width / img.height;
     const planeW = logoSize * aspect;
@@ -140,7 +162,7 @@
     });
 
     logoMesh = new THREE.Mesh(geo, mat);
-    logoMesh.position.set(0, 0, 0.5); // slightly forward
+    logoMesh.position.set(0, 0, 0.5);
     scene.add(logoMesh);
   });
 
@@ -155,7 +177,11 @@
   }
   particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   const particleMat = new THREE.PointsMaterial({
-    color: turquoise, size: 0.04, transparent: true, opacity: 0.35, sizeAttenuation: true,
+    color: turquoise,
+    size: 0.04,
+    transparent: true,
+    opacity: 0.35,
+    sizeAttenuation: true,
   });
   const particles = new THREE.Points(particleGeo, particleMat);
   scene.add(particles);
@@ -222,20 +248,17 @@
     // Logo: gentle float + always face camera + slight tilt from mouse
     if (logoMesh) {
       logoMesh.lookAt(camera.position);
-      // Subtle floating
       logoMesh.position.y = Math.sin(t * 0.8) * 0.15;
       logoMesh.position.z = 0.5 + Math.cos(t * 0.6) * 0.1;
-      // Scale pulse
       const pulse = 1 + Math.sin(t * 1.5) * 0.02;
       logoMesh.scale.setScalar(pulse);
-      // Fade on scroll
       logoMesh.material.opacity = 1 - scrollProgress * 0.6;
     }
 
     // Repulsion origin
     _tmpVec.set(mouse.x * 6, mouse.y * 4, 1.5);
 
-    // Animate floating objects
+    // Animate floating glass objects
     for (let i = 0; i < objects.length; i++) {
       const obj = objects[i];
       const mesh = obj.mesh;
@@ -272,9 +295,6 @@
       mesh.rotation.x += obj.rotSpeed.x;
       mesh.rotation.y += obj.rotSpeed.y;
       mesh.rotation.z += obj.rotSpeed.z;
-
-      const targetOpacity = obj.baseOpacity * (1 - scrollProgress * 0.4);
-      mesh.material.opacity += (targetOpacity - mesh.material.opacity) * 0.05;
     }
 
     // Particles

@@ -24,6 +24,10 @@
       <a href="index.html" class="active">Главная</a>
       <a href="music.html">Музыка</a>
       <a href="games.html">Игры</a>
+      <a href="birthday.html" class="bday-nav-banner">
+        <span class="bday-banner-badge">10 мая</span>
+        <span class="bday-banner-text">Приглашение на юбилей &rarr;</span>
+      </a>
     </div>
     <div class="nav-burger"><span></span><span></span><span></span></div>
   </nav>
@@ -38,11 +42,6 @@
   <section class="slide">
     <p class="music-hero-sub">Family Office</p>
     <div id="hero-3d" class="hero-3d-canvas"></div>
-    <!-- Birthday invitation banner -->
-    <a href="birthday.html" class="bday-banner">
-      <span class="bday-banner-badge">10 мая</span>
-      <span class="bday-banner-text">Приглашение на юбилей &rarr;</span>
-    </a>
     <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
   </section>
 
@@ -125,10 +124,19 @@
     </div>
   </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-  <script src="script.js"></script>
-  <script src="hero-3d.js"></script>
+  <!-- Three.js ES modules (for glass material + RoomEnvironment) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="hero-3d.js"></script>
 
+  <!-- Vanilla scripts -->
+  <script src="script.js"></script>
   <script src="slide-controller.js"></script>
 </body>
 </html>
