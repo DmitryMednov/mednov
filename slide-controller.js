@@ -32,16 +32,10 @@
   }
   measureVh();
 
-  /* --- Layout: pixel-based translateY ---
-     Each slide is rendered 2px taller than the viewport so adjacent
-     slides overlap by 2px, hiding the sub-pixel seam where the global
-     background would otherwise show through (especially on textured
-     slides where any 1px gap is very visible). The container has
-     overflow:hidden, so the extra pixels are clipped. */
-  const SLIDE_OVERLAP = 2;
+  /* --- Layout: pixel-based translateY --- */
   function layout(animate) {
     slides.forEach((slide, i) => {
-      slide.style.height = (vh + SLIDE_OVERLAP) + 'px';
+      slide.style.height = vh + 'px';
       if (!animate) {
         slide.style.transition = 'none';
         slide.offsetHeight; // reflow
