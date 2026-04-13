@@ -127,33 +127,26 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   ro.observe(container);
   resize();
 
-  /* ---------- Mouse parallax ---------- */
-  let mouseX = 0, mouseY = 0;
-  let targetRotX = 0, targetRotY = 0;
-
-  window.addEventListener('pointermove', (e) => {
-    const rect = container.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    mouseX = (e.clientX - cx) / window.innerWidth;
-    mouseY = (e.clientY - cy) / window.innerHeight;
-    targetRotY = mouseX * 0.6;
-    targetRotX = -mouseY * 0.4;
-  }, { passive: true });
-
-  /* ---------- Animate ---------- */
+  /* ---------- Animate (autonomous spherical motion) ---------- */
+  /* Group orbits around its center — rotating around all 3 axes at
+     different frequencies + a Lissajous-like position drift on a sphere. */
   let animId;
+  const t0 = performance.now();
   function animate() {
     animId = requestAnimationFrame(animate);
 
-    // Smooth rotation toward target
-    group.rotation.y += (targetRotY - group.rotation.y) * 0.06;
-    group.rotation.x += (targetRotX - group.rotation.x) * 0.06;
+    const t = (performance.now() - t0) * 0.001;
 
-    // Subtle auto-rotate + float
-    const t = performance.now() * 0.001;
-    group.rotation.y += 0.002;
-    group.position.y = Math.sin(t * 0.8) * 0.08;
+    // Rotate around all 3 axes at different frequencies for a "tumbling sphere" feel
+    group.rotation.x = Math.sin(t * 0.45) * 0.55 + Math.cos(t * 0.27) * 0.18;
+    group.rotation.y = t * 0.35 + Math.sin(t * 0.6) * 0.4;
+    group.rotation.z = Math.sin(t * 0.33) * 0.18;
+
+    // Subtle position drift on a small sphere (Lissajous in 3D)
+    const r = 0.18;
+    group.position.x = Math.sin(t * 0.7) * r;
+    group.position.y = Math.cos(t * 0.5) * r * 0.8;
+    group.position.z = Math.sin(t * 0.4 + 1.2) * r * 0.6;
 
     renderer.render(scene, camera);
   }

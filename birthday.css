@@ -16,28 +16,19 @@
   justify-content: center !important;
   align-items: center !important;
   text-align: center;
-  gap: clamp(0.4rem, 1.5vh, 1rem) !important;
+  gap: clamp(0.5rem, 1.5vh, 1.25rem) !important;
 }
 
-.bday-title {
-  font-family: var(--font-main);
-  font-size: clamp(2.4rem, 7vw + 1rem, 5.5rem);
-  font-weight: 800;
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  margin: 0 0 clamp(0.5rem, 1.5vh, 1.25rem);
-  opacity: 0;
-  animation: bdayFadeUp 0.9s 0.3s var(--ease) forwards;
-}
-
-/* Glass 60 WebGL container */
+/* Glass 60 WebGL container — 2x bigger than before */
 .bday-glass-60 {
-  width: clamp(220px, 32vw, 420px);
-  height: clamp(150px, 22vh, 260px);
+  width: clamp(440px, 64vw, 840px);
+  height: clamp(300px, 44vh, 520px);
+  max-width: 100%;
   position: relative;
   margin: 0 auto;
   opacity: 0;
-  animation: bdayFadeUp 1s 0.6s var(--ease) forwards;
+  animation: bdayFadeUp 1.2s 0.3s var(--ease) forwards;
+  pointer-events: none;
 }
 .bday-glass-60 canvas {
   display: block;
@@ -45,27 +36,33 @@
   height: 100% !important;
 }
 
-.bday-age-label {
-  font-family: var(--font-main);
-  font-size: clamp(0.7rem, 1vw, 0.9rem);
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  margin: -0.5rem 0 0.5rem;
+/* Hero meta block: name + date below the 60 */
+.bday-hero-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: -0.5rem;
   opacity: 0;
-  animation: bdayFadeUp 0.9s 0.8s var(--ease) forwards;
+  animation: bdayFadeUp 0.9s 0.9s var(--ease) forwards;
+}
+
+.bday-hero-name {
+  font-family: var(--font-main);
+  font-size: clamp(1.1rem, 1.8vw + 0.3rem, 1.7rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin: 0;
 }
 
 .bday-date-main {
   font-family: var(--font-main);
-  font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+  font-size: clamp(0.85rem, 1.1vw + 0.2rem, 1.05rem);
   font-weight: 600;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.5);
   letter-spacing: 0.1em;
-  margin: 0 0 clamp(1rem, 2vh, 1.5rem);
-  opacity: 0;
-  animation: bdayFadeUp 0.9s 1s var(--ease) forwards;
+  margin: 0 0 clamp(0.75rem, 1.5vh, 1.25rem);
 }
 
 /* Countdown */
@@ -75,7 +72,7 @@
   justify-content: center;
   gap: clamp(0.4rem, 1.5vw, 1.25rem);
   opacity: 0;
-  animation: bdayFadeUp 0.9s 1.2s var(--ease) forwards;
+  animation: bdayFadeUp 0.9s 1.1s var(--ease) forwards;
 }
 
 .bday-countdown-item {
@@ -371,6 +368,15 @@
   color: var(--turquoise);
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.bday-final-name {
+  font-family: var(--font-main);
+  font-size: clamp(0.9rem, 1.2vw + 0.2rem, 1.1rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: -0.005em;
 }
 
 /* ═══════════════════════════════════════
@@ -378,12 +384,12 @@
    ═══════════════════════════════════════ */
 
 @media (max-width: 768px) {
-  .bday-title {
-    font-size: clamp(2rem, 9vw, 3.2rem);
-  }
   .bday-glass-60 {
-    width: clamp(200px, 60vw, 320px);
-    height: clamp(130px, 18vh, 200px);
+    width: min(94vw, 560px);
+    height: clamp(260px, 38vh, 380px);
+  }
+  .bday-hero-name {
+    font-size: 1.1rem;
   }
   .bday-countdown {
     gap: 0.4rem;
@@ -432,12 +438,15 @@
 }
 
 @media (max-width: 480px) {
-  .bday-title {
-    font-size: clamp(1.8rem, 11vw, 2.8rem);
-  }
   .bday-glass-60 {
-    width: clamp(180px, 70vw, 280px);
-    height: clamp(120px, 16vh, 170px);
+    width: 96vw;
+    height: clamp(220px, 34vh, 320px);
+  }
+  .bday-hero-name {
+    font-size: 1rem;
+  }
+  .bday-date-main {
+    font-size: 0.78rem;
   }
   .bday-countdown {
     gap: 0.3rem;
@@ -468,10 +477,9 @@
 }
 
 @media (max-width: 360px) {
-  .bday-title { font-size: 1.75rem; }
   .bday-glass-60 {
-    width: 90vw;
-    height: 130px;
+    width: 96vw;
+    height: 200px;
   }
   .bday-countdown-num { font-size: 1.2rem; }
   .bday-countdown-item { min-width: 40px; }
@@ -479,22 +487,20 @@
 
 /* Height-constrained screens — shrink hero a bit */
 @media (max-height: 700px) {
-  .bday-title { font-size: clamp(2rem, 6vw, 3.5rem); margin-bottom: 0.25rem; }
-  .bday-glass-60 { height: clamp(110px, 18vh, 180px); }
-  .bday-date-main { margin-bottom: 0.75rem; }
+  .bday-glass-60 { height: clamp(220px, 36vh, 320px); }
+  .bday-date-main { margin-bottom: 0.5rem; }
   .bday-countdown-num { font-size: clamp(1.3rem, 3vh, 2rem); }
 }
 @media (max-height: 560px) {
-  .bday-title { font-size: 1.8rem; }
-  .bday-glass-60 { height: 100px; }
-  .bday-age-label { display: none; }
+  .bday-glass-60 { height: clamp(180px, 32vh, 240px); }
+  .bday-hero-name { font-size: 0.95rem; }
+  .bday-date-main { font-size: 0.75rem; }
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .bday-title,
   .bday-glass-60,
-  .bday-age-label,
+  .bday-hero-meta,
   .bday-date-main,
   .bday-countdown {
     opacity: 1;
