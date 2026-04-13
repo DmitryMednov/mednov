@@ -49,16 +49,13 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   light3.position.set(0, 6, -3);
   scene.add(light3);
 
-  /* --- Brand palette --- */
+  /* --- Brand palette (strictly the 5 official colors, no inventions) --- */
   const PALETTE = {
-    turquoise:    0x2cb0a8,
-    turquoiseHi:  0x5fd6ce,
-    deepTeal:     0x1a8580,
-    violet:       0xccd4fd,
-    violetDeep:   0x9aa8f0,
-    yellow:       0xfaffaf,
-    yellowWarm:   0xf0e68a,
-    mint:         0x8de6c8,
+    white:     0xffffff,
+    turquoise: 0x2cb0a8,
+    deepGreen: 0x053b3a,
+    violet:    0xccd4fd,
+    yellow:    0xfaffaf,
   };
 
   /* --- Glass material factory ---
@@ -103,22 +100,25 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     new THREE.CylinderGeometry(0.3, 0.3, 1.2, 8),
   ];
 
-  /* Cycle through every palette color so adjacent shapes never share a tint */
+  /* Color pairs from the brand book — cycle so adjacent shapes never share
+     a tint. Turquoise is the primary brand color and appears most often;
+     white / violet / yellow are accents. Deep green is reserved for the
+     background and is intentionally skipped here. */
   const tints = [
     PALETTE.turquoise,
     PALETTE.violet,
+    PALETTE.turquoise,
     PALETTE.yellow,
-    PALETTE.turquoiseHi,
-    PALETTE.violetDeep,
-    PALETTE.mint,
-    PALETTE.yellowWarm,
-    PALETTE.deepTeal,
+    PALETTE.white,
     PALETTE.turquoise,
     PALETTE.violet,
     PALETTE.yellow,
-    PALETTE.turquoiseHi,
-    PALETTE.violetDeep,
-    PALETTE.mint,
+    PALETTE.turquoise,
+    PALETTE.white,
+    PALETTE.violet,
+    PALETTE.turquoise,
+    PALETTE.yellow,
+    PALETTE.violet,
   ];
 
   /* --- Floating objects --- */
