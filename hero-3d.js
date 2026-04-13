@@ -57,27 +57,29 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   const white = 0xeaecf2;
 
   /* --- Glass material factory ---
-     Identical recipe to birthday-glass-60.js. Each shape gets a tinted
-     glass material via attenuationColor. */
+     Same recipe as birthday-glass-60.js but semi-transparent so the
+     floating shapes feel airy and don't obscure the central logo. */
   function glassMat(tintHex) {
     const mat = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
       metalness: 0.0,
-      roughness: 0.02,
+      roughness: 0.05,
       transmission: 1.0,
-      thickness: 1.4,
-      ior: 1.5,
+      thickness: 0.6,
+      ior: 1.4,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.0,
-      iridescence: isMobile ? 0.3 : 0.6,
+      clearcoatRoughness: 0.05,
+      iridescence: isMobile ? 0.25 : 0.5,
       iridescenceIOR: 1.3,
       iridescenceThicknessRange: [100, 800],
       attenuationColor: new THREE.Color(tintHex),
-      attenuationDistance: 4.0,
-      envMapIntensity: 1.6,
+      attenuationDistance: 2.5,
+      envMapIntensity: 1.4,
       side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.55,
     });
-    if ('dispersion' in mat) mat.dispersion = isMobile ? 0.8 : 1.4;
+    if ('dispersion' in mat) mat.dispersion = isMobile ? 0.6 : 1.0;
     return mat;
   }
 
