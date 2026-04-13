@@ -127,9 +127,14 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   ro.observe(container);
   resize();
 
-  /* ---------- Animate (autonomous spherical motion) ---------- */
-  /* Group orbits around its center — rotating around all 3 axes at
-     different frequencies + a Lissajous-like position drift on a sphere. */
+  /* ---------- Animate (bounded sway, never fully flips) ---------- */
+  /* All rotations are sine-based and capped, so the front face of "60"
+     stays visible. Combined with a small position drift this gives
+     a gentle floating-glass feel without the text ever turning around. */
+  const MAX_X = 0.32;  // ~18° pitch
+  const MAX_Y = 0.55;  // ~31° yaw  (front always visible)
+  const MAX_Z = 0.18;  // ~10° roll
+
   let animId;
   const t0 = performance.now();
   function animate() {
@@ -137,10 +142,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
     const t = (performance.now() - t0) * 0.001;
 
-    // Rotate around all 3 axes at different frequencies for a "tumbling sphere" feel
-    group.rotation.x = Math.sin(t * 0.45) * 0.55 + Math.cos(t * 0.27) * 0.18;
-    group.rotation.y = t * 0.35 + Math.sin(t * 0.6) * 0.4;
-    group.rotation.z = Math.sin(t * 0.33) * 0.18;
+    // Bounded sway on every axis
+    group.rotation.x = Math.sin(t * 0.42) * MAX_X;
+    group.rotation.y = Math.sin(t * 0.31) * MAX_Y + Math.cos(t * 0.55) * 0.12;
+    group.rotation.z = Math.sin(t * 0.27) * MAX_Z;
 
     // Subtle position drift on a small sphere (Lissajous in 3D)
     const r = 0.18;
