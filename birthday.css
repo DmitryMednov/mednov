@@ -424,10 +424,31 @@
 /* ═══════════════════════════════════════
    SLIDE 5: FINAL
    ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   SLIDE 7: FINAL + VIDEO
+   ═══════════════════════════════════════ */
 .bday-final-message {
   text-align: center;
   max-width: 560px;
   margin: 0 auto;
+}
+
+.bday-video-wrap {
+  width: 100%;
+  max-width: 400px;
+  margin: clamp(0.75rem, 2vh, 1.5rem) auto;
+  border-radius: clamp(14px, 1.5vw, 20px);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.bday-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 30vh;
+  object-fit: cover;
 }
 
 .bday-final-quote {
@@ -524,6 +545,9 @@
     gap: 1rem;
   }
 
+  .bday-video-wrap { max-width: 300px; }
+  .bday-video { max-height: 25vh; }
+
   .bday-gift-card {
     padding: 1.5rem 1.25rem;
   }
@@ -610,6 +634,8 @@
   .bday-hero-name { font-size: 0.92rem; }
   .bday-date-main { font-size: 0.7rem; }
   .bday-countdown-num { font-size: 1.25rem; }
+  .bday-video-wrap { max-width: 200px; }
+  .bday-video { max-height: 18vh; }
 }
 @media (max-height: 480px) {
   .bday-glass-60 { height: clamp(160px, 42vh, 220px); }
