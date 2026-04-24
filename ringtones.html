@@ -7,156 +7,144 @@
   <title>Рингтоны — Mednov</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="image" href="logo-mark.svg">
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* === RINGTONES PAGE (inline — small page, no separate CSS file) === */
-    body { overflow-y:auto; overflow-x:hidden; height:auto; }
-    html { overflow:auto; height:auto; }
+    html, body {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      height: auto !important;
+    }
 
     .rt-page {
-      min-height:100vh; min-height:100dvh;
-      padding:clamp(5rem, 8vh, 7rem) clamp(1rem, 4vw, 3rem) 3rem;
-      max-width:800px; margin:0 auto;
+      min-height: 100vh;
+      padding: clamp(5rem, 8vh, 7rem) clamp(1rem, 4vw, 3rem) 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
     }
 
     .rt-back {
-      display:inline-flex; align-items:center; gap:0.4rem;
-      font-family:var(--font-main); font-size:0.82rem; font-weight:600;
-      color:var(--turquoise); margin-bottom:2rem; text-decoration:none;
-      transition:opacity 0.3s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--font-main); font-size: 0.82rem; font-weight: 600;
+      color: #2CB0A8; margin-bottom: 2rem; text-decoration: none;
     }
-    .rt-back:hover { opacity:0.7; }
+    .rt-back:hover { opacity: 0.7; }
 
     .rt-title {
-      font-family:var(--font-main); font-size:clamp(1.8rem, 5vw, 2.8rem);
-      font-weight:800; margin-bottom:0.5rem;
+      font-family: var(--font-main);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
     }
     .rt-subtitle {
-      font-size:clamp(0.88rem, 1vw + 0.3rem, 1rem);
-      color:rgba(255,255,255,0.5); line-height:1.6; margin-bottom:2rem;
+      font-size: clamp(0.88rem, 1vw + 0.3rem, 1rem);
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      margin-bottom: 2rem;
     }
 
-    /* Tabs */
     .rt-tabs {
-      display:flex; gap:0.5rem; margin-bottom:2rem; flex-wrap:wrap;
+      display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;
     }
     .rt-tab {
-      padding:0.55rem 1.25rem; border-radius:60px;
-      font-family:var(--font-main); font-size:0.82rem; font-weight:700;
-      border:1px solid rgba(255,255,255,0.1); background:transparent;
-      color:rgba(255,255,255,0.5); cursor:pointer;
-      transition:all 0.3s var(--ease);
+      padding: 0.55rem 1.25rem; border-radius: 60px;
+      font-family: var(--font-main); font-size: 0.82rem; font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.1); background: transparent;
+      color: rgba(255,255,255,0.5); cursor: pointer;
+      transition: all 0.3s;
     }
     .rt-tab.active {
-      background:var(--turquoise); color:var(--dark-green);
-      border-color:var(--turquoise);
+      background: #2CB0A8; color: #0F2120;
+      border-color: #2CB0A8;
     }
     .rt-tab:hover:not(.active) {
-      border-color:rgba(255,255,255,0.25); color:rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.8);
     }
 
-    /* Tab panels */
-    .rt-panel { display:none; }
-    .rt-panel.active { display:block; }
+    .rt-panel { display: none; }
+    .rt-panel.active { display: block; }
 
-    /* Ringtone card */
-    .rt-list { display:flex; flex-direction:column; gap:0.75rem; }
+    .rt-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
     .rt-card {
-      display:flex; align-items:center; gap:clamp(0.75rem, 2vw, 1.25rem);
-      padding:clamp(0.85rem, 1.5vw, 1.1rem) clamp(1rem, 2vw, 1.5rem);
-      border-radius:16px;
-      background:rgba(44,176,168,0.06);
-      border:1px solid rgba(255,255,255,0.06);
-      transition:all 0.3s var(--ease);
-    }
-    .rt-card:hover {
-      border-color:rgba(44,176,168,0.2);
-      background:rgba(44,176,168,0.1);
+      display: flex; align-items: center;
+      gap: clamp(0.75rem, 2vw, 1.25rem);
+      padding: clamp(0.85rem, 1.5vw, 1.1rem) clamp(1rem, 2vw, 1.5rem);
+      border-radius: 16px;
+      background: rgba(44,176,168,0.08);
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
     .rt-icon {
-      width:42px; height:42px; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center;
-      border-radius:12px; background:rgba(44,176,168,0.1);
-      color:var(--turquoise);
+      width: 42px; height: 42px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px; background: rgba(44,176,168,0.12);
+      color: #2CB0A8;
     }
 
-    .rt-info { flex:1; min-width:0; }
+    .rt-info { flex: 1; min-width: 0; }
     .rt-name {
-      font-family:var(--font-main); font-size:0.92rem; font-weight:700;
-      margin-bottom:0.15rem;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      font-family: var(--font-main); font-size: 0.92rem; font-weight: 700;
+      color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .rt-meta {
-      font-size:0.72rem; color:rgba(255,255,255,0.35);
-    }
+    .rt-meta { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
 
-    .rt-audio {
-      width:clamp(140px, 25vw, 200px); height:32px; flex-shrink:0;
+    .rt-player {
+      flex-shrink: 0;
     }
-    .rt-audio::-webkit-media-controls-panel { background:rgba(255,255,255,0.05); border-radius:8px; }
+    .rt-player audio {
+      height: 32px; width: clamp(120px, 20vw, 180px);
+    }
 
     .rt-download {
-      display:inline-flex; align-items:center; justify-content:center;
-      width:38px; height:38px; flex-shrink:0;
-      border-radius:10px; background:rgba(44,176,168,0.12);
-      border:1px solid rgba(44,176,168,0.2);
-      color:var(--turquoise); text-decoration:none;
-      transition:all 0.3s var(--ease);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: 10px; background: rgba(44,176,168,0.12);
+      border: 1px solid rgba(44,176,168,0.2);
+      color: #2CB0A8; text-decoration: none;
+      transition: all 0.3s;
     }
-    .rt-download:hover { background:var(--turquoise); color:var(--dark-green); }
+    .rt-download:hover { background: #2CB0A8; color: #0F2120; }
 
-    /* Instructions accordion */
-    .rt-instructions { margin-top:2.5rem; }
-    .rt-instructions summary {
-      font-family:var(--font-main); font-size:0.92rem; font-weight:700;
-      color:var(--turquoise); cursor:pointer; padding:0.75rem 0;
-      list-style:none; display:flex; align-items:center; gap:0.5rem;
-      border-top:1px solid rgba(255,255,255,0.06);
+    details.rt-instr { margin-top: 0.5rem; }
+    details.rt-instr summary {
+      font-family: var(--font-main); font-size: 0.92rem; font-weight: 700;
+      color: #2CB0A8; cursor: pointer; padding: 0.75rem 0;
+      list-style: none; display: flex; align-items: center; gap: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
-    .rt-instructions summary::-webkit-details-marker { display:none; }
-    .rt-instructions summary::after {
-      content:'+'; font-size:1.2rem; font-weight:400;
-      margin-left:auto; transition:transform 0.3s;
+    details.rt-instr summary::-webkit-details-marker { display: none; }
+    details.rt-instr summary::after { content: '+'; font-size: 1.2rem; margin-left: auto; }
+    details.rt-instr[open] summary::after { content: '\2212'; }
+    .rt-instr-body {
+      padding: 0.5rem 0 1.5rem; font-size: 0.88rem; line-height: 1.7;
+      color: rgba(255,255,255,0.6);
     }
-    .rt-instructions[open] summary::after {
-      content:'−';
-    }
-    .rt-instructions-body {
-      padding:0.75rem 0 1.5rem;
-      font-size:0.88rem; line-height:1.7;
-      color:rgba(255,255,255,0.6);
-    }
-    .rt-instructions-body ol {
-      padding-left:1.25rem; margin:0.5rem 0;
-    }
-    .rt-instructions-body li {
-      margin-bottom:0.4rem;
-    }
-    .rt-instructions-body strong { color:rgba(255,255,255,0.85); }
+    .rt-instr-body ol { padding-left: 1.25rem; margin: 0.5rem 0; }
+    .rt-instr-body li { margin-bottom: 0.4rem; }
+    .rt-instr-body strong { color: rgba(255,255,255,0.85); }
 
-    /* Footer */
     .rt-footer {
-      text-align:center; margin-top:3rem;
-      padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.05);
+      text-align: center; margin-top: 3rem;
+      padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);
     }
-    .rt-footer-logo { height:20px; width:auto; margin:0 auto 0.5rem; display:block; opacity:0.4; }
-    .rt-footer p { font-size:0.75rem; color:rgba(255,255,255,0.2); }
+    .rt-footer img { height: 20px; width: auto; margin: 0 auto 0.5rem; display: block; opacity: 0.4; }
+    .rt-footer p { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
 
-    @media(max-width:480px) {
-      .rt-card { flex-wrap:wrap; }
-      .rt-audio { width:100%; order:10; margin-top:0.25rem; }
+    @media (max-width: 600px) {
+      .rt-card { flex-wrap: wrap; }
+      .rt-player { width: 100%; order: 10; margin-top: 0.35rem; }
+      .rt-player audio { width: 100%; }
+      .rt-download { order: 5; }
     }
   </style>
 </head>
 <body>
   <div class="noise-overlay"></div>
-  <div class="cursor-glow"></div>
-  <div class="global-bg">
-    <div class="hero-orb"></div>
-    <div class="hero-orb"></div>
-  </div>
+  <div class="global-bg"><div class="hero-orb"></div><div class="hero-orb"></div></div>
 
   <nav class="nav">
     <a href="index.html" class="nav-logo"><img src="logo-mark.svg" alt="Mednov"></a>
@@ -179,158 +167,121 @@
     </a>
 
     <h1 class="rt-title">Рингтоны</h1>
-    <p class="rt-subtitle">Авторские рингтоны от Mednov. Скачайте и установите на свой телефон.</p>
+    <p class="rt-subtitle">Авторские рингтоны от Mednov. Слушайте, скачивайте, устанавливайте.</p>
 
-    <!-- Tabs -->
     <div class="rt-tabs">
-      <button class="rt-tab active" data-tab="all">Все</button>
-      <button class="rt-tab" data-tab="ios">iPhone</button>
-      <button class="rt-tab" data-tab="android">Android</button>
-      <button class="rt-tab" data-tab="telegram">Telegram</button>
+      <button class="rt-tab active" onclick="showTab('all')">Все</button>
+      <button class="rt-tab" onclick="showTab('ios')">iPhone</button>
+      <button class="rt-tab" onclick="showTab('android')">Android</button>
+      <button class="rt-tab" onclick="showTab('telegram')">Telegram</button>
     </div>
 
-    <!-- ALL -->
-    <div class="rt-panel active" id="tab-all">
-      <div class="rt-list" id="list-all"></div>
+    <div class="rt-panel active" id="panel-all"></div>
+    <div class="rt-panel" id="panel-ios"></div>
+    <div class="rt-panel" id="panel-android"></div>
+    <div class="rt-panel" id="panel-telegram"></div>
+
+    <div style="margin-top:2.5rem;">
+      <details class="rt-instr">
+        <summary>Как установить рингтон на iPhone</summary>
+        <div class="rt-instr-body">
+          <ol>
+            <li>Скачайте файл <strong>.m4a</strong> на iPhone</li>
+            <li>Откройте <strong>GarageBand</strong> (бесплатно в App Store)</li>
+            <li>Создайте проект &rarr; <strong>Аудиорекордер</strong></li>
+            <li>Иконка <strong>петли</strong> (вверху справа) &rarr; <strong>Файлы</strong> &rarr; выберите файл</li>
+            <li>Перетащите на дорожку</li>
+            <li>Долгое нажатие на проект &rarr; <strong>Поделиться</strong> &rarr; <strong>Рингтон</strong></li>
+            <li><strong>Настройки &rarr; Звуки &rarr; Рингтон</strong> — выберите</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="rt-instr">
+        <summary>Как установить рингтон на Android</summary>
+        <div class="rt-instr-body">
+          <ol>
+            <li>Скачайте файл <strong>.mp3</strong></li>
+            <li><strong>Настройки &rarr; Звуки &rarr; Мелодия звонка</strong></li>
+            <li>Нажмите <strong>«+» / «Добавить»</strong></li>
+            <li>Выберите файл из <strong>Загрузок</strong></li>
+          </ol>
+          <p>Или скопируйте .mp3 в папку <strong>Ringtones</strong> через файловый менеджер.</p>
+        </div>
+      </details>
+
+      <details class="rt-instr">
+        <summary>Как установить звук в Telegram</summary>
+        <div class="rt-instr-body">
+          <ol>
+            <li>Скачайте файл с пометкой <strong>tgm</strong> (до 5 сек)</li>
+            <li><strong>Telegram &rarr; Настройки &rarr; Уведомления и звуки</strong></li>
+            <li><strong>Звук уведомлений</strong> &rarr; <strong>Загрузить звук</strong></li>
+            <li>Выберите файл — готово!</li>
+          </ol>
+        </div>
+      </details>
     </div>
-
-    <!-- iOS -->
-    <div class="rt-panel" id="tab-ios">
-      <div class="rt-list" id="list-ios"></div>
-    </div>
-
-    <!-- Android -->
-    <div class="rt-panel" id="tab-android">
-      <div class="rt-list" id="list-android"></div>
-    </div>
-
-    <!-- Telegram -->
-    <div class="rt-panel" id="tab-telegram">
-      <div class="rt-list" id="list-telegram"></div>
-    </div>
-
-    <!-- Instructions -->
-    <details class="rt-instructions">
-      <summary>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
-        Как установить рингтон на iPhone
-      </summary>
-      <div class="rt-instructions-body">
-        <ol>
-          <li>Скачайте файл <strong>.m4a</strong> на iPhone</li>
-          <li>Откройте приложение <strong>GarageBand</strong> (бесплатное в App Store)</li>
-          <li>Создайте новый проект &rarr; <strong>Аудиорекордер</strong></li>
-          <li>Нажмите на иконку <strong>петли</strong> (вверху справа) &rarr; <strong>Файлы</strong> &rarr; найдите скачанный файл</li>
-          <li>Перетащите его на дорожку</li>
-          <li>Долгое нажатие на проект &rarr; <strong>Поделиться</strong> &rarr; <strong>Рингтон</strong></li>
-          <li>Назовите и нажмите <strong>Экспортировать</strong></li>
-          <li>Перейдите в <strong>Настройки &rarr; Звуки &rarr; Рингтон</strong> и выберите его</li>
-        </ol>
-      </div>
-    </details>
-
-    <details class="rt-instructions">
-      <summary>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
-        Как установить рингтон на Android
-      </summary>
-      <div class="rt-instructions-body">
-        <ol>
-          <li>Скачайте файл <strong>.mp3</strong> на телефон</li>
-          <li>Откройте <strong>Настройки &rarr; Звуки и вибрация &rarr; Мелодия звонка</strong></li>
-          <li>Нажмите <strong>«+»</strong> или <strong>«Добавить рингтон»</strong></li>
-          <li>Найдите скачанный файл в папке <strong>Загрузки</strong></li>
-          <li>Выберите его — готово!</li>
-        </ol>
-        <p>На некоторых устройствах можно просто скопировать .mp3 файл в папку <strong>Ringtones</strong> через файловый менеджер.</p>
-      </div>
-    </details>
-
-    <details class="rt-instructions">
-      <summary>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
-        Как установить звук уведомления в Telegram
-      </summary>
-      <div class="rt-instructions-body">
-        <ol>
-          <li>Скачайте файл с пометкой <strong>«tgm»</strong> (до 5 сек, .mp3)</li>
-          <li>Откройте <strong>Telegram &rarr; Настройки &rarr; Уведомления и звуки</strong></li>
-          <li>Выберите <strong>Звук уведомлений</strong> (для личных или групповых чатов)</li>
-          <li>Нажмите <strong>«Загрузить звук»</strong></li>
-          <li>Выберите скачанный файл — готово!</li>
-        </ol>
-      </div>
-    </details>
 
     <footer class="rt-footer">
-      <img src="logo-mark.svg" alt="Mednov" class="rt-footer-logo" loading="lazy" decoding="async">
+      <img src="logo-mark.svg" alt="Mednov">
       <p>Mednov Family Office &copy; 2026</p>
     </footer>
   </main>
 
   <script src="script.js"></script>
   <script>
-    /* === Ringtone data === */
-    const ringtones = [
-      { name: 'Ring Ring Ring 1',    file: 'ring-ring-ring-1.m4a',   format: 'm4a', platform: ['ios'],     category: 'Рингтон' },
-      { name: 'Ring Ring Ring 2',    file: 'ring-ring-ring-2.m4a',   format: 'm4a', platform: ['ios'],     category: 'Рингтон' },
-      { name: 'Ring Ring Ring 3',    file: 'ring-ring-ring-3.m4a',   format: 'm4a', platform: ['ios'],     category: 'Рингтон' },
-      { name: 'Ring Ring Ring 1',    file: 'ring-ring-ring-1-tgm.mp3', format: 'mp3', platform: ['telegram'], category: 'Telegram' },
-      { name: 'Ring Ring Ring 3',    file: 'ring-ring-ring-3-telegram.mp3', format: 'mp3', platform: ['telegram'], category: 'Telegram' },
-      { name: 'Звон',               file: 'Звон-1-tgm.mp3',        format: 'mp3', platform: ['telegram'], category: 'Telegram' },
-      { name: 'Gentleness',         file: 'Gentleness-tgm .mp3',   format: 'mp3', platform: ['telegram'], category: 'Telegram' },
-      { name: 'Money',              file: 'Money-tgm.mp3',         format: 'mp3', platform: ['telegram'], category: 'Telegram' },
-      { name: 'Subscription',       file: 'Subscription .mp3',     format: 'mp3', platform: ['telegram'], category: 'Telegram' },
-      { name: 'Мяу (Tim)',          file: 'мяу-Tim.mp3',           format: 'mp3', platform: ['android', 'telegram'], category: 'Telegram' },
-      { name: 'Crystalline #2',     file: '“A_single_crystallin_#2-1763058172352.mp3', format: 'mp3', platform: ['android', 'ios'], category: 'Рингтон' },
-      { name: 'Crystalline #3',     file: '“A_single_crystallin_#3-1763058693896.mp3', format: 'mp3', platform: ['android', 'ios'], category: 'Рингтон' },
-      { name: 'Crystalline #4',     file: '“A_single_crystallin_#4-1763058186733.mp3', format: 'mp3', platform: ['android', 'ios'], category: 'Рингтон' },
-      { name: 'Soft Purr #2',       file: '“A_soft_warm_purr-li_#2-1763057462811.mp3', format: 'mp3', platform: ['android', 'telegram'], category: 'Telegram' },
-      { name: 'Soft Purr #2 (long)',file: '“A_soft_warm_purr-li_#2-1763058044638.mp3', format: 'mp3', platform: ['android'],         category: 'Рингтон' },
-      { name: 'Soft Purr #3',       file: '“A_soft_warm_purr-li_#3-1763058058269.mp3', format: 'mp3', platform: ['android'],         category: 'Рингтон' },
-      { name: 'Soft Purr #4',       file: '“A_soft_warm_purr-li_#4-1763057555690.mp3', format: 'mp3', platform: ['android'],         category: 'Рингтон' },
+  (function() {
+    var SVG_MUSIC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+    var SVG_DL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+
+    var data = [
+      ["Ring Ring Ring 1",   "ring-ring-ring-1.m4a",        "m4a", "ios",      "Рингтон"],
+      ["Ring Ring Ring 2",   "ring-ring-ring-2.m4a",        "m4a", "ios",      "Рингтон"],
+      ["Ring Ring Ring 3",   "ring-ring-ring-3.m4a",        "m4a", "ios",      "Рингтон"],
+      ["Crystalline #2",     "“A_single_crystallin_#2-1763058172352.mp3", "mp3", "android", "Рингтон"],
+      ["Crystalline #3",     "“A_single_crystallin_#3-1763058693896.mp3", "mp3", "android", "Рингтон"],
+      ["Crystalline #4",     "“A_single_crystallin_#4-1763058186733.mp3", "mp3", "android", "Рингтон"],
+      ["Soft Purr #2",       "“A_soft_warm_purr-li_#2-1763058044638.mp3", "mp3", "android", "Рингтон"],
+      ["Soft Purr #3",       "“A_soft_warm_purr-li_#3-1763058058269.mp3", "mp3", "android", "Рингтон"],
+      ["Soft Purr #4",       "“A_soft_warm_purr-li_#4-1763057555690.mp3", "mp3", "android", "Рингтон"],
+      ["Ring Ring Ring 1",   "ring-ring-ring-1-tgm.mp3",    "mp3", "telegram", "Telegram"],
+      ["Ring Ring Ring 3",   "ring-ring-ring-3-telegram.mp3","mp3", "telegram", "Telegram"],
+      ["Звон",               "Звон-1-tgm.mp3",          "mp3", "telegram", "Telegram"],
+      ["Gentleness",         "Gentleness-tgm .mp3",         "mp3", "telegram", "Telegram"],
+      ["Money",              "Money-tgm.mp3",               "mp3", "telegram", "Telegram"],
+      ["Subscription",       "Subscription .mp3",           "mp3", "telegram", "Telegram"],
+      ["Мяу (Tim)",          "мяу-Tim.mp3",  "mp3", "telegram", "Telegram"],
+      ["Soft Purr (short)",  "“A_soft_warm_purr-li_#2-1763057462811.mp3","mp3","telegram","Telegram"]
     ];
 
-    function renderCard(r) {
-      const encodedFile = encodeURIComponent(r.file);
-      return `
-        <div class="rt-card">
-          <div class="rt-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-            </svg>
-          </div>
-          <div class="rt-info">
-            <div class="rt-name">${r.name}</div>
-            <div class="rt-meta">${r.format.toUpperCase()} · ${r.category}</div>
-          </div>
-          <audio class="rt-audio" controls preload="none" src="${encodedFile}"></audio>
-          <a class="rt-download" href="${encodedFile}" download title="Скачать">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-          </a>
-        </div>`;
+    function card(d) {
+      var src = encodeURI(d[1]);
+      return '<div class="rt-card">' +
+        '<div class="rt-icon">' + SVG_MUSIC + '</div>' +
+        '<div class="rt-info"><div class="rt-name">' + d[0] + '</div>' +
+        '<div class="rt-meta">' + d[2].toUpperCase() + ' · ' + d[4] + '</div></div>' +
+        '<div class="rt-player"><audio controls preload="none" src="' + src + '"></audio></div>' +
+        '<a class="rt-download" href="' + src + '" download title="Скачать">' + SVG_DL + '</a>' +
+        '</div>';
     }
 
-    function renderList(containerId, items) {
-      document.getElementById(containerId).innerHTML = items.map(renderCard).join('');
+    function fill(id, items) {
+      document.getElementById(id).innerHTML = '<div class="rt-list">' + items.map(card).join('') + '</div>';
     }
 
-    renderList('list-all', ringtones);
-    renderList('list-ios', ringtones.filter(r => r.platform.includes('ios')));
-    renderList('list-android', ringtones.filter(r => r.platform.includes('android')));
-    renderList('list-telegram', ringtones.filter(r => r.platform.includes('telegram')));
+    fill('panel-all', data);
+    fill('panel-ios', data.filter(function(d){ return d[3]==='ios'; }));
+    fill('panel-android', data.filter(function(d){ return d[3]==='android'; }));
+    fill('panel-telegram', data.filter(function(d){ return d[3]==='telegram'; }));
 
-    /* Tabs */
-    document.querySelectorAll('.rt-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.rt-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.rt-panel').forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-      });
-    });
+    window.showTab = function(name) {
+      document.querySelectorAll('.rt-tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.rt-panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById('panel-' + name).classList.add('active');
+      event.target.classList.add('active');
+    };
+  })();
   </script>
 </body>
 </html>
