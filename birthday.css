@@ -580,8 +580,8 @@
     gap: 1rem;
   }
 
-  .bday-video-wrap { max-width: 300px; }
-  .bday-video { max-height: 25vh; }
+  .bday-video-wrap { max-width: 200px; }
+  .bday-video { max-height: 20vh; }
 
   .bday-gift-card {
     padding: 1.5rem 1.25rem;
@@ -622,6 +622,8 @@
   .bday-countdown-sep {
     font-size: 1rem;
   }
+  .bday-video-wrap { max-width: 180px; }
+  .bday-video { max-height: 18vh; }
   .bday-gift-icon {
     width: 52px;
     height: 52px;
@@ -669,8 +671,8 @@
   .bday-hero-name { font-size: 0.92rem; }
   .bday-date-main { font-size: 0.7rem; }
   .bday-countdown-num { font-size: 1.25rem; }
-  .bday-video-wrap { max-width: 200px; }
-  .bday-video { max-height: 18vh; }
+  .bday-video-wrap { max-width: 160px; }
+  .bday-video { max-height: 14vh; }
 }
 @media (max-height: 480px) {
   .bday-glass-60 { height: clamp(160px, 42vh, 220px); }
