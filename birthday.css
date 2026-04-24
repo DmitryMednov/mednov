@@ -260,7 +260,72 @@
 }
 
 /* ═══════════════════════════════════════
-   SLIDE 4: GIFT
+   SLIDES 3-4: PROGRAM SCHEDULE
+   ═══════════════════════════════════════ */
+.bday-program-inner {
+  align-items: center !important;
+  gap: clamp(0.6rem, 1.5vh, 1.25rem) !important;
+}
+
+.bday-program-sub {
+  font-family: var(--font-main);
+  font-size: clamp(0.82rem, 1vw + 0.2rem, 1rem);
+  font-weight: 600;
+  color: var(--turquoise);
+  margin: 0.25rem 0 0;
+  letter-spacing: 0.03em;
+}
+
+.bday-program {
+  width: 100%;
+  max-width: 620px;
+  margin: clamp(0.5rem, 1.5vh, 1.25rem) auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 2px solid rgba(44,176,168,0.25);
+  padding-left: clamp(1rem, 2vw, 1.5rem);
+}
+
+.bday-program-item {
+  display: grid;
+  grid-template-columns: clamp(90px, 14vw, 120px) 1fr;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  align-items: baseline;
+  padding: clamp(0.4rem, 0.8vh, 0.65rem) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.bday-program-item:last-child {
+  border-bottom: none;
+}
+
+.bday-program-time {
+  font-family: var(--font-main);
+  font-size: clamp(0.72rem, 0.8vw + 0.2rem, 0.88rem);
+  font-weight: 700;
+  color: var(--turquoise);
+  white-space: nowrap;
+}
+
+.bday-program-desc {
+  font-family: var(--font-text);
+  font-size: clamp(0.82rem, 0.8vw + 0.3rem, 0.95rem);
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+
+.bday-program-note {
+  font-family: var(--font-text);
+  font-size: clamp(0.75rem, 0.8vw + 0.2rem, 0.88rem);
+  color: rgba(255,255,255,0.4);
+  font-style: italic;
+  text-align: center;
+  max-width: 520px;
+  margin: clamp(0.5rem, 1.5vh, 1rem) auto 0;
+}
+
+/* ═══════════════════════════════════════
+   SLIDE 5: GIFT
    ═══════════════════════════════════════ */
 .bday-gift-card {
   margin: clamp(1.25rem, 3vh, 2rem) auto 0;
@@ -421,6 +486,19 @@
   .bday-countdown-sep {
     font-size: 1.2rem;
   }
+
+  /* Program schedule: tighter on mobile */
+  .bday-program {
+    padding-left: 0.85rem;
+  }
+  .bday-program-item {
+    grid-template-columns: 85px 1fr;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+  }
+  .bday-program-time { font-size: 0.72rem; }
+  .bday-program-desc { font-size: 0.82rem; line-height: 1.45; }
+  .bday-program-note { font-size: 0.75rem; }
 
   /* Timeline: stack date on top */
   .bday-timeline-day {
