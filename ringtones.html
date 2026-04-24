@@ -170,16 +170,12 @@
     <p class="rt-subtitle">Авторские рингтоны от Mednov. Слушайте, скачивайте, устанавливайте.</p>
 
     <div class="rt-tabs">
-      <button class="rt-tab active" onclick="showTab('all')">Все</button>
-      <button class="rt-tab" onclick="showTab('ios')">iPhone</button>
+      <button class="rt-tab active" onclick="showTab('ios')">iPhone</button>
       <button class="rt-tab" onclick="showTab('android')">Android</button>
-      <button class="rt-tab" onclick="showTab('telegram')">Telegram</button>
     </div>
 
-    <div class="rt-panel active" id="panel-all"></div>
-    <div class="rt-panel" id="panel-ios"></div>
+    <div class="rt-panel active" id="panel-ios"></div>
     <div class="rt-panel" id="panel-android"></div>
-    <div class="rt-panel" id="panel-telegram"></div>
 
     <div style="margin-top:2.5rem;">
       <details class="rt-instr">
@@ -235,24 +231,27 @@
     var SVG_MUSIC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
     var SVG_DL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
 
-    var data = [
-      ["Ring Ring Ring 1",   "ring-ring-ring-1.m4a",        "m4a", "ios",      "Рингтон"],
-      ["Ring Ring Ring 2",   "ring-ring-ring-2.m4a",        "m4a", "ios",      "Рингтон"],
-      ["Ring Ring Ring 3",   "ring-ring-ring-3.m4a",        "m4a", "ios",      "Рингтон"],
-      ["Crystalline #2",     "“A_single_crystallin_#2-1763058172352.mp3", "mp3", "android", "Рингтон"],
-      ["Crystalline #3",     "“A_single_crystallin_#3-1763058693896.mp3", "mp3", "android", "Рингтон"],
-      ["Crystalline #4",     "“A_single_crystallin_#4-1763058186733.mp3", "mp3", "android", "Рингтон"],
-      ["Soft Purr #2",       "“A_soft_warm_purr-li_#2-1763058044638.mp3", "mp3", "android", "Рингтон"],
-      ["Soft Purr #3",       "“A_soft_warm_purr-li_#3-1763058058269.mp3", "mp3", "android", "Рингтон"],
-      ["Soft Purr #4",       "“A_soft_warm_purr-li_#4-1763057555690.mp3", "mp3", "android", "Рингтон"],
-      ["Ring Ring Ring 1",   "ring-ring-ring-1-tgm.mp3",    "mp3", "telegram", "Telegram"],
-      ["Ring Ring Ring 3",   "ring-ring-ring-3-telegram.mp3","mp3", "telegram", "Telegram"],
-      ["Звон",               "Звон-1-tgm.mp3",          "mp3", "telegram", "Telegram"],
-      ["Gentleness",         "Gentleness-tgm .mp3",         "mp3", "telegram", "Telegram"],
-      ["Money",              "Money-tgm.mp3",               "mp3", "telegram", "Telegram"],
-      ["Subscription",       "Subscription .mp3",           "mp3", "telegram", "Telegram"],
-      ["Мяу (Tim)",          "мяу-Tim.mp3",  "mp3", "telegram", "Telegram"],
-      ["Soft Purr (short)",  "“A_soft_warm_purr-li_#2-1763057462811.mp3","mp3","telegram","Telegram"]
+    var ios = [
+      ["Ring Ring Ring 1",   "ring-ring-ring-1.m4a",        "m4a", "Рингтон"],
+      ["Ring Ring Ring 2",   "ring-ring-ring-2.m4a",        "m4a", "Рингтон"],
+      ["Ring Ring Ring 3",   "ring-ring-ring-3.m4a",        "m4a", "Рингтон"],
+    ];
+
+    var android = [
+      ["Ring Ring Ring 1",   "ring-ring-ring-1-tgm.mp3",    "mp3", "Рингтон"],
+      ["Ring Ring Ring 3",   "ring-ring-ring-3-telegram.mp3","mp3", "Рингтон"],
+      ["Crystalline #2",     "“A_single_crystallin_#2-1763058172352.mp3", "mp3", "Рингтон"],
+      ["Crystalline #3",     "“A_single_crystallin_#3-1763058693896.mp3", "mp3", "Рингтон"],
+      ["Crystalline #4",     "“A_single_crystallin_#4-1763058186733.mp3", "mp3", "Рингтон"],
+      ["Soft Purr #2",       "“A_soft_warm_purr-li_#2-1763058044638.mp3", "mp3", "Рингтон"],
+      ["Soft Purr #3",       "“A_soft_warm_purr-li_#3-1763058058269.mp3", "mp3", "Рингтон"],
+      ["Soft Purr #4",       "“A_soft_warm_purr-li_#4-1763057555690.mp3", "mp3", "Рингтон"],
+      ["Soft Purr (short)",  "“A_soft_warm_purr-li_#2-1763057462811.mp3", "mp3", "Уведомление"],
+      ["Звон",               "Звон-1-tgm.mp3",            "mp3", "Уведомление"],
+      ["Gentleness",         "Gentleness-tgm .mp3",         "mp3", "Уведомление"],
+      ["Money",              "Money-tgm.mp3",               "mp3", "Уведомление"],
+      ["Subscription",       "Subscription .mp3",           "mp3", "Уведомление"],
+      ["Мяу (Tim)",          "мяу-Tim.mp3",  "mp3", "Уведомление"],
     ];
 
     function card(d) {
@@ -260,7 +259,7 @@
       return '<div class="rt-card">' +
         '<div class="rt-icon">' + SVG_MUSIC + '</div>' +
         '<div class="rt-info"><div class="rt-name">' + d[0] + '</div>' +
-        '<div class="rt-meta">' + d[2].toUpperCase() + ' · ' + d[4] + '</div></div>' +
+        '<div class="rt-meta">' + d[2].toUpperCase() + ' · ' + d[3] + '</div></div>' +
         '<div class="rt-player"><audio controls preload="none" src="' + src + '"></audio></div>' +
         '<a class="rt-download" href="' + src + '" download title="Скачать">' + SVG_DL + '</a>' +
         '</div>';
@@ -270,10 +269,8 @@
       document.getElementById(id).innerHTML = '<div class="rt-list">' + items.map(card).join('') + '</div>';
     }
 
-    fill('panel-all', data);
-    fill('panel-ios', data.filter(function(d){ return d[3]==='ios'; }));
-    fill('panel-android', data.filter(function(d){ return d[3]==='android'; }));
-    fill('panel-telegram', data.filter(function(d){ return d[3]==='telegram'; }));
+    fill('panel-ios', ios);
+    fill('panel-android', android);
 
     window.showTab = function(name) {
       document.querySelectorAll('.rt-tab').forEach(function(t){ t.classList.remove('active'); });
