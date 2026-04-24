@@ -22,15 +22,21 @@
   let isAnimating = false;
   const DURATION = 800;
 
-  /* --- Viewport height measurement (handles mobile URL bar) --- */
+  /* --- Viewport height measurement (handles mobile URL bar + in-app browsers) --- */
   let vh = window.innerHeight;
   function measureVh() {
-    // Prefer visualViewport (accounts for URL bar / keyboard)
-    vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    // Prefer visualViewport (accounts for URL bar / keyboard).
+    // In-app browsers (Telegram, Instagram) may report incorrect visualViewport
+    // initially, so we take the smaller of both to avoid overflow.
+    const vvh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    vh = Math.min(vvh, window.innerHeight);
     document.documentElement.style.setProperty('--vh', (vh * 0.01) + 'px');
     document.documentElement.style.setProperty('--app-h', vh + 'px');
   }
   measureVh();
+  // Re-measure after a short delay — in-app browsers sometimes settle late
+  setTimeout(measureVh, 300);
+  setTimeout(measureVh, 1000);
 
   /* --- Layout: pixel-based translateY --- */
   function layout(animate) {
