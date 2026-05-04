@@ -1076,6 +1076,24 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 .footer-logo { height:24px; width:auto; margin:0 auto 0.8rem; display:block; opacity:0.6; }
 .footer p { font-size:0.82rem; color:rgba(255,255,255,0.3); }
 
+/* === RINGTONES LINK PILL (in music page) === */
+.rt-link-pill {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  padding:0.5rem 1.2rem;
+  border-radius:60px;
+  background:rgba(44,176,168,0.12);
+  border:1px solid rgba(44,176,168,0.25);
+  font-family:var(--font-main); font-size:0.78rem; font-weight:700;
+  color:var(--turquoise); text-decoration:none;
+  transition:all 0.3s var(--ease);
+  margin:0.75rem auto 0;
+}
+.rt-link-pill:hover {
+  background:rgba(44,176,168,0.22);
+  border-color:rgba(44,176,168,0.45);
+  box-shadow:0 6px 20px rgba(44,176,168,0.2);
+}
+
 /* === CURSOR GLOW === */
 .cursor-glow {
   position:fixed; width:300px; height:300px; border-radius:50%;
