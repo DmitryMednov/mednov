@@ -230,6 +230,34 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 }
 .nav-links a.nav-link-accent::after { display:none; }
 .nav-links a.nav-link-accent:hover { background:#fff; color:var(--dark-green); }
+/* Nav dropdown submenu */
+.nav-dropdown { position:relative; }
+.nav-dropdown > a { cursor:pointer; }
+.nav-dropdown-menu {
+  position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  min-width:130px; padding:0.5rem 0; margin-top:0.5rem;
+  background:rgba(15,33,32,0.92);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  display:flex; flex-direction:column;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:all 0.25s var(--ease);
+  box-shadow:0 12px 36px rgba(0,0,0,0.4);
+  z-index:100;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity:1; visibility:visible; pointer-events:auto;
+}
+.nav-dropdown-menu a {
+  padding:0.5rem 1rem !important;
+  font-size:0.8rem !important;
+  white-space:nowrap;
+  transition:background 0.2s;
+}
+.nav-dropdown-menu a::after { display:none !important; }
+.nav-dropdown-menu a:hover { background:rgba(44,176,168,0.12); color:var(--turquoise); }
+
 .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; }
 .nav-burger span { display:block; width:28px; height:2px; background:var(--white); transition:all 0.3s; }
 .nav-burger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
@@ -247,6 +275,23 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   }
   .nav-links.open { transform:translateX(0); }
   .nav-links a { font-size:1.5rem; }
+  /* Dropdown: show inline in mobile burger menu */
+  .nav-dropdown { display:contents; }
+  .nav-dropdown-menu {
+    position:static; transform:none;
+    opacity:1; visibility:visible; pointer-events:auto;
+    background:none; border:none; box-shadow:none;
+    backdrop-filter:none; -webkit-backdrop-filter:none;
+    padding:0; margin:0; gap:0.75rem;
+    align-items:center;
+  }
+  .nav-dropdown-menu a {
+    font-size:1rem !important;
+    padding:0.25rem 0 !important;
+    color:rgba(255,255,255,0.5) !important;
+  }
+  .nav-dropdown-menu a:hover { background:none; }
+  .nav-dropdown > a { display:none; }
 }
 
 /* === REVEAL ANIMATIONS === */
