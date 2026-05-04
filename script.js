@@ -35,14 +35,18 @@ function initNav() {
   }, { passive: true });
 
   if (burger) {
-    burger.addEventListener('click', () => {
+    burger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const opening = !burger.classList.contains('open');
       burger.classList.toggle('open');
       links.classList.toggle('open');
+      document.body.style.overflow = opening ? 'hidden' : '';
     });
-    links.querySelectorAll('a').forEach(a =>
+    links.querySelectorAll('a[href]').forEach(a =>
       a.addEventListener('click', () => {
         burger.classList.remove('open');
         links.classList.remove('open');
+        document.body.style.overflow = '';
       })
     );
   }
