@@ -209,9 +209,9 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 }
 .nav-logo { display:flex; align-items:center; height:clamp(26px, 3.2vh, 34px); }
 .nav-logo img { height:100%; width:auto; }
-.nav-links { display:flex; gap:clamp(1.25rem, 2.5vw, 2.5rem); }
+.nav-links { display:flex; gap:clamp(1rem, 2vw, 2.5rem); align-items:center; }
 .nav-links a {
-  font-family:var(--font-main); font-size:clamp(0.78rem, 0.95vw, 0.9rem); font-weight:600;
+  font-family:var(--font-main); font-size:clamp(0.75rem, 0.85vw, 0.9rem); font-weight:600;
   letter-spacing:0.02em; position:relative; padding:0.3rem 0;
   transition: color 0.3s; white-space:nowrap;
 }
@@ -231,7 +231,7 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 .nav-links a.nav-link-accent::after { display:none; }
 .nav-links a.nav-link-accent:hover { background:#fff; color:var(--dark-green); }
 /* Nav dropdown submenu */
-.nav-dropdown { position:relative; display:flex; align-items:center; }
+.nav-dropdown { position:relative; }
 .nav-dropdown > a { cursor:pointer; }
 .nav-dropdown-menu {
   position:absolute; top:calc(100% + 0.5rem); left:50%; transform:translateX(-50%);
@@ -534,8 +534,8 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 .nav-links a.bday-nav-banner {
   display:inline-flex;
   align-items:center;
-  gap:0.55rem;
-  padding:0.4rem 1rem 0.4rem 0.4rem;
+  gap:0.45rem;
+  padding:0.35rem 0.85rem 0.35rem 0.35rem;
   border-radius:60px;
   background:rgba(44,176,168,0.12);
   backdrop-filter:blur(20px);
@@ -546,7 +546,7 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
   white-space:nowrap;
   color:var(--white);
   font-weight:600;
-  margin-left:clamp(0.5rem, 1.5vw, 1.25rem);
+  margin-left:clamp(0.25rem, 1vw, 0.75rem);
 }
 .nav-links a.bday-nav-banner::after { display:none !important; }
 .nav-links a.bday-nav-banner:hover {
@@ -1363,7 +1363,10 @@ button { font-family:var(--font-text); cursor:pointer; border:none; outline:none
 
 /* ── Tablet landscape (1024-1366px): tighten nav, balanced padding ── */
 @media (max-width: 1366px) and (min-width: 1025px) {
-  .nav-links { gap:2rem; }
+  .nav-links { gap:clamp(0.8rem, 1.5vw, 1.5rem); }
+  .nav-links a { font-size:0.78rem; }
+  .bday-banner-text { font-size:0.72rem; }
+  .bday-banner-badge { font-size:0.6rem; padding:0.18rem 0.5rem; }
   .slide .album-carousel { height:clamp(280px, 42vh, 440px); }
 }
 
