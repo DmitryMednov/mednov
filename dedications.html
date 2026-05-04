@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F2120">
+  <title>Посвящение друзьям — Mednov</title>
+  <meta name="description" content="Музыкальные посвящения друзьям от Сергея Меднова.">
+  <meta property="og:title" content="Посвящение друзьям — Mednov">
+  <meta property="og:description" content="Музыкальные посвящения друзьям.">
+  <meta property="og:image" content="https://mednov.family/logo-3d.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    html, body { overflow-y:auto!important; overflow-x:hidden!important; height:auto!important; }
+
+    .ded-page {
+      min-height:100vh; max-width:800px; margin:0 auto;
+      padding:clamp(5rem,8vh,7rem) clamp(1rem,4vw,3rem) 3rem;
+      position:relative; z-index:1;
+    }
+    .ded-back {
+      display:inline-flex; align-items:center; gap:0.4rem;
+      font-family:var(--font-main); font-size:0.82rem; font-weight:600;
+      color:#2CB0A8; margin-bottom:2rem; text-decoration:none;
+    }
+    .ded-back:hover { opacity:0.7; }
+    .ded-title {
+      font-family:var(--font-main); font-size:clamp(1.8rem,5vw,2.8rem);
+      font-weight:800; color:#fff; margin-bottom:0.5rem;
+    }
+    .ded-subtitle {
+      font-size:clamp(0.88rem,1vw+0.3rem,1rem);
+      color:rgba(255,255,255,0.5); line-height:1.6; margin-bottom:2rem;
+    }
+    .ded-list { display:flex; flex-direction:column; gap:0.75rem; }
+    .ded-card {
+      padding:clamp(1rem,2vw,1.4rem);
+      border-radius:16px;
+      background:rgba(44,176,168,0.06);
+      border:1px solid rgba(255,255,255,0.06);
+      transition:all 0.3s;
+    }
+    .ded-card:hover {
+      border-color:rgba(44,176,168,0.2);
+      background:rgba(44,176,168,0.1);
+    }
+    .ded-card-head {
+      display:flex; align-items:center; gap:0.75rem; margin-bottom:0.6rem;
+    }
+    .ded-card-icon {
+      width:40px; height:40px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:12px; background:rgba(44,176,168,0.12); color:#2CB0A8;
+    }
+    .ded-card-who { flex:1; min-width:0; }
+    .ded-card-to {
+      font-family:var(--font-main); font-size:0.92rem; font-weight:700; color:#fff;
+    }
+    .ded-card-from {
+      font-size:0.75rem; color:rgba(255,255,255,0.35);
+    }
+    .ded-track {
+      display:flex; align-items:center; gap:0.6rem;
+      padding:0.4rem 0;
+    }
+    .ded-track-name {
+      font-family:var(--font-main); font-size:0.82rem; font-weight:600;
+      color:rgba(255,255,255,0.7); flex-shrink:0; white-space:nowrap;
+    }
+    .ded-track audio {
+      flex:1; height:32px; min-width:0;
+    }
+    .ded-footer {
+      text-align:center; margin-top:3rem;
+      padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.05);
+    }
+    .ded-footer img { height:20px; width:auto; margin:0 auto 0.5rem; display:block; opacity:0.4; }
+    .ded-footer p { font-size:0.75rem; color:rgba(255,255,255,0.2); }
+
+    @media(max-width:480px) {
+      .ded-track { flex-direction:column; align-items:stretch; }
+      .ded-track audio { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="global-bg"><div class="hero-orb"></div><div class="hero-orb"></div></div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo"><img src="logo-mark.svg" alt="Mednov"></a>
+    <div class="nav-links">
+      <a href="index.html">Главная</a>
+      <div class="nav-dropdown">
+        <a href="music.html" class="active">Музыка</a>
+        <div class="nav-dropdown-menu">
+          <a href="music.html">Альбомы</a>
+          <a href="ringtones.html">Рингтоны</a>
+          <a href="dedications.html">Посвящения</a>
+        </div>
+      </div>
+      <a href="games.html">Игры</a>
+      <a href="leia.html">Лея</a>
+      <a href="birthday.html" class="bday-nav-banner">
+        <span class="bday-banner-badge">10 мая</span>
+        <span class="bday-banner-text">Приглашение на юбилей &rarr;</span>
+      </a>
+    </div>
+    <div class="nav-burger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <main class="ded-page">
+    <a href="music.html" class="ded-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Музыка
+    </a>
+
+    <h1 class="ded-title">Посвящение друзьям</h1>
+    <p class="ded-subtitle">Авторские треки, написанные для&nbsp;близких людей.</p>
+
+    <div class="ded-list">
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Anna & Dima Vasilievy</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Навсегда Твоя</span>
+          <audio controls preload="none" src="%D0%9D%D0%B0%D0%B2%D1%81%D0%B5%D0%B3%D0%B4%D0%B0%20%D0%A2%D0%B2%D0%BE%D1%8F.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Dima & Galia Nazipovy</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Воск и пламя</span>
+          <audio controls preload="none" src="%D0%92%D0%BE%D1%81%D0%BA%20%D0%B8%20%D0%BF%D0%BB%D0%B0%D0%BC%D1%8F.mp3"></audio>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">За стеклом</span>
+          <audio controls preload="none" src="%D0%97%D0%B0%20%D1%81%D1%82%D0%B5%D0%BA%D0%BB%D0%BE%D0%BC.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Ksenia Eruntsova</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Bella come Milano al tramonto</span>
+          <audio controls preload="none" src="Bella%20come%20Milano%20al%20tramonto.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Lena Ryvkina</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Elena By The Sea</span>
+          <audio controls preload="none" src="Elena%20By%20The%20Sea.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Maria Eliana</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">MariaElena</span>
+          <audio controls preload="none" src="MariaElena.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Natalia Mednova</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Natalia's Evening</span>
+          <audio controls preload="none" src="Natalia's%20Evening%20%E2%80%93%20Harmonic%20Version.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Sergey Radul</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">I'm the One</span>
+          <audio controls preload="none" src="i'm%20the%20One.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Teimur Shternlib</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Miss Your Fucking Face</span>
+          <audio controls preload="none" src="Miss%20your%20fucking%20face.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Victor Orlovsky</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Любовь случается случайно</span>
+          <audio controls preload="none" src="%D0%9B%D1%8E%D0%B1%D0%BE%D0%B2%D1%8C%20%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B5%D1%82%D1%81%D1%8F%20%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B8%CC%86%D0%BD%D0%BE.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="ded-card">
+        <div class="ded-card-head">
+          <div class="ded-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="ded-card-who"><div class="ded-card-to">Yulia Anna</div></div>
+        </div>
+        <div class="ded-track">
+          <span class="ded-track-name">Mediterranean Hearts</span>
+          <audio controls preload="none" src="Mediterranean%20Hearts.mp3"></audio>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="ded-footer">
+      <img src="logo-mark.svg" alt="Mednov">
+      <p>Mednov Family Office &copy; 2026</p>
+    </footer>
+  </main>
+
+  <script>
+    /* Burger menu */
+    (function() {
+      var b = document.querySelector('.nav-burger');
+      var l = document.querySelector('.nav-links');
+      if (!b || !l) return;
+      b.addEventListener('click', function(e) {
+        e.stopPropagation();
+        b.classList.toggle('open');
+        l.classList.toggle('open');
+        document.body.style.overflow = l.classList.contains('open') ? 'hidden' : '';
+      });
+      l.querySelectorAll('a[href]').forEach(function(a) {
+        a.addEventListener('click', function() {
+          b.classList.remove('open');
+          l.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
