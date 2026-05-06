@@ -267,6 +267,7 @@
 
   <script>
     /* Burger menu */
+    /* Burger menu */
     (function() {
       var b = document.querySelector('.nav-burger');
       var l = document.querySelector('.nav-links');
@@ -285,6 +286,15 @@
         });
       });
     })();
+
+    /* Stop other audio when a new one starts playing */
+    document.querySelectorAll('audio').forEach(function(a) {
+      a.addEventListener('play', function() {
+        document.querySelectorAll('audio').forEach(function(other) {
+          if (other !== a) other.pause();
+        });
+      });
+    });
   </script>
 </body>
 </html>

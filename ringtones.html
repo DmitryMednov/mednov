@@ -401,6 +401,15 @@
       document.getElementById('panel-' + name).classList.add('active');
       event.target.classList.add('active');
     }
+
+    /* Stop other audio when a new one starts playing */
+    document.querySelectorAll('audio').forEach(function(a) {
+      a.addEventListener('play', function() {
+        document.querySelectorAll('audio').forEach(function(other) {
+          if (other !== a) other.pause();
+        });
+      });
+    });
   </script>
 </body>
 </html>
