@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F2120">
+  <title>CATALIST — Mednov</title>
+  <meta name="description" content="CATALIST — проект сохранения наследия кошек Кипра. Памятник, платформа, ветеринарная помощь.">
+  <meta property="og:title" content="CATALIST — Mednov Family Office">
+  <meta property="og:description" content="Кошки спасли Кипр. Теперь мы спасаем их.">
+  <meta property="og:image" content="https://mednov.family/Dempsi.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    html, body { overflow-y:auto!important; overflow-x:hidden!important; height:auto!important; }
+
+    .cat-page {
+      min-height:100vh; max-width:820px; margin:0 auto;
+      padding:clamp(5rem,8vh,7rem) clamp(1rem,4vw,3rem) 3rem;
+      position:relative; z-index:1;
+    }
+
+    .cat-hero { text-align:center; margin-bottom:clamp(2.5rem,5vh,4rem); }
+    .cat-badge {
+      display:inline-block; padding:0.35rem 1rem; border-radius:60px;
+      background:rgba(44,176,168,0.12); border:1px solid rgba(44,176,168,0.25);
+      font-family:var(--font-main); font-size:0.7rem; font-weight:700;
+      color:#2CB0A8; letter-spacing:0.15em; text-transform:uppercase;
+      margin-bottom:1.25rem;
+    }
+    .cat-title {
+      font-family:var(--font-main); font-size:clamp(2.4rem,6vw,3.8rem);
+      font-weight:800; color:#fff; margin-bottom:0.5rem; letter-spacing:-0.02em;
+    }
+    .cat-full {
+      font-size:clamp(0.72rem,0.9vw,0.85rem); color:rgba(255,255,255,0.35);
+      letter-spacing:0.05em; margin-bottom:1.25rem;
+    }
+    .cat-tagline {
+      font-size:clamp(1rem,1.5vw,1.2rem); font-weight:600; font-style:italic;
+      color:rgba(255,255,255,0.6); max-width:500px; margin:0 auto 1rem;
+    }
+    .cat-link {
+      display:inline-flex; align-items:center; gap:0.4rem;
+      font-family:var(--font-main); font-size:0.85rem; font-weight:600;
+      color:#2CB0A8; text-decoration:none;
+    }
+    .cat-link:hover { text-decoration:underline; }
+
+    .cat-section { margin-bottom:clamp(2.5rem,5vh,3.5rem); }
+    .cat-section-title {
+      font-family:var(--font-main); font-size:clamp(1.3rem,3vw,1.8rem);
+      font-weight:800; color:#fff; margin-bottom:1rem;
+    }
+    .cat-text {
+      font-size:clamp(0.88rem,1vw+0.3rem,1rem); line-height:1.7;
+      color:rgba(255,255,255,0.6); margin-bottom:1rem;
+    }
+
+    /* Monument gallery */
+    .cat-monuments {
+      display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+      margin:1.5rem 0;
+    }
+    .cat-monument {
+      border-radius:16px; overflow:hidden;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    }
+    .cat-monument img {
+      width:100%; height:auto; display:block;
+    }
+    .cat-monument-caption {
+      padding:0.75rem 1rem;
+      background:rgba(15,33,32,0.8);
+      font-family:var(--font-main); font-size:0.75rem; font-weight:600;
+      color:rgba(255,255,255,0.6);
+    }
+
+    /* Quote */
+    .cat-quote {
+      padding:1.5rem 2rem; border-radius:16px;
+      background:rgba(44,176,168,0.06);
+      border-left:3px solid #2CB0A8;
+      margin:1.5rem 0;
+    }
+    .cat-quote p {
+      font-size:0.92rem; line-height:1.6; color:rgba(255,255,255,0.7);
+      font-style:italic; margin:0;
+    }
+    .cat-quote p + p { margin-top:0.5rem; }
+
+    /* Directions list */
+    .cat-dirs { display:flex; flex-direction:column; gap:0.75rem; margin:1.25rem 0; }
+    .cat-dir {
+      display:flex; gap:1rem; align-items:flex-start;
+      padding:1rem 1.25rem; border-radius:14px;
+      background:rgba(44,176,168,0.06);
+      border:1px solid rgba(255,255,255,0.05);
+    }
+    .cat-dir-num {
+      width:32px; height:32px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:10px; background:rgba(44,176,168,0.15);
+      font-family:var(--font-main); font-size:0.82rem; font-weight:800; color:#2CB0A8;
+    }
+    .cat-dir-info { flex:1; }
+    .cat-dir-title {
+      font-family:var(--font-main); font-size:0.95rem; font-weight:700; color:#fff;
+      margin-bottom:0.2rem;
+    }
+    .cat-dir-desc { font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.5; }
+
+    /* CTA */
+    .cat-cta {
+      text-align:center; padding:2rem 1.5rem; border-radius:20px;
+      background:rgba(44,176,168,0.08); border:1px solid rgba(44,176,168,0.2);
+      margin:2rem 0;
+    }
+    .cat-cta-text {
+      font-family:var(--font-main); font-size:clamp(1.1rem,2vw,1.4rem);
+      font-weight:700; color:#fff; margin-bottom:0.5rem;
+    }
+    .cat-cta-sub { font-size:0.88rem; color:rgba(255,255,255,0.5); margin-bottom:1.25rem; }
+    .cat-cta-btn {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      padding:0.8rem 2rem; border-radius:60px;
+      background:#2CB0A8; color:#0F2120;
+      font-family:var(--font-main); font-weight:700; font-size:0.92rem;
+      text-decoration:none; transition:all 0.3s;
+      box-shadow:0 8px 28px rgba(44,176,168,0.28);
+    }
+    .cat-cta-btn:hover { background:#fff; box-shadow:0 12px 36px rgba(44,176,168,0.4); }
+
+    .cat-footer {
+      text-align:center; margin-top:3rem;
+      padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.05);
+    }
+    .cat-footer img { height:20px; width:auto; margin:0 auto 0.5rem; display:block; opacity:0.4; }
+    .cat-footer p { font-size:0.75rem; color:rgba(255,255,255,0.2); }
+
+    @media(max-width:600px) {
+      .cat-monuments { grid-template-columns:1fr; }
+      .cat-quote { padding:1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="global-bg"><div class="hero-orb"></div><div class="hero-orb"></div></div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo"><img src="logo-mark.svg" alt="Mednov"></a>
+    <div class="nav-links">
+      <a href="index.html">Главная</a>
+      <div class="nav-dropdown">
+        <a href="music.html">Музыка</a>
+        <div class="nav-dropdown-menu">
+          <a href="music.html">Альбомы</a>
+          <a href="ringtones.html">Рингтоны</a>
+          <a href="dedications.html">Посвящения</a>
+        </div>
+      </div>
+      <a href="games.html">Игры</a>
+      <a href="catalist.html">CATALIST</a>
+      <a href="leia.html">Лея</a>
+      <a href="birthday.html" class="bday-nav-banner">
+        <span class="bday-banner-badge">10 мая</span>
+        <span class="bday-banner-text">Приглашение на юбилей &rarr;</span>
+      </a>
+    </div>
+    <div class="nav-burger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <main class="cat-page">
+
+    <section class="cat-hero">
+      <div class="cat-badge">Non-profit project</div>
+      <h1 class="cat-title">CATALIST</h1>
+      <p class="cat-full">Caring Alliance for Technology, Art, Loneliness, Inclusion, Sustainability, Togetherness</p>
+      <p class="cat-tagline">&laquo;Кошки спасли Кипр. Теперь мы спасаем их.&raquo;</p>
+      <a href="https://catalist.world" target="_blank" rel="noopener" class="cat-link">catalist.world <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+    </section>
+
+    <section class="cat-section">
+      <h2 class="cat-section-title">Кипр &mdash; родина кошки</h2>
+      <p class="cat-text">
+        В&nbsp;неолитическом поселении Шиллурокамбос близ Лимасола археологи обнаружили
+        захоронение возрастом 9&nbsp;500 лет, где рядом с&nbsp;человеком был бережно
+        погребён молодой дикий кот. Это древнейшее в&nbsp;мире свидетельство глубокой
+        эмоциональной связи между человеком и&nbsp;кошкой&nbsp;&mdash; на&nbsp;4&nbsp;000 лет
+        старше египетских изображений.
+      </p>
+      <p class="cat-text">
+        В&nbsp;IV&nbsp;веке Святая Елена Константинопольская прислала на Кипр сотни кошек
+        из Египта и Палестины. Монахи монастыря Святого Николая обучили их охотиться
+        на&nbsp;ядовитых змей по звону колокола. Кошки спасли монастырь&nbsp;&mdash;
+        и&nbsp;весь остров.
+      </p>
+      <p class="cat-text">
+        Сегодня на Кипре более 1,5 миллиона кошек&nbsp;&mdash; больше, чем людей.
+        Это живая история, которую CATALIST хочет сохранить и&nbsp;передать миру.
+      </p>
+    </section>
+
+    <section class="cat-section">
+      <h2 class="cat-section-title">Памятник &laquo;Вечный Страж Кипра&raquo;</h2>
+      <p class="cat-text">
+        Скульптура &laquo;The Eternal Guardian of Cyprus&raquo;&nbsp;&mdash; кот, побеждающий
+        змею&nbsp;&mdash; создаётся кипрским скульптором <strong>Панайотисом Спаносом</strong>
+        из&nbsp;нержавеющей стали. Два памятника будут установлены в&nbsp;знаковых местах Кипра.
+      </p>
+
+      <div class="cat-monuments">
+        <div class="cat-monument">
+          <img src="Dempsi.png" alt="Памятник в Лимасоле" loading="lazy" decoding="async">
+          <div class="cat-monument-caption">Лимасол &mdash; центр города</div>
+        </div>
+        <div class="cat-monument">
+          <img src="Spanos.png" alt="Памятник у монастыря" loading="lazy" decoding="async">
+          <div class="cat-monument-caption">Holy Monastery of St Nicholas of the Cats</div>
+        </div>
+      </div>
+
+      <div class="cat-quote">
+        <p>&laquo;To the eternal companions of humankind &mdash; worthy of our love and care.&raquo;</p>
+        <p>&laquo;Вечным спутникам человечества &mdash; достойным нашей любви и заботы.&raquo;</p>
+      </div>
+    </section>
+
+    <section class="cat-section">
+      <h2 class="cat-section-title">Три направления</h2>
+      <div class="cat-dirs">
+        <div class="cat-dir">
+          <div class="cat-dir-num">1</div>
+          <div class="cat-dir-info">
+            <div class="cat-dir-title">catalist.world &mdash; цифровая платформа</div>
+            <div class="cat-dir-desc">Истории кошек, карта приютов и ветеринаров, возможность поддержать конкретного кота, вход в сообщество.</div>
+          </div>
+        </div>
+        <div class="cat-dir">
+          <div class="cat-dir-num">2</div>
+          <div class="cat-dir-info">
+            <div class="cat-dir-title">Памятники в Лимасоле</div>
+            <div class="cat-dir-desc">Физический символ проекта и точка притяжения для горожан и туристов. Скульптура работы Панайотиса Спаноса.</div>
+          </div>
+        </div>
+        <div class="cat-dir">
+          <div class="cat-dir-num">3</div>
+          <div class="cat-dir-info">
+            <div class="cat-dir-title">Ветеринарная помощь</div>
+            <div class="cat-dir-desc">Сеть партнёрских клиник, мобильная помощь, телемедицина, экстренная горячая линия, интеграция с муниципальными программами.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cat-cta">
+      <p class="cat-cta-text">Cats saved Cyprus. Now we save them.</p>
+      <p class="cat-cta-sub">Узнайте больше о проекте и&nbsp;присоединяйтесь</p>
+      <a href="https://catalist.world" target="_blank" rel="noopener" class="cat-cta-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        catalist.world
+      </a>
+    </section>
+
+    <footer class="cat-footer">
+      <img src="logo-mark.svg" alt="Mednov">
+      <p>Mednov Family Office &copy; 2026</p>
+    </footer>
+  </main>
+
+  <script>
+    (function() {
+      var b = document.querySelector('.nav-burger');
+      var l = document.querySelector('.nav-links');
+      if (!b || !l) return;
+      b.addEventListener('click', function(e) {
+        e.stopPropagation();
+        b.classList.toggle('open');
+        l.classList.toggle('open');
+        document.body.style.overflow = l.classList.contains('open') ? 'hidden' : '';
+      });
+      l.querySelectorAll('a[href]').forEach(function(a) {
+        a.addEventListener('click', function() {
+          b.classList.remove('open');
+          l.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
