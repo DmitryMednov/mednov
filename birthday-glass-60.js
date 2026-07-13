@@ -83,7 +83,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
   const fontLoader = new FontLoader();
   fontLoader.load(
-    'https://cdn.jsdelivr.net/npm/three@0.157.0/examples/fonts/helvetiker_bold.typeface.json',
+    'vendor/three-0.157.0/fonts/helvetiker_bold.typeface.json',
     (font) => {
       const geometry = new TextGeometry('60', {
         font,
