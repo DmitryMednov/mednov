@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Кроссворд — Mednov</title>
+  <meta name="description" content="Генератор кроссвордов: выбирай темы и сложность, решай на экране или печатай.">
+  <meta property="og:title" content="Кроссворд — Mednov Family Office">
+  <meta property="og:description" content="Генератор кроссвордов: 36 тем, три уровня сложности, печать и решение на экране.">
+  <meta property="og:image" content="https://mednov.family/logo-3d.png">
+  <meta property="og:url" content="https://mednov.family/crossword.html">
+  <meta name="theme-color" content="#f0f0f0">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="logo-mark.svg" type="image/svg+xml">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { min-height:100vh; background:#f0f0f0; -webkit-text-size-adjust:100%; }
+    .back-link {
+      /* z-index ниже модалок кроссворда (окно слова: 50, предпросмотр печати: 60) */
+      position:fixed; top:max(12px, env(safe-area-inset-top)); right:max(12px, env(safe-area-inset-right)); z-index:40;
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 16px; border-radius:24px;
+      background:rgba(22,32,58,0.85);
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.12);
+      color:#fff; font-family:Inter,Arial,sans-serif; font-size:12px; font-weight:600;
+      text-decoration:none; transition:all 0.3s;
+    }
+    .back-link:hover { background:rgba(22,32,58,1); }
+    .back-link svg { width:14px; height:14px; }
+    #cw-loading {
+      min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:14px; color:#555; font-family:Arial,sans-serif; font-size:14px;
+    }
+    #cw-loading .sp { width:26px; height:26px; border:3px solid #ccc; border-top-color:#b81d1d; border-radius:50%; animation:cwspin .8s linear infinite; }
+    @keyframes cwspin { to { transform:rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <a href="games.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    Игры
+  </a>
+  <div id="root"><div id="cw-loading"><div class="sp"></div>Загружаю кроссворд…</div></div>
+
+  <!-- React локально (vendor/), код игры скомпилирован заранее из crossgen.tsx (см. esbuild) -->
+  <script src="vendor/react-18.2.0.min.js"></script>
+  <script src="vendor/react-dom-18.2.0.min.js"></script>
+  <script src="crossword.js"></script>
+</body>
+</html>

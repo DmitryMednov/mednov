@@ -41,6 +41,14 @@ function generateCode() {
 // Проверка валидности расстановки флота от клиента
 function validateFleet(ships) {
   if (!Array.isArray(ships) || ships.length !== FLEET.length) return false;
+  // Каждый корабль — объект с массивом клеток [row, col] из целых чисел
+  for (const ship of ships) {
+    if (!ship || !Array.isArray(ship.cells) || !ship.cells.length) return false;
+    for (const cell of ship.cells) {
+      if (!Array.isArray(cell) || cell.length !== 2) return false;
+      if (!Number.isInteger(cell[0]) || !Number.isInteger(cell[1])) return false;
+    }
+  }
 
   // Проверка длин кораблей
   const lengths = ships.map(s => s.cells.length).sort((a, b) => b - a);
@@ -105,12 +113,23 @@ function allSunk(ships) {
   return ships.every(ship => ship.hits && ship.hits.size === ship.cells.length);
 }
 
+// Защита обработчиков: битые данные от клиента не должны ронять процесс
+function safe(handler) {
+  return (data, callback) => {
+    try {
+      handler(data || {}, typeof callback === 'function' ? callback : () => {});
+    } catch (err) {
+      console.error('[handler error]', err);
+    }
+  };
+}
+
 // ===== Socket.IO логика =====
 io.on('connection', (socket) => {
   console.log(`[connect] ${socket.id}`);
 
   // --- Создать комнату ---
-  socket.on('create_room', ({ nick }, callback) => {
+  socket.on('create_room', safe(({ nick }, callback) => {
     if (!nick || typeof nick !== 'string' || nick.length > 20) {
       return callback({ error: 'Ник обязателен (до 20 символов)' });
     }
@@ -133,10 +152,10 @@ io.on('connection', (socket) => {
     socket.data.roomCode = code;
     console.log(`[room created] ${code} by ${nick}`);
     callback({ code, role: 'host' });
-  });
+  }));
 
   // --- Подключиться к комнате ---
-  socket.on('join_room', ({ nick, code }, callback) => {
+  socket.on('join_room', safe(({ nick, code }, callback) => {
     if (!nick || typeof nick !== 'string' || nick.length > 20) {
       return callback({ error: 'Ник обязателен (до 20 символов)' });
     }
@@ -162,10 +181,10 @@ io.on('connection', (socket) => {
     io.to(roomCode).emit('opponent_joined', { nicks });
     console.log(`[room joined] ${roomCode} by ${nick}`);
     callback({ code: roomCode, role: 'guest', opponentNick: room.players[0].nick });
-  });
+  }));
 
   // --- Игрок готов (прислал расстановку) ---
-  socket.on('fleet_ready', ({ ships }, callback) => {
+  socket.on('fleet_ready', safe(({ ships }, callback) => {
     const room = rooms.get(socket.data.roomCode);
     if (!room || room.state !== 'setup') return callback?.({ error: 'Не в фазе расстановки' });
 
@@ -194,14 +213,15 @@ io.on('connection', (socket) => {
       });
       console.log(`[battle start] ${room.code}, first: ${turnNick}`);
     }
-  });
+  }));
 
   // --- Выстрел ---
-  socket.on('shoot', ({ row, col }, callback) => {
+  socket.on('shoot', safe(({ row, col }, callback) => {
     const room = rooms.get(socket.data.roomCode);
     if (!room || room.state !== 'battle') return callback?.({ error: 'Не в фазе боя' });
     if (room.turn !== socket.id) return callback?.({ error: 'Не ваш ход' });
-    if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
+    if (!Number.isInteger(row) || !Number.isInteger(col) ||
+        row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
       return callback?.({ error: 'Неверные координаты' });
     }
 
@@ -252,7 +272,7 @@ io.on('connection', (socket) => {
     }
 
     io.to(room.code).emit('shot_result', payload);
-  });
+  }));
 
   // --- Запрос новой игры (после завершения) ---
   socket.on('rematch_request', () => {
@@ -263,7 +283,8 @@ io.on('connection', (socket) => {
 
   socket.on('rematch_accept', () => {
     const room = rooms.get(socket.data.roomCode);
-    if (!room) return;
+    // Реванш возможен только после завершённой игры с двумя игроками
+    if (!room || room.state !== 'finished' || room.players.length !== 2) return;
     // Сброс
     room.state = 'setup';
     room.turn = null;

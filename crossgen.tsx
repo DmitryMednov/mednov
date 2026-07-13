@@ -600,8 +600,11 @@ export default function CrosswordApp() {
     const rr = r + dr, cc = c + dc;
     if (puzzle.sol[rr] && puzzle.sol[rr][cc] != null) { setActive({ r: rr, c: cc }); focusCell(rr, cc); }
   };
-  const handleChange = (r, c, val) => {
-    const ch = (val || "").slice(-1).toUpperCase();
+  const handleChange = (r, c, e) => {
+    // Берём именно введённый символ (InputEvent.data): курсор может стоять перед старой буквой
+    const typed = e.nativeEvent && e.nativeEvent.data;
+    const val = typed || e.target.value || "";
+    const ch = val.slice(-1).toUpperCase();
     if (ch && !/[\p{L}\p{N}]/u.test(ch)) return;
     setUser((prev) => { const g = prev.map((row) => row.slice()); g[r][c] = ch; return g; });
     if (ch) step(r, c, dir, false);
@@ -763,8 +766,10 @@ export default function CrosswordApp() {
     return { cells, item, dir: d };
   }, [puzzle, wordModal]);
 
-  const modalChange = (cells, idx, val) => {
-    const ch = (val || "").slice(-1).toUpperCase();
+  const modalChange = (cells, idx, e) => {
+    const typed = e.nativeEvent && e.nativeEvent.data;
+    const val = typed || e.target.value || "";
+    const ch = val.slice(-1).toUpperCase();
     if (ch && !/[\p{L}]/u.test(ch)) return;
     const [r, c] = cells[idx].split("-").map(Number);
     setUser((prev) => { const g = prev.map((row) => row.slice()); g[r][c] = ch; return g; });
@@ -897,7 +902,7 @@ export default function CrosswordApp() {
                 return (
                   <div key={key} className="cwcell" style={{ position: "relative", width: cellSize, height: cellSize, background: bg, boxShadow: "inset 0 0 0 1px #2b2b2b" }}>
                     {puzzle.numbers[r][c] > 0 && <span style={{ position: "absolute", top: 1, left: 2, fontSize: Math.max(8, cellSize * 0.3), fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600, color: "#161616", lineHeight: 1, pointerEvents: "none" }}>{puzzle.numbers[r][c]}</span>}
-                    <input ref={(el) => (inputRefs.current[key] = el)} value={uv || ""} onChange={(e) => handleChange(r, c, e.target.value)} onKeyDown={(e) => handleKey(e, r, c)} onFocus={() => setActive({ r, c })} onClick={() => selectCell(r, c)} inputMode="text" autoComplete="off" autoCorrect="off" autoCapitalize="characters" style={{ width: "100%", height: "100%", border: "none", background: "transparent", textAlign: "center", textTransform: "uppercase", color: tc, fontFamily: ST.letterFont, fontWeight: 400, fontSize: Math.max(12, cellSize * 0.56), padding: 0, caretColor: T.ink }} />
+                    <input ref={(el) => (inputRefs.current[key] = el)} value={uv || ""} onChange={(e) => handleChange(r, c, e)} onKeyDown={(e) => handleKey(e, r, c)} onFocus={(e) => { setActive({ r, c }); e.target.select(); }} onClick={() => selectCell(r, c)} inputMode="text" autoComplete="off" autoCorrect="off" autoCapitalize="characters" style={{ width: "100%", height: "100%", border: "none", background: "transparent", textAlign: "center", textTransform: "uppercase", color: tc, fontFamily: ST.letterFont, fontWeight: 400, fontSize: Math.max(12, cellSize * 0.56), padding: 0, caretColor: T.ink }} />
                   </div>
                 );
               }))}
@@ -976,7 +981,7 @@ export default function CrosswordApp() {
                 const bad = checked && uv && uv !== puzzle.sol[r][c];
                 return (
                   <div key={key} style={{ position: "relative", width: 42, height: 48, borderRadius: 9, background: bad ? "#fdecea" : ok ? "#e7f6ee" : "#fbfcfe", boxShadow: `inset 0 0 0 1.5px ${bad ? C.wrong : ok ? C.correct : T.line}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <input ref={(el) => (modalRefs.current[idx] = el)} value={uv || ""} onChange={(e) => modalChange(modalData.cells, idx, e.target.value)} onKeyDown={(e) => modalKey(e, modalData.cells, idx)} inputMode="text" autoComplete="off" autoCapitalize="characters" style={{ width: "100%", height: "100%", border: "none", background: "transparent", textAlign: "center", textTransform: "uppercase", fontFamily: ST.letterFont, fontWeight: 400, fontSize: 24, color: bad ? C.wrong : ok ? C.correct : T.ink, caretColor: T.ink }} />
+                    <input ref={(el) => (modalRefs.current[idx] = el)} value={uv || ""} onChange={(e) => modalChange(modalData.cells, idx, e)} onKeyDown={(e) => modalKey(e, modalData.cells, idx)} onFocus={(e) => e.target.select()} inputMode="text" autoComplete="off" autoCapitalize="characters" style={{ width: "100%", height: "100%", border: "none", background: "transparent", textAlign: "center", textTransform: "uppercase", fontFamily: ST.letterFont, fontWeight: 400, fontSize: 24, color: bad ? C.wrong : ok ? C.correct : T.ink, caretColor: T.ink }} />
                     {checked && (ok || bad) && <span style={{ position: "absolute", top: 2, right: 4, fontSize: 11, color: ok ? C.correct : C.wrong }}>{ok ? "✓" : "✗"}</span>}
                   </div>
                 );
